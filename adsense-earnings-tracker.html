@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Hunt AdSense Earnings Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .metric {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .metric h2 {
+            font-size: 2rem;
+            margin: 10px 0;
+            color: #3498db;
+        }
+        
+        .metric p {
+            color: #7f8c8d;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        .form-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .form-row label {
+            width: 150px;
+            font-weight: 600;
+        }
+        
+        .form-row input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .reset-button {
+            background-color: #e74c3c;
+        }
+        
+        .reset-button:hover {
+            background-color: #c0392b;
+        }
+        
+        .history {
+            margin-top: 40px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .chart-container {
+            margin-top: 40px;
+            height: 300px;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>QR Hunt AdSense Earnings Tracker</h1>
+        
+        <div class="dashboard">
+            <div class="metric">
+                <p>Total Views</p>
+                <h2 id="totalViews">0</h2>
+            </div>
+            <div class="metric">
+                <p>Total Earnings</p>
+                <h2 id="totalEarnings">$0.00</h2>
+            </div>
+            <div class="metric">
+                <p>Average RPM</p>
+                <h2 id="averageRPM">$0.00</h2>
+            </div>
+            <div class="metric">
+                <p>Estimated Monthly</p>
+                <h2 id="estimatedMonthly">$0.00</h2>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <h3>Add Daily Data</h3>
+            <div class="form-row">
+                <label for="date">Date:</label>
+                <input type="date" id="date" value="">
+            </div>
+            <div class="form-row">
+                <label for="views">Ad Views:</label>
+                <input type="number" id="views" placeholder="Number of ad views">
+            </div>
+            <div class="form-row">
+                <label for="earnings">Earnings ($):</label>
+                <input type="number" id="earnings" step="0.01" placeholder="Earnings in dollars">
+            </div>
+            <div class="button-container">
+                <button id="addEntry">Add Entry</button>
+                <button id="resetData" class="reset-button">Reset All Data</button>
+            </div>
+        </div>
+        
+        <div class="history">
+            <h3>Earnings History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Views</th>
+                        <th>Earnings</th>
+                        <th>RPM</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTable">
+                    <!-- Data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>This tracker is for estimation purposes only. Always refer to your official AdSense dashboard for accurate earnings data.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Set today's date as default
+        document.getElementById('date').valueAsDate = new Date();
+        
+        // Initialize data from localStorage
+        let earningsData = [];
+        if (localStorage.getItem('qrHuntAdSenseData')) {
+            earningsData = JSON.parse(localStorage.getItem('qrHuntAdSenseData'));
+            updateDashboard();
+            updateTable();
+        }
+        
+        // Add entry button
+        document.getElementById('addEntry').addEventListener('click', function() {
+            const date = document.getElementById('date').value;
+            const views = parseInt(document.getElementById('views').value);
+            const earnings = parseFloat(document.getElementById('earnings').value);
+            
+            if (!date || isNaN(views) || isNaN(earnings)) {
+                alert('Please fill in all fields with valid values.');
+                return;
+            }
+            
+            // Add new entry
+            earningsData.push({
+                date: date,
+                views: views,
+                earnings: earnings,
+                rpm: calculateRPM(views, earnings)
+            });
+            
+            // Sort by date
+            earningsData.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            // Save to localStorage
+            localStorage.setItem('qrHuntAdSenseData', JSON.stringify(earningsData));
+            
+            // Update UI
+            updateDashboard();
+            updateTable();
+            
+            // Clear form
+            document.getElementById('views').value = '';
+            document.getElementById('earnings').value = '';
+        });
+        
+        // Reset button
+        document.getElementById('resetData').addEventListener('click', function() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+                earningsData = [];
+                localStorage.removeItem('qrHuntAdSenseData');
+                updateDashboard();
+                updateTable();
+            }
+        });
+        
+        // Calculate RPM (Revenue Per Mille - per 1000 views)
+        function calculateRPM(views, earnings) {
+            if (views === 0) return 0;
+            return (earnings / views) * 1000;
+        }
+        
+        // Update dashboard metrics
+        function updateDashboard() {
+            let totalViews = 0;
+            let totalEarnings = 0;
+            
+            earningsData.forEach(entry => {
+                totalViews += entry.views;
+                totalEarnings += entry.earnings;
+            });
+            
+            const averageRPM = totalViews > 0 ? calculateRPM(totalViews, totalEarnings) : 0;
+            
+            // Calculate estimated monthly earnings based on current daily average
+            let estimatedMonthly = 0;
+            if (earningsData.length > 0) {
+                const dailyAverage = totalEarnings / earningsData.length;
+                estimatedMonthly = dailyAverage * 30;
+            }
+            
+            // Update UI
+            document.getElementById('totalViews').textContent = totalViews.toLocaleString();
+            document.getElementById('totalEarnings').textContent = '$' + totalEarnings.toFixed(2);
+            document.getElementById('averageRPM').textContent = '$' + averageRPM.toFixed(2);
+            document.getElementById('estimatedMonthly').textContent = '$' + estimatedMonthly.toFixed(2);
+        }
+        
+        // Update history table
+        function updateTable() {
+            const tableBody = document.getElementById('historyTable');
+            tableBody.innerHTML = '';
+            
+            earningsData.forEach(entry => {
+                const row = document.createElement('tr');
+                
+                // Format date
+                const dateObj = new Date(entry.date);
+                const formattedDate = dateObj.toLocaleDateString();
+                
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td>${entry.views.toLocaleString()}</td>
+                    <td>$${entry.earnings.toFixed(2)}</td>
+                    <td>$${entry.rpm.toFixed(2)}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // If no data, show a message
+            if (earningsData.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="4" style="text-align: center;">No data available. Add your first entry above.</td>';
+                tableBody.appendChild(row);
+            }
+        }
+    </script>
+</body>
+</html>

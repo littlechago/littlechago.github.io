@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 4rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+    z-index: 10;
+    position: relative;
+}
+
+p {
+    font-size: 1.2rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    z-index: 10;
+    position: relative;
+}
+
+#qr-container {
+    position: absolute;
+    transition: all 2s ease-in-out;
+    z-index: 5;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
+}
+
+img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    background: white;
+    padding: 10px;
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) translateX(0); }
+    25% { transform: translateY(-20px) translateX(10px); }
+    50% { transform: translateY(0) translateX(20px); }
+    75% { transform: translateY(20px) translateX(10px); }
+    100% { transform: translateY(0) translateX(0); }
+}
+
+/* Confetti styles */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.8;
+    border-radius: 2px;
+    animation: fall 5s linear forwards;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) translateX(0) rotate(var(--rotation, 0deg));
+    }
+    25% {
+        transform: translateY(25vh) translateX(calc(var(--drift-x, 0px) * 0.25)) rotate(calc(var(--rotation, 0deg) + 90deg));
+    }
+    50% {
+        transform: translateY(50vh) translateX(calc(var(--drift-x, 0px) * 0.5)) rotate(calc(var(--rotation, 0deg) + 180deg));
+    }
+    75% {
+        transform: translateY(75vh) translateX(calc(var(--drift-x, 0px) * 0.75)) rotate(calc(var(--rotation, 0deg) + 270deg));
+    }
+    100% {
+        transform: translateY(100vh) translateX(var(--drift-x, 0px)) rotate(calc(var(--rotation, 0deg) + 360deg));
+    }
+}
+
+/* Money bill styles */
+.money-bill {
+    position: absolute;
+    width: 40px;
+    height: 25px;
+    background-color: #85bb65; /* Dollar bill green */
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #1e4620;
+    font-weight: bold;
+    font-size: 14px;
+}

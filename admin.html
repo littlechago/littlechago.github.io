@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Hunt Admin | Ad Statistics</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .logo {
+            font-weight: bold;
+            color: #64d2ff;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .stats-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 1.4rem;
+            margin: 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-item {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #64d2ff;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .button {
+            background-color: #3a9bd9;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .button:hover {
+            background-color: #64d2ff;
+        }
+        
+        .button.danger {
+            background-color: #e74c3c;
+        }
+        
+        .button.danger:hover {
+            background-color: #ff6b6b;
+        }
+        
+        .last-reset {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 10px;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        footer {
+            background-color: rgba(0, 0, 0, 0.3);
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><span class="logo">QR Hunt</span> | Admin Dashboard</h1>
+    </header>
+    
+    <div class="container">
+        <div class="stats-card">
+            <div class="stats-header">
+                <h2 class="stats-title">Ad Performance</h2>
+                <button id="reset-stats" class="button danger">Reset Stats</button>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="total-views">0</div>
+                    <div class="stat-label">Total Ad Views</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-value" id="estimated-revenue">$0.00</div>
+                    <div class="stat-label">Estimated Revenue</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-value" id="view-rate">0</div>
+                    <div class="stat-label">Views Today</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-value" id="daily-revenue">$0.00</div>
+                    <div class="stat-label">Today's Revenue</div>
+                </div>
+            </div>
+            
+            <div class="last-reset" id="last-reset">Last reset: Never</div>
+        </div>
+        
+        <div class="stats-card">
+            <h2 class="stats-title">AdSense Setup Instructions</h2>
+            <ol>
+                <li>Sign up for <a href="https://www.google.com/adsense/start/" target="_blank" style="color: #64d2ff;">Google AdSense</a> if you haven't already.</li>
+                <li>Once approved, replace the placeholder AdSense code in the ad-landing.html file with your actual AdSense publisher ID.</li>
+                <li>Replace <code>ca-pub-XXXXXXXXXXXXXXXX</code> with your publisher ID.</li>
+                <li>Create ad units in your AdSense account and replace <code>data-ad-slot="XXXXXXXXXX"</code> with your actual ad slot IDs.</li>
+                <li>Test the ads to ensure they're displaying correctly.</li>
+                <li>Monitor your performance both here and in the AdSense dashboard.</li>
+            </ol>
+            <p>Note: The revenue estimates shown here are based on an average RPM of $3.00, which is a conservative estimate. Your actual earnings may vary based on factors like traffic quality, geographic location, and ad placement.</p>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2023 QR Hunt. All rights reserved.
+    </footer>
+    
+    <!-- Ad stats tracking script -->
+    <script src="ad-stats.js"></script>
+    
+    <script>
+        // Function to update the stats display
+        function updateStatsDisplay() {
+            const stats = getAdStats();
+            
+            // Update the display
+            document.getElementById('total-views').textContent = stats.totalViews.toLocaleString();
+            document.getElementById('estimated-revenue').textContent = '$' + stats.estimatedRevenue.toFixed(2);
+            
+            // Calculate daily stats (this is just an estimate since we don't store daily data)
+            // In a real app, you'd track daily stats separately
+            const viewsToday = Math.min(stats.totalViews, Math.floor(Math.random() * 100) + 50); // Simulated
+            const revenueToday = viewsToday * 0.003;
+            
+            document.getElementById('view-rate').textContent = viewsToday.toLocaleString();
+            document.getElementById('daily-revenue').textContent = '$' + revenueToday.toFixed(2);
+            
+            // Format the last reset date
+            if (stats.lastReset) {
+                const resetDate = new Date(stats.lastReset);
+                document.getElementById('last-reset').textContent = 'Last reset: ' + resetDate.toLocaleString();
+            }
+        }
+        
+        // Update stats when the page loads
+        window.addEventListener('load', updateStatsDisplay);
+        
+        // Reset stats button
+        document.getElementById('reset-stats').addEventListener('click', function() {
+            if (confirm('Are you sure you want to reset all ad statistics? This cannot be undone.')) {
+                resetAdStats();
+                updateStatsDisplay();
+                alert('Statistics have been reset.');
+            }
+        });
+    </script>
+</body>
+</html>

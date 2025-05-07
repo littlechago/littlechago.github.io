@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Won a Sweepstakes Entry!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #333;
+        }
+        
+        .prize-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #4facfe;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .prize-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            color: #4facfe;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .grand-prize {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border: 2px dashed #4facfe;
+        }
+        
+        .grand-prize h2 {
+            color: #4facfe;
+            margin-top: 0;
+        }
+        
+        .grand-prize-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .submit-button {
+            background-color: #4facfe;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .submit-button:hover {
+            background-color: #00f2fe;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .timer {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #FF6347;
+        }
+        
+        .share-buttons {
+            margin-top: 30px;
+        }
+        
+        .share-button {
+            display: inline-block;
+            margin: 0 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3b5998;
+            color: white;
+            font-size: 1.2rem;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .share-button.twitter {
+            background-color: #1DA1F2;
+        }
+        
+        .share-button.instagram {
+            background-color: #C13584;
+        }
+        
+        .share-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .entries-info {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4facfe;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="prize-container">
+        <div class="prize-icon">🎟️</div>
+        <h1>Congratulations!</h1>
+        <p>You've won a <strong>FREE ENTRY</strong> into our exclusive sweepstakes!</p>
+        
+        <div class="grand-prize">
+            <div class="grand-prize-icon">✈️</div>
+            <h2>Grand Prize: Luxury Vacation</h2>
+            <p>Win a 7-day all-expenses-paid luxury vacation for two to the destination of your choice!</p>
+            <p>Value: <strong>$5,000</strong></p>
+        </div>
+        
+        <div class="entries-info">
+            Your Entries: <span id="entries-count">5</span>
+        </div>
+        
+        <p>Complete the form below to claim your entries:</p>
+        
+        <form id="sweepstakes-form">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <select id="age" name="age" required>
+                    <option value="">Select your age</option>
+                    <option value="18-24">18-24</option>
+                    <option value="25-34">25-34</option>
+                    <option value="35-44">35-44</option>
+                    <option value="45-54">45-54</option>
+                    <option value="55+">55+</option>
+                </select>
+            </div>
+            
+            <p>Entry closes in:</p>
+            <div class="timer" id="timer">48:00:00</div>
+            
+            <button type="submit" class="submit-button">SUBMIT YOUR ENTRY</button>
+        </form>
+        
+        <div class="share-buttons">
+            <p>Share for an extra entry:</p>
+            <div class="share-button">f</div>
+            <div class="share-button twitter">t</div>
+            <div class="share-button instagram">i</div>
+        </div>
+    </div>
+    
+    <script>
+        // Form submission
+        document.getElementById('sweepstakes-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            
+            if (!name || !email) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Show success message
+            alert('Congratulations! Your sweepstakes entry has been submitted. Good luck!');
+            
+            // Here you would typically submit the form data to a server
+            // For demo purposes, we'll just reset the form
+            this.reset();
+        });
+        
+        // Share buttons to increase entries
+        const shareButtons = document.querySelectorAll('.share-button');
+        let entriesCount = 5;
+        
+        shareButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                entriesCount++;
+                document.getElementById('entries-count').textContent = entriesCount;
+                
+                alert('Thanks for sharing! You\'ve earned an extra entry!');
+            });
+        });
+        
+        // Countdown timer
+        let timeLeft = 172800; // 48 hours in seconds
+        const timerElement = document.getElementById('timer');
+        
+        function updateTimer() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            let seconds = timeLeft % 60;
+            
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            const minutesFormatted = minutes < 10 ? '0' + minutes : minutes;
+            
+            timerElement.textContent = `${hours}:${minutesFormatted}:${seconds}`;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                timerElement.textContent = 'CLOSED';
+                document.querySelector('.submit-button').textContent = 'ENTRY CLOSED';
+                document.querySelector('.submit-button').disabled = true;
+                document.querySelector('.submit-button').style.backgroundColor = '#ccc';
+                document.querySelector('.submit-button').style.cursor = 'not-allowed';
+            }
+        }
+        
+        updateTimer();
+    </script>
+</body>
+</html>

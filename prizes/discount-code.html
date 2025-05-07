@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Won a Special Discount Code!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #333;
+        }
+        
+        .prize-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #185a9d;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .prize-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            color: #43cea2;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .discount-code {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border: 2px dashed #43cea2;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            margin: 20px 0;
+            color: #185a9d;
+            position: relative;
+        }
+        
+        .copy-button {
+            background-color: #43cea2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .copy-button:hover {
+            background-color: #185a9d;
+        }
+        
+        .use-button {
+            background-color: #185a9d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .use-button:hover {
+            background-color: #43cea2;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .timer {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #FF6347;
+        }
+        
+        .share-buttons {
+            margin-top: 30px;
+        }
+        
+        .share-button {
+            display: inline-block;
+            margin: 0 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3b5998;
+            color: white;
+            font-size: 1.2rem;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .share-button.twitter {
+            background-color: #1DA1F2;
+        }
+        
+        .share-button.instagram {
+            background-color: #C13584;
+        }
+        
+        .share-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="prize-container">
+        <div class="prize-icon">🎁</div>
+        <h1>You're a Winner!</h1>
+        <p>Congratulations! You've discovered a special QR code and won an exclusive discount!</p>
+        
+        <p>Your special discount code is:</p>
+        <div class="discount-code">
+            QR50OFF
+            <button class="copy-button" id="copy-button">Copy</button>
+        </div>
+        
+        <p>This code gives you <strong>50% OFF</strong> your next purchase!</p>
+        
+        <p>Valid for:</p>
+        <div class="timer" id="timer">24:00:00</div>
+        
+        <a href="#" class="use-button">USE DISCOUNT NOW</a>
+        
+        <div class="share-buttons">
+            <p>Share this discount with friends:</p>
+            <div class="share-button">f</div>
+            <div class="share-button twitter">t</div>
+            <div class="share-button instagram">i</div>
+        </div>
+    </div>
+    
+    <script>
+        // Copy button functionality
+        document.getElementById('copy-button').addEventListener('click', function() {
+            const discountCode = 'QR50OFF';
+            
+            // Create a temporary input element
+            const tempInput = document.createElement('input');
+            tempInput.value = discountCode;
+            document.body.appendChild(tempInput);
+            
+            // Select and copy the text
+            tempInput.select();
+            document.execCommand('copy');
+            
+            // Remove the temporary element
+            document.body.removeChild(tempInput);
+            
+            // Change button text temporarily
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+                this.textContent = 'Copy';
+            }, 2000);
+        });
+        
+        // Countdown timer
+        let timeLeft = 86400; // 24 hours in seconds
+        const timerElement = document.getElementById('timer');
+        
+        function updateTimer() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            let seconds = timeLeft % 60;
+            
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            const minutesFormatted = minutes < 10 ? '0' + minutes : minutes;
+            
+            timerElement.textContent = `${hours}:${minutesFormatted}:${seconds}`;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                timerElement.textContent = 'EXPIRED';
+            }
+        }
+        
+        updateTimer();
+    </script>
+</body>
+</html>

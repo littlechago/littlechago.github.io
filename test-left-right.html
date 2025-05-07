@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Left-Right Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        
+        .left-element, .right-element {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        
+        .left-element {
+            top: 50%;
+            left: 100px;
+            background-color: yellow;
+        }
+        
+        .right-element {
+            top: 50%;
+            right: 100px;
+            background-color: green;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+        
+        button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <!-- Elements will be created by JavaScript -->
+    </div>
+    
+    <div class="controls">
+        <button id="create-left">Create Left Element</button>
+        <button id="create-right">Create Right Element</button>
+        <button id="create-both">Create Both</button>
+        <button id="clear-all">Clear All</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('container');
+            
+            // Button event listeners
+            document.getElementById('create-left').addEventListener('click', createLeftElement);
+            document.getElementById('create-right').addEventListener('click', createRightElement);
+            document.getElementById('create-both').addEventListener('click', createBothElements);
+            document.getElementById('clear-all').addEventListener('click', clearAll);
+            
+            // Create left element
+            function createLeftElement() {
+                const element = document.createElement('div');
+                element.classList.add('left-element');
+                element.style.left = '100px';
+                element.style.top = '50%';
+                container.appendChild(element);
+                console.log('Left element created at x=100px');
+            }
+            
+            // Create right element
+            function createRightElement() {
+                const element = document.createElement('div');
+                element.classList.add('right-element');
+                element.style.right = '100px';
+                element.style.top = '50%';
+                container.appendChild(element);
+                console.log('Right element created at right=100px');
+            }
+            
+            // Create both elements
+            function createBothElements() {
+                createLeftElement();
+                createRightElement();
+            }
+            
+            // Clear all elements
+            function clearAll() {
+                container.innerHTML = '';
+                console.log('All elements cleared');
+            }
+            
+            // Create both elements on load
+            createBothElements();
+        });
+    </script>
+</body>
+</html>

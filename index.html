@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>QR Hunt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        p {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            z-index: 10;
+            position: relative;
+        }
+
+        #qr-container {
+            position: absolute;
+            transition: all 2s ease-in-out;
+            z-index: 5;
+            padding: 20px;
+            background-color: rgba(30, 30, 40, 0.85);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 250px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Subtle hover effect instead of pulse */
+        #qr-container:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* QR wrapper with subtle styling */
+        .qr-wrapper {
+            position: relative;
+            margin: 10px auto;
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            border-radius: 10px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        /* Subtle hover effect for QR code */
+        .qr-wrapper:hover {
+            transform: scale(1.03);
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #qr-container:hover .click-hint {
+            opacity: 1;
+        }
+
+        /* Prize QR code effect */
+        .prize-qr {
+            animation: prize-pulse 0.3s ease-in-out;
+        }
+
+        @keyframes prize-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 215, 0, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+
+        /* Urgency banner - more elegant */
+        .urgency-banner {
+            background-color: rgba(60, 60, 80, 0.8);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .countdown {
+            color: #e6e6fa;
+            font-size: 1rem;
+        }
+
+        .scarcity {
+            font-size: 0.9rem;
+            color: #d0d0e0;
+        }
+
+        /* Social proof section - more elegant */
+        .social-proof {
+            margin-top: 15px;
+            background-color: rgba(60, 60, 80, 0.6);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .winner-ticker {
+            height: 20px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .winner-ticker p {
+            margin: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            line-height: 20px;
+            text-align: center;
+            transform: translateY(20px);
+            animation: ticker 5s linear infinite;
+            color: #a8d8ff;
+            font-weight: 500;
+        }
+
+        .winner-ticker p:nth-child(2) {
+            animation-delay: 2.5s;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateY(20px); opacity: 0; }
+            10% { transform: translateY(0); opacity: 1; }
+            40% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(-20px); opacity: 0; }
+            100% { transform: translateY(-20px); opacity: 0; }
+        }
+
+        .stats {
+            text-align: center;
+            margin: 5px 0 0 0;
+            color: #d0d0e0;
+            font-size: 0.8rem;
+        }
+
+        /* Attention-grabbing text styles - more elegant */
+        .highlight-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+            color: #f0f0f0;
+        }
+
+        .highlight-span {
+            background: linear-gradient(to right, #64d2ff, #3a9bd9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding: 0 5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+        }
+
+        .highlight-span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -2px;
+            height: 1px;
+            background: linear-gradient(to right, #64d2ff, #3a9bd9);
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .blink-text {
+            animation: subtle-pulse 3s ease-in-out infinite;
+            color: #ffd280;
+            font-style: italic;
+            font-weight: 600;
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes subtle-pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+
+
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(0) translateX(20px); }
+            75% { transform: translateY(20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        /* Confetti and Money styles */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.8;
+            animation: fall-confetti var(--fall-duration) linear forwards;
+            /* Ensure initial position is set */
+            top: 0;
+            left: 0;
+        }
+
+        .confetti-rect {
+            width: 100%;
+            height: 100%;
+            transform: rotate(var(--rotation-angle));
+            animation: spin-confetti var(--spin-duration) ease-in-out infinite alternate;
+        }
+
+        .money-bill {
+            position: absolute;
+            width: 40px;
+            height: 25px;
+            background-color: #85bb65; /* Dollar bill green */
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0;
+            animation: float-money var(--float-duration) ease-in-out forwards;
+            /* Ensure initial position is set */
+            top: 0;
+            left: 0;
+        }
+
+        .money-bill::before {
+            content: "$";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #1e4620;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        @keyframes fall-confetti {
+            0% {
+                /* Use absolute positioning instead of transforms for more reliable positioning */
+                top: var(--start-y);
+                left: var(--start-x);
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+            25% {
+                top: calc(var(--start-y) + 25vh);
+                left: calc(var(--start-x) + var(--drift-x) * 0.25);
+                transform: rotate(45deg);
+            }
+            50% {
+                top: calc(var(--start-y) + 50vh);
+                left: calc(var(--start-x) + var(--drift-x) * 0.5);
+                transform: rotate(90deg);
+            }
+            75% {
+                top: calc(var(--start-y) + 75vh);
+                left: calc(var(--start-x) + var(--drift-x) * 0.75);
+                transform: rotate(135deg);
+            }
+            100% {
+                top: calc(var(--start-y) + 105vh);
+                left: calc(var(--start-x) + var(--drift-x));
+                transform: rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes spin-confetti {
+            0% { transform: rotate(var(--rotation-angle)); }
+            100% { transform: rotate(calc(var(--rotation-angle) + 180deg)); }
+        }
+
+        @keyframes float-money {
+            0% {
+                /* Use absolute positioning instead of transforms for more reliable positioning */
+                top: var(--start-y);
+                left: var(--start-x);
+                transform: rotate(var(--rotation));
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                top: calc(var(--start-y) + var(--move-y));
+                left: calc(var(--start-x) + var(--move-x));
+                transform: rotate(calc(var(--rotation) + var(--rotate-amount)));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div id="money-qr-scene"></div>
+
+
+
+    <h1>QR Hunt</h1>
+    <p>Follow the floating QR code to discover exciting destinations!</p>
+    <p class="highlight-text"><span class="highlight-span">SCAN TO WIN REAL PRIZES worth up to $100!</span> <span class="blink-text">Someone wins every 20 seconds!</span></p>
+
+    <div id="qr-container" class="pulse-animation">
+        <!-- Urgency banner -->
+        <div class="urgency-banner">
+            <span class="countdown" id="countdown-timer">Prize changes in: 03:00</span>
+            <span class="scarcity" id="prizes-left">7 grand prizes left today!</span>
+        </div>
+
+        <!-- QR code with shimmer effect -->
+        <div class="qr-wrapper shimmer-effect">
+            <img id="qr-code" src="" alt="QR Code">
+        </div>
+
+        <div class="click-hint">Click to reveal your prize!</div>
+
+        <!-- Social proof -->
+        <div class="social-proof">
+            <div class="winner-ticker" id="winner-ticker">
+                <p>John S. just won $5 Amazon card!</p>
+                <p>Maria T. won a free movie ticket!</p>
+            </div>
+            <p class="stats" id="scan-stats">352 people scanned in the last hour</p>
+        </div>
+    </div>
+
+
+
+    <script src="script.js?v=4.1"></script>
+</body>
+</html>

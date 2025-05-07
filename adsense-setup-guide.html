@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdSense Setup Guide for QR Hunt</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        
+        .step {
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .step h3 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+        
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        
+        .note {
+            background-color: #fffde7;
+            border-left: 4px solid #ffd600;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            margin: 15px 0;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Google AdSense Setup Guide for QR Hunt</h1>
+    
+    <p>This guide will walk you through the process of setting up Google AdSense for your QR Hunt application. AdSense allows you to monetize your app by displaying ads when users scan QR codes.</p>
+    
+    <div class="note">
+        <strong>Note:</strong> Setting up AdSense typically takes 1-2 weeks for approval, so start this process early.
+    </div>
+    
+    <h2>Step-by-Step AdSense Setup</h2>
+    
+    <div class="step">
+        <h3>Step 1: Create a Google AdSense Account</h3>
+        <ol>
+            <li>Go to <a href="https://www.google.com/adsense/start/" target="_blank">https://www.google.com/adsense/start/</a></li>
+            <li>Sign in with your Google account (or create one if needed)</li>
+            <li>Fill out the application form with your website information</li>
+            <li>Accept the AdSense terms and conditions</li>
+            <li>Click "Create Account"</li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <h3>Step 2: Add AdSense Code to Your Website</h3>
+        <ol>
+            <li>After creating your account, Google will provide you with an AdSense code snippet</li>
+            <li>Open the <code>ad-landing-simple.html</code> file in your code editor</li>
+            <li>Find this line:
+                <pre><code>&lt;script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"&gt;&lt;/script&gt;</code></pre>
+            </li>
+            <li>Replace <code>ca-pub-XXXXXXXXXXXXXXXX</code> with your actual publisher ID from AdSense</li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <h3>Step 3: Create an Ad Unit</h3>
+        <ol>
+            <li>In your AdSense dashboard, go to "Ads" → "By ad unit"</li>
+            <li>Click "Create new ad unit"</li>
+            <li>Name your ad unit (e.g., "QR Hunt Ad")</li>
+            <li>Select "Display ads" as the ad type</li>
+            <li>Choose "Responsive" for the ad size</li>
+            <li>Click "Create"</li>
+            <li>Copy the provided ad code</li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <h3>Step 4: Add the Ad Unit to Your Landing Page</h3>
+        <ol>
+            <li>Open the <code>ad-landing-simple.html</code> file again</li>
+            <li>Find the ad container section:
+                <pre><code>&lt;!-- Single AdSense Ad --&gt;
+&lt;div class="ad-container"&gt;
+    &lt;!-- Replace this with your actual AdSense ad code --&gt;
+    &lt;ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"&gt;&lt;/ins&gt;
+    &lt;script&gt;
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    &lt;/script&gt;
+&lt;/div&gt;</code></pre>
+            </li>
+            <li>Replace <code>data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"</code> with your publisher ID</li>
+            <li>Replace <code>data-ad-slot="XXXXXXXXXX"</code> with your ad slot ID from the ad unit you created</li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <h3>Step 5: Wait for AdSense Approval</h3>
+        <ol>
+            <li>Google will review your application, which typically takes 1-2 weeks</li>
+            <li>Make sure your website is live and accessible during this time</li>
+            <li>Check your email regularly for updates from Google</li>
+            <li>Once approved, your ads will start displaying automatically</li>
+        </ol>
+    </div>
+    
+    <h2>AdSense Best Practices</h2>
+    
+    <div class="note">
+        <strong>Important:</strong> Following these best practices will help ensure your AdSense account remains in good standing.
+    </div>
+    
+    <ul>
+        <li><strong>Don't click your own ads:</strong> This violates AdSense policies and can get your account banned</li>
+        <li><strong>Don't encourage users to click ads:</strong> Phrases like "click the ads to support us" are against the rules</li>
+        <li><strong>Limit ad units:</strong> Don't place too many ads on a single page (1-3 is usually appropriate)</li>
+        <li><strong>Provide valuable content:</strong> Make sure your landing page offers some value to users</li>
+        <li><strong>Be transparent:</strong> Clearly label advertisements as such</li>
+        <li><strong>Follow content policies:</strong> Don't place ads on pages with prohibited content (adult, illegal, etc.)</li>
+    </ul>
+    
+    <h2>Monitoring Your AdSense Performance</h2>
+    
+    <p>Once your AdSense account is approved and running:</p>
+    
+    <ol>
+        <li>Log in to your AdSense dashboard regularly</li>
+        <li>Monitor key metrics like page views, clicks, and earnings</li>
+        <li>Experiment with ad placement to optimize performance</li>
+        <li>Set up payment information to receive your earnings</li>
+    </ol>
+    
+    <div class="note">
+        <strong>Payment Note:</strong> Google AdSense pays monthly once you reach the payment threshold (typically $100).
+    </div>
+    
+    <a href="index.html" class="button">Return to QR Hunt</a>
+</body>
+</html>

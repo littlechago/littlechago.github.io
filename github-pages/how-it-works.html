@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How QR Hunt Works - Interactive QR Code Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Learn how to play QR Hunt, the interactive game where users scan QR codes to discover prizes and exciting destinations.">
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
+    <style>
+        .how-it-works-section {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+
+        .how-it-works-section h2 {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+        }
+
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 50px;
+            align-items: center;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(to right, #3a9bd9, #64d2ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin-right: 30px;
+        }
+
+        .step-content h3 {
+            margin-bottom: 10px;
+            color: #1a1a2e;
+            font-size: 1.5rem;
+        }
+
+        .step-content p {
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .faq-section {
+            padding: 80px 0;
+            background-color: #f0f7ff;
+        }
+
+        .faq-section h2 {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+        }
+
+        .faq-item {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-item h3 {
+            margin-bottom: 15px;
+            color: #1a1a2e;
+            font-size: 1.3rem;
+        }
+
+        .faq-item p {
+            color: #555;
+        }
+
+        .demo-section {
+            padding: 80px 0;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .demo-section h2 {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+        }
+
+        .demo-section p {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            font-size: 1.1rem;
+        }
+
+        .demo-video {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-video img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>QR Hunt</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="how-it-works.html" class="active">How It Works</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="how-it-works-section">
+        <div class="container">
+            <h2>How to Play QR Hunt</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Visit QR Hunt</h3>
+                        <p>Open QR Hunt on any device with a camera. No downloads or installations required - it works right in your web browser!</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Follow the Floating QR Code</h3>
+                        <p>Watch as the QR code floats around your screen, surrounded by falling confetti and money animations. The code changes every few seconds, so be quick!</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Scan or Click the QR Code</h3>
+                        <p>On mobile devices, use your camera to scan the QR code. On desktop, simply click the code to activate it.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Discover Your Result</h3>
+                        <p>Each scan has a chance to win real prizes worth up to $100! Even if you don't win immediately, you'll discover interesting content and can try again.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Claim Your Prizes</h3>
+                        <p>If you win, follow the instructions to claim your prize. Prizes range from gift cards to digital downloads and exclusive discounts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="demo-section">
+        <div class="container">
+            <h2>See QR Hunt in Action</h2>
+            <p>Watch this quick demo to see how QR Hunt works and the exciting visual effects that make it so engaging!</p>
+            <div class="demo-video">
+                <img src="https://via.placeholder.com/800x450" alt="QR Hunt Demo Video">
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>Is QR Hunt free to play?</h3>
+                <p>Yes, QR Hunt is completely free to play. There are no hidden fees or subscriptions required.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How often can I win prizes?</h3>
+                <p>Each scan gives you a chance to win, and someone wins approximately every 20 seconds! The more you play, the better your chances.</p>
+            </div>
+            <div class="faq-item">
+                <h3>What kinds of prizes can I win?</h3>
+                <p>Prizes include Amazon gift cards, digital downloads, discount codes, free trial subscriptions, and entries into larger sweepstakes.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Do I need to create an account?</h3>
+                <p>No account is required to play, but creating one allows you to track your progress and claim certain prizes more easily.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How do I claim my prizes?</h3>
+                <p>If you win, you'll be directed to a prize claim page with specific instructions for your particular prize.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>QR Hunt</h2>
+                    <p>Discover. Scan. Win.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="how-it-works.html">How It Works</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 QR Hunt. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent Banner -->
+    <script src="cookie-consent.js"></script>
+</body>
+</html>

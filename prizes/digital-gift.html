@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Won a Digital Gift!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #333;
+        }
+        
+        .prize-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #FF416C;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .prize-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            color: #FF416C;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .gift-options {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .gift-option {
+            flex: 1;
+            min-width: 150px;
+            margin: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .gift-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #FF416C;
+        }
+        
+        .gift-option.selected {
+            border-color: #FF416C;
+            background-color: #fff0f0;
+        }
+        
+        .gift-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .claim-button {
+            background-color: #FF416C;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+        
+        .claim-button:hover {
+            background-color: #FF4B2B;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .timer {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #FF6347;
+        }
+        
+        .share-buttons {
+            margin-top: 30px;
+        }
+        
+        .share-button {
+            display: inline-block;
+            margin: 0 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3b5998;
+            color: white;
+            font-size: 1.2rem;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .share-button.twitter {
+            background-color: #1DA1F2;
+        }
+        
+        .share-button.instagram {
+            background-color: #C13584;
+        }
+        
+        .share-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="prize-container">
+        <div class="prize-icon">🎵</div>
+        <h1>You Won a Digital Gift!</h1>
+        <p>Congratulations! You've discovered a special QR code and won a free digital gift of your choice!</p>
+        
+        <p>Choose your gift:</p>
+        <div class="gift-options">
+            <div class="gift-option" data-gift="music">
+                <div class="gift-icon">🎵</div>
+                <h3>Music Album</h3>
+                <p>Digital download of a premium album</p>
+            </div>
+            <div class="gift-option" data-gift="ebook">
+                <div class="gift-icon">📚</div>
+                <h3>E-Book</h3>
+                <p>Bestselling e-book of your choice</p>
+            </div>
+            <div class="gift-option" data-gift="movie">
+                <div class="gift-icon">🎬</div>
+                <h3>Movie Rental</h3>
+                <p>Free movie rental</p>
+            </div>
+        </div>
+        
+        <p>This offer expires in:</p>
+        <div class="timer" id="timer">04:00:00</div>
+        
+        <a href="#" class="claim-button" id="claim-button">CLAIM YOUR GIFT</a>
+        
+        <div class="share-buttons">
+            <p>Share this with friends:</p>
+            <div class="share-button">f</div>
+            <div class="share-button twitter">t</div>
+            <div class="share-button instagram">i</div>
+        </div>
+    </div>
+    
+    <script>
+        // Gift selection
+        const giftOptions = document.querySelectorAll('.gift-option');
+        let selectedGift = null;
+        
+        giftOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                giftOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Store selected gift
+                selectedGift = this.dataset.gift;
+                
+                // Update button text
+                document.getElementById('claim-button').textContent = `CLAIM YOUR ${this.querySelector('h3').textContent.toUpperCase()}`;
+            });
+        });
+        
+        // Claim button
+        document.getElementById('claim-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (!selectedGift) {
+                alert('Please select a gift first!');
+                return;
+            }
+            
+            alert(`Congratulations! You've selected the ${selectedGift} gift. Please enter your details to claim it.`);
+            // Here you would typically redirect to a form or open a modal
+        });
+        
+        // Countdown timer
+        let timeLeft = 14400; // 4 hours in seconds
+        const timerElement = document.getElementById('timer');
+        
+        function updateTimer() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            let seconds = timeLeft % 60;
+            
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            const minutesFormatted = minutes < 10 ? '0' + minutes : minutes;
+            const hoursFormatted = hours < 10 ? '0' + hours : hours;
+            
+            timerElement.textContent = `${hoursFormatted}:${minutesFormatted}:${seconds}`;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                timerElement.textContent = 'EXPIRED';
+                document.getElementById('claim-button').textContent = 'OFFER EXPIRED';
+                document.getElementById('claim-button').style.backgroundColor = '#ccc';
+                document.getElementById('claim-button').style.cursor = 'not-allowed';
+                
+                // Disable gift options
+                giftOptions.forEach(option => {
+                    option.style.opacity = '0.5';
+                    option.style.cursor = 'not-allowed';
+                    option.style.pointerEvents = 'none';
+                });
+            }
+        }
+        
+        updateTimer();
+    </script>
+</body>
+</html>
