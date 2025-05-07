@@ -77,7 +77,85 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get container dimensions
         const containerWidth = 250; // Width of QR container
         const containerHeight = 350; // Approximate height of QR container
-\
+
+        // Calculate safe boundaries
+        const maxX = window.innerWidth - containerWidth;
+        const maxY = window.innerHeight - containerHeight - 60;
+        const minY = 100; // Keep some distance from the top
+
+        // Avoid center area where text is
+        let randomX, randomY;
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        // Keep trying until we get a position that's not in the center
+        do {
+            randomX = Math.floor(Math.random() * maxX);
+            randomY = Math.floor(Math.random() * (maxY - minY)) + minY;
+        } while (
+            Math.abs(randomX - centerX) < 200 &&
+            Math.abs(randomY - centerY) < 200
+        );
+
+        // Apply easing for smoother animation
+        qrContainer.style.transition = 'all 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
+        qrContainer.style.left = `${randomX}px`;
+        qrContainer.style.top = `${randomY}px`;
+    }
+
+    // Function to change QR code with fade effect
+    function changeQR() {
+        // Fade out
+        qrImage.style.transition = 'opacity 0.5s ease-out';
+        qrImage.style.opacity = 0;
+
+        setTimeout(() => {
+            // Determine if this is a prize (5% chance) or ad (95% chance)
+            const isPrize = Math.random() < 0.05;
+
+            let currentUrl;
+            if (isPrize) {
+                // It's a prize! Select a random prize URL
+                const prizeIndex = Math.floor(Math.random() * prizeUrls.length);
+                currentUrl = prizeUrls[prizeIndex];
+                console.log("Prize QR generated!");
+
+                // Add a special class to indicate it's a prize QR code
+                qrContainer.classList.add('prize-qr');
+
+                // Remove the class after a short delay to reset the effect
+                setTimeout(() => {
+                    qrContainer.classList.remove('prize-qr');
+                }, 300);
+            } else {
+                // It's an ad. Use our ad landing page with AdSense
+                currentUrl = adLandingPage;
+
+                // Remove prize class if it exists
+                qrContainer.classList.remove('prize-qr');
+            }
+
+            // Generate QR code
+            const data = encodeURIComponent(currentUrl);
+            qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${data}`;
+
+            // Store the current URL as a data attribute for click handling
+            qrContainer.dataset.url = currentUrl;
+
+            // Fade in
+            qrImage.style.opacity = 1;
+        }, 500);
+    }
+
+    // Make QR code clickable
+    qrContainer.addEventListener('click', function() {
+        const url = this.dataset.url;
+        if (url) {
+            // Open the URL in a new tab
+            window.open(url, '_blank');
+
+            // Add a visual feedback for the click
+            qrContainer.style.transform = 'scale(0.9)';
             setTimeout(() => {
                 qrContainer.style.transform = 'scale(1)';
             }, 200);

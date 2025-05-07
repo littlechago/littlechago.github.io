@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to View QR Hunt Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #764ba2;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        .note {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        ol li, ul li {
+            margin-bottom: 10px;
+        }
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <h1>How to View QR Hunt Website</h1>
+    
+    <div class="note">
+        <p>This guide will help you properly view and test the QR Hunt website on your local computer.</p>
+    </div>
+    
+    <div class="section">
+        <h2>Option 1: Using the Test Navigation Page</h2>
+        <p>The simplest way to test the website is to use the test navigation page:</p>
+        <ol>
+            <li>Open the <a href="test-navigation.html">test-navigation.html</a> file in your browser</li>
+            <li>Use the links on that page to navigate to different parts of the website</li>
+            <li>Test that all the links and functionality work correctly</li>
+        </ol>
+        <a href="test-navigation.html" class="button">Open Test Navigation</a>
+    </div>
+    
+    <div class="section">
+        <h2>Option 2: Opening Files Directly</h2>
+        <p>You can open the HTML files directly in your browser:</p>
+        <ul>
+            <li><a href="index.html">index.html</a> - The main QR game page (landing page)</li>
+            <li><a href="about.html">about.html</a> - Information about QR Hunt</li>
+            <li><a href="ad-landing-simple.html">ad-landing-simple.html</a> - The ad landing page</li>
+        </ul>
+        <div class="warning">
+            <p><strong>Note:</strong> When opening files directly, some features might not work correctly due to browser security restrictions. For the best experience, use a local web server (Option 3).</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Option 3: Using a Local Web Server (Recommended)</h2>
+        <p>For the best experience, you should use a local web server to view the website. Here are some options:</p>
+        
+        <h3>Using Python (if installed):</h3>
+        <ol>
+            <li>Open a command prompt or terminal</li>
+            <li>Navigate to the folder containing the website files</li>
+            <li>Run one of these commands:
+                <ul>
+                    <li>Python 3: <code>python -m http.server 8000</code></li>
+                    <li>Python 2: <code>python -m SimpleHTTPServer 8000</code></li>
+                </ul>
+            </li>
+            <li>Open your browser and go to <code>http://localhost:8000</code></li>
+        </ol>
+        
+        <h3>Using Node.js (if installed):</h3>
+        <ol>
+            <li>Open a command prompt or terminal</li>
+            <li>Navigate to the folder containing the website files</li>
+            <li>Run: <code>npx serve</code></li>
+            <li>Open the URL shown in the terminal</li>
+        </ol>
+        
+        <h3>Using a simple web server extension:</h3>
+        <p>You can install a web server extension for your browser:</p>
+        <ul>
+            <li>For Chrome: <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb" target="_blank">Web Server for Chrome</a></li>
+            <li>For VS Code: Use the "Live Server" extension</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>Troubleshooting</h2>
+        <ul>
+            <li><strong>QR codes not loading:</strong> This might be due to browser security restrictions when opening files directly. Try using a local web server.</li>
+            <li><strong>JavaScript errors:</strong> Check the browser console (F12) for any error messages.</li>
+            <li><strong>Links not working:</strong> Make sure all file paths are correct and the files exist in the correct locations.</li>
+        </ul>
+    </div>
+    
+    <div class="note">
+        <p>Remember: The QR game is now the landing page (index.html), and the play.html page redirects to index.html.</p>
+    </div>
+</body>
+</html>

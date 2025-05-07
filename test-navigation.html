@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Hunt - Test Navigation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #764ba2;
+        }
+        .link-container {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .link-container h2 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        a {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #764ba2;
+        }
+        .note {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Hunt - Test Navigation</h1>
+    
+    <div class="note">
+        <p>This page is for testing navigation between different pages of the QR Hunt website. Click on the links below to test each page.</p>
+    </div>
+    
+    <div class="link-container">
+        <h2>Main Pages</h2>
+        <a href="index.html" target="_blank">Home/Landing Page (QR Game)</a><br>
+        <a href="about.html" target="_blank">About Page</a><br>
+        <a href="play.html" target="_blank">Play Page (should redirect to index.html)</a>
+    </div>
+    
+    <div class="link-container">
+        <h2>Ad Landing Pages</h2>
+        <a href="ad-landing.html" target="_blank">Ad Landing Page</a><br>
+        <a href="ad-landing-simple.html" target="_blank">Simple Ad Landing Page</a>
+    </div>
+    
+    <div class="link-container">
+        <h2>Testing Instructions</h2>
+        <p>1. Click on each link to make sure the page loads correctly</p>
+        <p>2. Test navigation between pages using the buttons on each page</p>
+        <p>3. Verify that the QR game is now the landing page (index.html)</p>
+        <p>4. Check that the "Play" page redirects to the index.html page</p>
+    </div>
+</body>
+</html>
