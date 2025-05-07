@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About QR Hunt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            position: relative;
+            z-index: 5;
+        }
+        
+        h2 {
+            color: #FFD700;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .feature-list {
+            padding-left: 20px;
+        }
+        
+        .feature-list li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .play-button, .home-button {
+            display: inline-block;
+            background: linear-gradient(to right, #3a9bd9, #64d2ff);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .home-button {
+            background: linear-gradient(to right, #764ba2, #667eea);
+        }
+        
+        .play-button:hover, .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .ad-container {
+            width: 100%;
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 250px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            width: 100%;
+        }
+        
+        /* Falling Elements */
+        .confetti, .money-bill {
+            position: absolute;
+            pointer-events: none;
+            z-index: 2;
+            top: -50px;
+        }
+        
+        .confetti {
+            width: 10px;
+            height: 10px;
+            opacity: 0.8;
+            animation: fall-confetti var(--fall-duration, 4s) linear forwards;
+        }
+        
+        .confetti-rect {
+            width: 100%;
+            height: 100%;
+            transform: rotate(var(--rotation-angle, 0deg));
+            animation: spin-confetti var(--spin-duration, 2s) ease-in-out infinite alternate;
+        }
+        
+        .money-bill {
+            width: 40px;
+            height: 25px;
+            background-color: #85bb65;
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            opacity: 0.8;
+            animation: fall-money var(--fall-duration, 5s) linear forwards;
+        }
+        
+        .money-bill::before {
+            content: "$";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #1e4620;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        @keyframes fall-confetti {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes spin-confetti {
+            0% { transform: rotate(var(--rotation-angle, 0deg)); }
+            100% { transform: rotate(calc(var(--rotation-angle, 0deg) + 180deg)); }
+        }
+        
+        @keyframes fall-money {
+            0% {
+                transform: translateY(0) rotate(var(--rotation, 0deg));
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(calc(var(--rotation, 0deg) + var(--rotate-amount, 180deg)));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>About QR Hunt</h1>
+        <div class="subtitle">The exciting QR code treasure hunt game</div>
+    </header>
+    
+    <div class="container">
+        <h2>What is QR Hunt?</h2>
+        <p>QR Hunt is an interactive game that combines the excitement of a treasure hunt with the convenience of QR code technology. Players scan QR codes to discover prizes, special offers, and more!</p>
+        
+        <h2>How to Play</h2>
+        <p>Playing QR Hunt is simple and fun:</p>
+        <ol class="feature-list">
+            <li>Look for the floating QR codes on the screen</li>
+            <li>Scan the QR code with your device</li>
+            <li>Follow the link to see if you've won a prize</li>
+            <li>The more you play, the better your chances of winning!</li>
+        </ol>
+        
+        <h2>Exciting Features</h2>
+        <ul class="feature-list">
+            <li>Animated QR codes that move around the screen</li>
+            <li>Colorful visual effects to enhance your gaming experience</li>
+            <li>Instant prize notifications</li>
+            <li>A variety of prizes to be won</li>
+            <li>No downloads required - play directly in your browser</li>
+        </ul>
+        
+        <div class="ad-container">
+            <!-- AdSense Ad Unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5468169357445383"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        
+        <h2>Prizes and Rewards</h2>
+        <p>QR Hunt offers a variety of exciting prizes and rewards:</p>
+        <ul class="feature-list">
+            <li>Cash prizes</li>
+            <li>Gift cards</li>
+            <li>Discount coupons</li>
+            <li>Special offers from our partners</li>
+            <li>And many more surprises!</li>
+        </ul>
+        
+        <p>Remember, the more you play, the better your chances of winning. Someone wins a prize approximately every 20 seconds on QR Hunt!</p>
+        
+        <div class="button-container">
+            <a href="play.html" class="play-button">Play Now</a>
+            <a href="index.html" class="home-button">Home</a>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2023 QR Hunt. All rights reserved.
+    </footer>
+    
+    <!-- Cookie Consent Banner -->
+    <script src="cookie-consent.js"></script>
+    
+    <script>
+        // Setup when the page loads
+        window.addEventListener('load', function() {
+            // Setup falling elements
+            setupFallingElements();
+        });
+        
+        // Function to create and animate falling elements
+        function setupFallingElements() {
+            // Create confetti and money at intervals
+            setInterval(createConfetti, 300);
+            setInterval(createMoneyBill, 1000);
+        }
+        
+        // Function to create a confetti piece
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            
+            // Random position across the top of the screen
+            const x = Math.random() * window.innerWidth;
+            confetti.style.left = `${x}px`;
+            
+            // Random fall duration
+            const fallDuration = (Math.random() * 3) + 3;
+            confetti.style.setProperty('--fall-duration', `${fallDuration}s`);
+            
+            // Random spin duration
+            const spinDuration = (Math.random() * 2) + 1;
+            confetti.style.setProperty('--spin-duration', `${spinDuration}s`);
+            
+            // Random initial rotation
+            const rotationAngle = Math.random() * 360;
+            confetti.style.setProperty('--rotation-angle', `${rotationAngle}deg`);
+            
+            // Create the inner rectangle
+            const confettiRect = document.createElement('div');
+            confettiRect.classList.add('confetti-rect');
+            
+            // Random color
+            const colors = [
+                '#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590',
+                '#FF1493', '#00FFFF', '#FFD700', '#7FFF00', '#FF00FF', '#00FF7F', '#FF4500'
+            ];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            confettiRect.style.backgroundColor = randomColor;
+            
+            // Random size
+            const size = Math.floor(Math.random() * 8) + 5;
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+            
+            confetti.appendChild(confettiRect);
+            document.body.appendChild(confetti);
+            
+            // Remove confetti after animation completes
+            confetti.addEventListener('animationend', function() {
+                confetti.remove();
+            });
+        }
+        
+        // Function to create a money bill
+        function createMoneyBill() {
+            const money = document.createElement('div');
+            money.classList.add('money-bill');
+            
+            // Random position across the top of the screen
+            const x = Math.random() * window.innerWidth;
+            money.style.left = `${x}px`;
+            
+            // Random money colors
+            const moneyColors = ['#85bb65', '#3D9970', '#2ECC40', '#01FF70'];
+            const randomMoneyColor = moneyColors[Math.floor(Math.random() * moneyColors.length)];
+            money.style.backgroundColor = randomMoneyColor;
+            
+            // Random fall duration
+            const fallDuration = (Math.random() * 3) + 4;
+            money.style.setProperty('--fall-duration', `${fallDuration}s`);
+            
+            // Random rotation
+            const rotation = Math.random() * 360;
+            money.style.setProperty('--rotation', `${rotation}deg`);
+            
+            // Random rotation amount
+            const rotateAmount = (Math.random() * 180) - 90;
+            money.style.setProperty('--rotate-amount', `${rotateAmount}deg`);
+            
+            document.body.appendChild(money);
+            
+            // Remove money after animation completes
+            money.addEventListener('animationend', function() {
+                money.remove();
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Play QR Hunt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        p {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            z-index: 10;
+            position: relative;
+        }
+
+        #qr-container {
+            position: absolute;
+            transition: all 2s ease-in-out;
+            z-index: 5;
+            padding: 20px;
+            background-color: rgba(30, 30, 40, 0.85);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 250px;
+            backdrop-filter: blur(5px);
+        }
+
+        #qr-container:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .qr-wrapper {
+            position: relative;
+            margin: 10px auto;
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            border-radius: 10px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .qr-wrapper:hover {
+            transform: scale(1.03);
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #qr-container:hover .click-hint {
+            opacity: 1;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(0) translateX(20px); }
+            75% { transform: translateY(20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        /* Confetti and Money styles */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.8;
+            animation: fall-confetti var(--fall-duration) linear forwards;
+            top: 0;
+            left: 0;
+        }
+
+        .confetti-rect {
+            width: 100%;
+            height: 100%;
+            transform: rotate(var(--rotation-angle));
+            animation: spin-confetti var(--spin-duration) ease-in-out infinite alternate;
+        }
+
+        .money-bill {
+            position: absolute;
+            width: 40px;
+            height: 25px;
+            background-color: #85bb65;
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0;
+            animation: float-money var(--float-duration) ease-in-out forwards;
+            top: 0;
+            left: 0;
+        }
+
+        .money-bill::before {
+            content: "$";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #1e4620;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        @keyframes fall-confetti {
+            0% {
+                top: var(--start-y);
+                left: var(--start-x);
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                top: calc(var(--start-y) + 105vh);
+                left: calc(var(--start-x) + var(--drift-x));
+                transform: rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes spin-confetti {
+            0% { transform: rotate(var(--rotation-angle)); }
+            100% { transform: rotate(calc(var(--rotation-angle) + 180deg)); }
+        }
+
+        @keyframes float-money {
+            0% {
+                top: var(--start-y);
+                left: var(--start-x);
+                transform: rotate(var(--rotation));
+                opacity: 0;
+            }
+            100% {
+                top: calc(var(--start-y) + var(--move-y));
+                left: calc(var(--start-x) + var(--move-x));
+                transform: rotate(calc(var(--rotation) + var(--rotate-amount)));
+                opacity: 0;
+            }
+        }
+
+        .about-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #764ba2, #667eea);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            z-index: 100;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div id="money-qr-scene"></div>
+
+    <h1>QR Hunt</h1>
+    <p>Follow the floating QR code to discover exciting destinations!</p>
+
+    <div id="qr-container">
+        <div class="qr-wrapper">
+            <img id="qr-code" src="" alt="QR Code">
+        </div>
+        <div class="click-hint">Click to reveal your prize!</div>
+    </div>
+
+    <a href="about.html" class="about-button">About QR Hunt</a>
+
+    <script>
+        // Wait for the document to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const qrContainer = document.getElementById('qr-container');
+            const qrImage = document.getElementById('qr-code');
+            const particlesContainer = document.getElementById('particles');
+            const scene = document.getElementById('money-qr-scene');
+
+            // Create floating particles background
+            createParticles();
+
+            // Setup confetti and money effects
+            setupConfettiAndMoney();
+
+            // Function to create floating particles
+            function createParticles() {
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+
+                    // Random size between 5px and 20px
+                    const size = Math.floor(Math.random() * 15) + 5;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+
+                    // Random position
+                    const posX = Math.floor(Math.random() * 100);
+                    const posY = Math.floor(Math.random() * 100);
+                    particle.style.left = `${posX}%`;
+                    particle.style.top = `${posY}%`;
+
+                    // Random opacity
+                    const opacity = (Math.random() * 0.5) + 0.1;
+                    particle.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+
+                    // Random animation delay
+                    const delay = Math.random() * 15;
+                    particle.style.animationDelay = `${delay}s`;
+
+                    particlesContainer.appendChild(particle);
+                }
+            }
+
+            // Function to move QR code to random position with smooth animation
+            function moveQR() {
+                // Get container dimensions
+                const containerWidth = 250; // Width of QR container
+                const containerHeight = 350; // Approximate height of QR container
+
+                // Calculate safe boundaries
+                const maxX = window.innerWidth - containerWidth;
+                const maxY = window.innerHeight - containerHeight - 60;
+                const minY = 100; // Keep some distance from the top
+
+                // Avoid center area where text is
+                let randomX, randomY;
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+
+                // Keep trying until we get a position that's not in the center
+                do {
+                    randomX = Math.floor(Math.random() * maxX);
+                    randomY = Math.floor(Math.random() * (maxY - minY)) + minY;
+                } while (
+                    Math.abs(randomX - centerX) < 200 &&
+                    Math.abs(randomY - centerY) < 200
+                );
+
+                // Apply easing for smoother animation
+                qrContainer.style.transition = 'all 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                qrContainer.style.left = `${randomX}px`;
+                qrContainer.style.top = `${randomY}px`;
+            }
+
+            // Function to change QR code with fade effect
+            function changeQR() {
+                // Fade out
+                qrImage.style.transition = 'opacity 0.5s ease-out';
+                qrImage.style.opacity = 0;
+
+                setTimeout(() => {
+                    // Generate QR code
+                    const currentUrl = "ad-landing.html";
+                    const data = encodeURIComponent(currentUrl);
+                    qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${data}`;
+
+                    // Store the current URL as a data attribute for click handling
+                    qrContainer.dataset.url = currentUrl;
+
+                    // Fade in
+                    qrImage.style.opacity = 1;
+                }, 500);
+            }
+
+            // Make QR code clickable
+            qrContainer.addEventListener('click', function() {
+                const url = this.dataset.url;
+                if (url) {
+                    // Open the URL in a new tab
+                    window.open(url, '_blank');
+
+                    // Add a visual feedback for the click
+                    qrContainer.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        qrContainer.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            });
+
+            // Add cursor style to indicate it's clickable
+            qrContainer.style.cursor = 'pointer';
+
+            // Initial QR code and position
+            changeQR();
+            moveQR();
+
+            // Move QR code continuously every 4 seconds
+            setInterval(moveQR, 4000);
+
+            // Add hover effect to QR code
+            qrContainer.addEventListener('mouseenter', function() {
+                qrContainer.style.transform = 'scale(1.1)';
+                qrContainer.style.filter = 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.7))';
+            });
+
+            qrContainer.addEventListener('mouseleave', function() {
+                qrContainer.style.transform = 'scale(1)';
+                qrContainer.style.filter = 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.3))';
+            });
+
+            // Function to setup confetti and floating money
+            function setupConfettiAndMoney() {
+                // Create confetti and money at intervals
+                setInterval(createConfetti, 300);
+                setInterval(createMoneyBill, 1000);
+            }
+
+            // Function to create a confetti piece
+            function createConfetti() {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                // Random position across the top of the screen
+                const x = Math.random() * window.innerWidth;
+                confetti.style.left = `${x}px`;
+                
+                // Set CSS variables for positioning
+                confetti.style.setProperty('--start-x', `${x}px`);
+                confetti.style.setProperty('--start-y', `0px`);
+                
+                // Add drift for more natural movement
+                let driftX = (Math.random() * 200) - 100; // Random drift between -100px and 100px
+                confetti.style.setProperty('--drift-x', `${driftX}px`);
+                
+                // Random fall duration between 4-8 seconds
+                const fallDuration = (Math.random() * 4) + 4;
+                confetti.style.setProperty('--fall-duration', `${fallDuration}s`);
+                
+                // Random spin duration
+                const spinDuration = (Math.random() * 2) + 1;
+                confetti.style.setProperty('--spin-duration', `${spinDuration}s`);
+                
+                // Random initial rotation
+                const rotationAngle = Math.random() * 360;
+                confetti.style.setProperty('--rotation-angle', `${rotationAngle}deg`);
+                
+                // Create the inner rectangle
+                const confettiRect = document.createElement('div');
+                confettiRect.classList.add('confetti-rect');
+                
+                // Random color
+                const colors = [
+                    '#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590',
+                    '#FF1493', '#00FFFF', '#FFD700', '#7FFF00', '#FF00FF', '#00FF7F', '#FF4500'
+                ];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                confettiRect.style.backgroundColor = randomColor;
+                
+                // Random size
+                const size = Math.floor(Math.random() * 8) + 5;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                
+                confetti.appendChild(confettiRect);
+                scene.appendChild(confetti);
+                
+                // Remove confetti after animation completes
+                confetti.addEventListener('animationend', function() {
+                    confetti.remove();
+                });
+            }
+
+            // Function to create a money bill
+            function createMoneyBill() {
+                const money = document.createElement('div');
+                money.classList.add('money-bill');
+                
+                // Random position across the top of the screen
+                const x = Math.random() * window.innerWidth;
+                const y = 0;
+                
+                // Set CSS variables for positioning
+                money.style.setProperty('--start-x', `${x}px`);
+                money.style.setProperty('--start-y', `${y}px`);
+                money.style.left = `${x}px`;
+                money.style.top = `${y}px`;
+                
+                // Add movement for more natural falling effect
+                const moveX = (Math.random() * 200) - 100; // Random horizontal movement
+                const moveY = window.innerHeight; // Move down to the bottom of the screen
+                money.style.setProperty('--move-x', `${moveX}px`);
+                money.style.setProperty('--move-y', `${moveY}px`);
+                
+                // Random rotation
+                const rotation = Math.random() * 360;
+                money.style.setProperty('--rotation', `${rotation}deg`);
+                
+                // Random rotation amount
+                const rotateAmount = (Math.random() * 180) - 90; // Rotate between -90 and 90 degrees
+                money.style.setProperty('--rotate-amount', `${rotateAmount}deg`);
+                
+                // Random duration between 4-8 seconds
+                const duration = (Math.random() * 4) + 4;
+                money.style.setProperty('--float-duration', `${duration}s`);
+                
+                scene.appendChild(money);
+                
+                // Remove money after animation completes
+                money.addEventListener('animationend', function() {
+                    money.remove();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
