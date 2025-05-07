@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Hunt | One Step Away</title>
+
+    <!-- Google AdSense script with actual publisher ID -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: #64d2ff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .message {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #ffd280;
+            font-weight: bold;
+        }
+
+        .ad-container {
+            width: 100%;
+            max-width: 728px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .continue-button, .about-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(to right, #3a9bd9, #64d2ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-button {
+            background: linear-gradient(to right, #764ba2, #667eea);
+        }
+
+        .continue-button:hover, .about-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.3);
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Floating QR Code */
+        #floating-qr {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 3;
+            animation: float 10s ease-in-out infinite;
+            padding: 5px;
+        }
+
+        #floating-qr::before {
+            content: 'QR Hunt';
+            position: absolute;
+            top: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #64d2ff;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #floating-qr img {
+            width: 90px;
+            height: 90px;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -15px) rotate(5deg); }
+            50% { transform: translate(0, -30px) rotate(0deg); }
+            75% { transform: translate(-20px, -15px) rotate(-5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Falling Elements */
+        .confetti, .money-bill {
+            position: absolute;
+            pointer-events: none;
+            z-index: 2;
+            top: -50px;
+        }
+
+        .confetti {
+            width: 10px;
+            height: 10px;
+            opacity: 0.8;
+            animation: fall-confetti var(--fall-duration, 4s) linear forwards;
+        }
+
+        .confetti-rect {
+            width: 100%;
+            height: 100%;
+            transform: rotate(var(--rotation-angle, 0deg));
+            animation: spin-confetti var(--spin-duration, 2s) ease-in-out infinite alternate;
+        }
+
+        .money-bill {
+            width: 40px;
+            height: 25px;
+            background-color: #85bb65;
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            opacity: 0.8;
+            animation: fall-money var(--fall-duration, 5s) linear forwards;
+        }
+
+        .money-bill::before {
+            content: "$";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #1e4620;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        @keyframes fall-confetti {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes spin-confetti {
+            0% { transform: rotate(var(--rotation-angle, 0deg)); }
+            100% { transform: rotate(calc(var(--rotation-angle, 0deg) + 180deg)); }
+        }
+
+        @keyframes fall-money {
+            0% {
+                transform: translateY(0) rotate(var(--rotation, 0deg));
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(calc(var(--rotation, 0deg) + var(--rotate-amount, 180deg)));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><span class="logo">QR Hunt</span></h1>
+    </header>
+
+    <!-- Floating QR Code -->
+    <div id="floating-qr">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=index.html" alt="QR Hunt">
+    </div>
+
+    <div class="container">
+        <div class="message">
+            <p>You're just <span class="highlight">one step away</span> from potentially winning a prize!</p>
+            <p>Please check out our sponsor's message below.</p>
+        </div>
+
+        <!-- Single AdSense Ad -->
+        <div class="ad-container">
+            <!-- AdSense ad code with actual publisher ID -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5468169357445383"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <div class="button-container">
+            <a href="index.html" class="continue-button">Continue to QR Hunt</a>
+            <a href="about.html" class="about-button">About QR Hunt</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2023 QR Hunt. All rights reserved.
+    </footer>
+
+    <!-- Ad stats tracking script -->
+    <script src="ad-stats.js"></script>
+
+    <script>
+        // Track when the page loads
+        window.addEventListener('load', function() {
+            // Track the ad view
+            trackAdView();
+
+            // Setup falling elements
+            setupFallingElements();
+
+            // Move floating QR code
+            moveFloatingQR();
+        });
+
+        // Function to create and animate falling elements
+        function setupFallingElements() {
+            // Create confetti and money at intervals
+            setInterval(createConfetti, 300);
+            setInterval(createMoneyBill, 1000);
+        }
+
+        // Function to create a confetti piece
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+
+            // Random position across the top of the screen
+            const x = Math.random() * window.innerWidth;
+            confetti.style.left = `${x}px`;
+
+            // Random fall duration
+            const fallDuration = (Math.random() * 3) + 3;
+            confetti.style.setProperty('--fall-duration', `${fallDuration}s`);
+
+            // Random spin duration
+            const spinDuration = (Math.random() * 2) + 1;
+            confetti.style.setProperty('--spin-duration', `${spinDuration}s`);
+
+            // Random initial rotation
+            const rotationAngle = Math.random() * 360;
+            confetti.style.setProperty('--rotation-angle', `${rotationAngle}deg`);
+
+            // Create the inner rectangle
+            const confettiRect = document.createElement('div');
+            confettiRect.classList.add('confetti-rect');
+
+            // Random color
+            const colors = [
+                '#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590',
+                '#FF1493', '#00FFFF', '#FFD700', '#7FFF00', '#FF00FF', '#00FF7F', '#FF4500'
+            ];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            confettiRect.style.backgroundColor = randomColor;
+
+            // Random size
+            const size = Math.floor(Math.random() * 8) + 5;
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+
+            confetti.appendChild(confettiRect);
+            document.body.appendChild(confetti);
+
+            // Remove confetti after animation completes
+            confetti.addEventListener('animationend', function() {
+                confetti.remove();
+            });
+        }
+
+        // Function to create a money bill
+        function createMoneyBill() {
+            const money = document.createElement('div');
+            money.classList.add('money-bill');
+
+            // Random position across the top of the screen
+            const x = Math.random() * window.innerWidth;
+            money.style.left = `${x}px`;
+
+            // Random money colors
+            const moneyColors = ['#85bb65', '#3D9970', '#2ECC40', '#01FF70'];
+            const randomMoneyColor = moneyColors[Math.floor(Math.random() * moneyColors.length)];
+            money.style.backgroundColor = randomMoneyColor;
+
+            // Random fall duration
+            const fallDuration = (Math.random() * 3) + 4;
+            money.style.setProperty('--fall-duration', `${fallDuration}s`);
+
+            // Random rotation
+            const rotation = Math.random() * 360;
+            money.style.setProperty('--rotation', `${rotation}deg`);
+
+            // Random rotation amount
+            const rotateAmount = (Math.random() * 180) - 90;
+            money.style.setProperty('--rotate-amount', `${rotateAmount}deg`);
+
+            document.body.appendChild(money);
+
+            // Remove money after animation completes
+            money.addEventListener('animationend', function() {
+                money.remove();
+            });
+        }
+
+        // Function to move the floating QR code
+        function moveFloatingQR() {
+            const qr = document.getElementById('floating-qr');
+
+            // Initial position
+            const startX = window.innerWidth * 0.8;
+            const startY = window.innerHeight * 0.3;
+            qr.style.left = `${startX}px`;
+            qr.style.top = `${startY}px`;
+
+            // Move QR code to a new position every 5 seconds
+            setInterval(() => {
+                // Get container dimensions
+                const containerWidth = 100; // Width of QR container
+                const containerHeight = 100; // Height of QR container
+
+                // Calculate safe boundaries
+                const maxX = window.innerWidth - containerWidth;
+                const maxY = window.innerHeight - containerHeight - 100; // Keep away from bottom
+                const minY = 100; // Keep away from top
+
+                // Random position
+                let randomX = Math.floor(Math.random() * maxX);
+                let randomY = Math.floor(Math.random() * (maxY - minY)) + minY;
+
+                // Avoid center area where content is
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+
+                // Keep trying until we get a position that's not in the center
+                if (Math.abs(randomX - centerX) < 200 && Math.abs(randomY - centerY) < 200) {
+                    // If in center, push to a side
+                    randomX = randomX < centerX ? randomX - 100 : randomX + 100;
+                }
+
+                // Apply smooth transition
+                qr.style.transition = 'all 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                qr.style.left = `${randomX}px`;
+                qr.style.top = `${randomY}px`;
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
