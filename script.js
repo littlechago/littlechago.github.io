@@ -49,7 +49,8 @@ function validatePrizeCode(code) {
     const mainCode = parts[1];
     const timestampAndChecksum = parts[2];
     const checksumChar = timestampAndChecksum.charAt(4);
-    const timestampCode = timestampAndChecksum.slice(0, 4);
+    // We don't need to use timestampCode, but we extract it for completeness
+    // const timestampCode = timestampAndChecksum.slice(0, 4);
 
     // Calculate checksum
     let sum = 0;
@@ -93,8 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Move the QR container to the mobile container
         mobileContainer.appendChild(qrContainer);
 
-        // Create additional QR containers for mobile
-        createAdditionalQRContainers();
+        // We're no longer creating additional QR containers
+        // createAdditionalQRContainers();
     }
 
     // Create floating particles background
@@ -149,7 +150,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to create additional QR containers for mobile view
+    /*
+    // Function to create additional QR containers for mobile view - DISABLED
     function createAdditionalQRContainers() {
         // Create 2 additional QR containers for mobile
         for (let i = 0; i < 2; i++) {
@@ -253,8 +255,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to change QR code for mobile containers
-    function changeQRForMobile(container, imgElement) {
+    */
+
+    // Function to change QR code for mobile containers - DISABLED
+    /* function changeQRForMobile(container, imgElement) {
         // Fade out
         imgElement.style.transition = 'opacity 0.5s ease-out';
         imgElement.style.opacity = 0;
@@ -304,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Fade in
             imgElement.style.opacity = 1;
         }, 500);
-    }
+    } */
 
     // Function to move QR code to random position with smooth animation
     function moveQR() {
