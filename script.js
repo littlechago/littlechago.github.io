@@ -1,8 +1,8 @@
-// Ad landing page URL - 95% chance of getting this
+// Ad landing page URL - 97% chance of getting this
 // We'll use a simplified ad landing page with Google AdSense
 const adLandingPage = "ad-landing-simple.html";
 
-// Prize URLs - 5% chance of getting these
+// Prize URLs - 3% chance of getting these
 const prizeUrls = [
     "prizes/grand-prize.html", // Grand prize page
     "prizes/discount-code.html", // Discount code page
@@ -264,8 +264,8 @@ document.addEventListener('DOMContentLoaded', function() {
         imgElement.style.opacity = 0;
 
         setTimeout(() => {
-            // Determine if this is a prize (5% chance) or ad (95% chance)
-            const isPrize = Math.random() < 0.05;
+            // Determine if this is a prize (3% chance) or ad (97% chance)
+            const isPrize = Math.random() < 0.03;
 
             let currentUrl;
             if (isPrize) {
@@ -351,8 +351,8 @@ document.addEventListener('DOMContentLoaded', function() {
         qrImage.style.opacity = 0;
 
         setTimeout(() => {
-            // Determine if this is a prize (5% chance) or ad (95% chance)
-            const isPrize = Math.random() < 0.05;
+            // Determine if this is a prize (3% chance) or ad (97% chance)
+            const isPrize = Math.random() < 0.03;
 
             let currentUrl;
             if (isPrize) {
