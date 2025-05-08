@@ -263,6 +263,114 @@
             color: #667eea;
             text-decoration: underline;
         }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 30px;
+                padding-bottom: 80px;
+            }
+
+            .claim-container {
+                width: 85%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .back-button {
+                margin: 15px 0;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .submit-btn {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .g-recaptcha {
+                transform: scale(0.9);
+                transform-origin: left center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding-top: 20px;
+            }
+
+            .claim-container {
+                width: 90%;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 15px;
+            }
+
+            p {
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            label {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
+
+            input, textarea {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .checkbox-container {
+                font-size: 0.8rem;
+                padding-left: 30px;
+            }
+
+            .checkmark {
+                height: 18px;
+                width: 18px;
+            }
+
+            .g-recaptcha {
+                transform: scale(0.77);
+                transform-origin: left center;
+                margin: 5px 0;
+            }
+
+            .captcha-note {
+                font-size: 0.7rem;
+            }
+
+            .submit-btn {
+                padding: 10px;
+                font-size: 0.9rem;
+                margin-top: 20px;
+            }
+
+            .footer-content p {
+                font-size: 0.7rem;
+            }
+
+            .footer-links a {
+                font-size: 0.7rem;
+                margin: 0 3px;
+            }
+        }
     </style>
 </head>
 <body>
