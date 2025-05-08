@@ -79,6 +79,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const particlesContainer = document.getElementById('particles');
     const scene = document.getElementById('money-qr-scene');
 
+    // Check if we're on mobile
+    const isMobile = window.innerWidth <= 768;
+
+    // Create a container for mobile QR codes if on mobile
+    let mobileContainer;
+    if (isMobile) {
+        mobileContainer = document.createElement('div');
+        mobileContainer.id = 'game-container';
+        mobileContainer.className = 'mobile-qr-layout';
+        document.body.appendChild(mobileContainer);
+
+        // Move the QR container to the mobile container
+        mobileContainer.appendChild(qrContainer);
+
+        // Create additional QR containers for mobile
+        createAdditionalQRContainers();
+    }
+
     // Create floating particles background
     createParticles();
 
@@ -131,8 +149,168 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Function to create additional QR containers for mobile view
+    function createAdditionalQRContainers() {
+        // Create 2 additional QR containers for mobile
+        for (let i = 0; i < 2; i++) {
+            const newContainer = document.createElement('div');
+            newContainer.id = `qr-container-${i+1}`;
+            newContainer.className = 'qr-container';
+            newContainer.style.width = '160px';
+            newContainer.style.padding = '10px';
+            newContainer.style.backgroundColor = 'rgba(30, 30, 40, 0.85)';
+            newContainer.style.borderRadius = '15px';
+            newContainer.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+            newContainer.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
+            newContainer.style.backdropFilter = 'blur(5px)';
+            newContainer.style.cursor = 'pointer';
+
+            // Create QR wrapper
+            const qrWrapper = document.createElement('div');
+            qrWrapper.className = 'qr-wrapper';
+            qrWrapper.style.position = 'relative';
+            qrWrapper.style.margin = '5px auto';
+            qrWrapper.style.width = '110px';
+            qrWrapper.style.height = '110px';
+            qrWrapper.style.overflow = 'hidden';
+            qrWrapper.style.borderRadius = '10px';
+            qrWrapper.style.background = 'white';
+            qrWrapper.style.padding = '6px';
+            qrWrapper.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+            qrWrapper.style.transition = 'transform 0.3s ease';
+
+            // Create QR image
+            const qrImg = document.createElement('img');
+            qrImg.id = `qr-code-${i+1}`;
+            qrImg.style.width = '110px';
+            qrImg.style.height = '110px';
+            qrImg.style.borderRadius = '10px';
+            qrImg.style.background = 'white';
+
+            // Create urgency banner
+            const urgencyBanner = document.createElement('div');
+            urgencyBanner.className = 'urgency-banner';
+            urgencyBanner.style.backgroundColor = 'rgba(60, 60, 80, 0.8)';
+            urgencyBanner.style.color = 'white';
+            urgencyBanner.style.padding = '8px';
+            urgencyBanner.style.borderRadius = '8px';
+            urgencyBanner.style.marginBottom = '10px';
+            urgencyBanner.style.textAlign = 'center';
+            urgencyBanner.style.fontWeight = '500';
+            urgencyBanner.style.display = 'flex';
+            urgencyBanner.style.flexDirection = 'column';
+            urgencyBanner.style.gap = '5px';
+            urgencyBanner.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+            urgencyBanner.style.fontSize = '0.8rem';
+
+            const countdownSpan = document.createElement('span');
+            countdownSpan.id = `countdown-timer-${i+1}`;
+            countdownSpan.className = 'countdown';
+            countdownSpan.textContent = 'Prize changes soon!';
+            countdownSpan.style.color = '#e6e6fa';
+            countdownSpan.style.fontSize = '0.8rem';
+
+            urgencyBanner.appendChild(countdownSpan);
+
+            // Assemble the container
+            qrWrapper.appendChild(qrImg);
+            newContainer.appendChild(urgencyBanner);
+            newContainer.appendChild(qrWrapper);
+
+            // Add click handler
+            newContainer.addEventListener('click', function() {
+                const url = this.dataset.url;
+                const prizeCode = this.dataset.prizeCode;
+
+                if (url) {
+                    // Check if this is a prize QR code
+                    if (prizeCode) {
+                        // Show prize win modal with the code
+                        showPrizeWinModal(prizeCode);
+                    } else {
+                        // Regular ad QR code - open the URL in a new tab
+                        window.open(url, '_blank');
+                    }
+
+                    // Add a visual feedback for the click
+                    this.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            });
+
+            // Add to mobile container
+            mobileContainer.appendChild(newContainer);
+
+            // Initialize QR code
+            changeQRForMobile(newContainer, qrImg);
+
+            // Set up interval to change QR code
+            setInterval(() => {
+                changeQRForMobile(newContainer, qrImg);
+            }, 5000 + (i * 1000)); // Stagger the intervals
+        }
+    }
+
+    // Function to change QR code for mobile containers
+    function changeQRForMobile(container, imgElement) {
+        // Fade out
+        imgElement.style.transition = 'opacity 0.5s ease-out';
+        imgElement.style.opacity = 0;
+
+        setTimeout(() => {
+            // Determine if this is a prize (5% chance) or ad (95% chance)
+            const isPrize = Math.random() < 0.05;
+
+            let currentUrl;
+            if (isPrize) {
+                // It's a prize! Select a random prize URL
+                const prizeIndex = Math.floor(Math.random() * prizeUrls.length);
+                currentUrl = prizeUrls[prizeIndex];
+                console.log("Prize QR generated!");
+
+                // Generate a unique prize code
+                const prizeCode = generatePrizeCode();
+
+                // Store the prize code in the container's dataset
+                container.dataset.prizeCode = prizeCode;
+
+                // Store the prize in localStorage for reference
+                storePrizeWin(prizeCode, prizeUrls[prizeIndex]);
+
+                // Add a special class to indicate it's a prize QR code
+                container.classList.add('prize-qr');
+
+                // Remove the class after a short delay to reset the effect
+                setTimeout(() => {
+                    container.classList.remove('prize-qr');
+                }, 300);
+            } else {
+                // It's an ad. Use our ad landing page with AdSense
+                currentUrl = adLandingPage;
+
+                // Remove prize class if it exists
+                container.classList.remove('prize-qr');
+            }
+
+            // Generate QR code
+            const data = encodeURIComponent(currentUrl);
+            imgElement.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${data}`;
+
+            // Store the current URL as a data attribute for click handling
+            container.dataset.url = currentUrl;
+
+            // Fade in
+            imgElement.style.opacity = 1;
+        }, 500);
+    }
+
     // Function to move QR code to random position with smooth animation
     function moveQR() {
+        // Skip if we're on mobile
+        if (isMobile) return;
+
         // Get container dimensions
         const containerWidth = 250; // Width of QR container
         const containerHeight = 350; // Approximate height of QR container
@@ -392,6 +570,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to setup confetti and floating money
     function setupConfettiAndMoney() {
+        // Skip heavy animations on mobile
+        if (isMobile) {
+            // On mobile, just create a few confetti pieces occasionally for a lighter effect
+            setInterval(() => {
+                // Only 20% chance to create confetti on each interval
+                if (Math.random() < 0.2) {
+                    const screenWidth = window.innerWidth;
+                    const x = Math.random() * screenWidth;
+                    createConfettiPiece(x);
+                }
+            }, 2000);
+
+            return; // Skip money animation on mobile
+        }
+
+        // Desktop version - more animations
         // Start confetti drops at a steady rate
         // Create just 2-3 confetti pieces every second
         setInterval(() => {
