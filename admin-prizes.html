@@ -171,6 +171,15 @@
             opacity: 1;
         }
 
+        .admin-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .section-divider {
             height: 1px;
             background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
@@ -411,7 +420,10 @@
 
             <div id="suspiciousActivity" class="hidden"></div>
 
-            <a href="index.html" class="back-link">← Back to QR Hunt</a>
+            <div class="admin-footer">
+                <a href="index.html" class="back-link">← Back to QR Hunt</a>
+                <button id="logoutBtn" class="action-button">Logout</button>
+            </div>
         </div>
     </div>
 
@@ -426,6 +438,7 @@
             const changePasswordBtn = document.getElementById('changePasswordBtn');
             const viewSuspiciousBtn = document.getElementById('viewSuspiciousBtn');
             const clearDataBtn = document.getElementById('clearDataBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
             const suspiciousActivity = document.getElementById('suspiciousActivity');
             const totalClaimsEl = document.getElementById('totalClaims');
             const suspiciousCountEl = document.getElementById('suspiciousCount');
@@ -435,18 +448,61 @@
             const defaultPassword = 'qrhuntadmin2007%';
             let ADMIN_PASSWORD = localStorage.getItem('adminPassword') || defaultPassword;
 
-            // Check if already logged in
-            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            // Check if already logged in with a secure token
+            const authToken = sessionStorage.getItem('adminAuthToken');
+            const loginTime = parseInt(sessionStorage.getItem('adminLoginTime') || '0');
+            const currentTime = new Date().getTime();
+
+            // Check if token exists and is valid (less than 30 minutes old)
+            if (authToken &&
+                verifyAuthToken(authToken, ADMIN_PASSWORD) &&
+                loginTime &&
+                (currentTime - loginTime < 30 * 60 * 1000)) {
                 showAdminPanel();
+            } else {
+                // Clear invalid session data
+                sessionStorage.removeItem('adminAuthToken');
+                sessionStorage.removeItem('adminLoginTime');
+            }
+
+            // Function to verify the authentication token
+            function verifyAuthToken(token, password) {
+                // Simple hash verification (in a real app, this would be more sophisticated)
+                return token === generateAuthToken(password);
+            }
+
+            // Function to generate an authentication token
+            function generateAuthToken(password) {
+                // Simple hash function (in a real app, this would use a proper crypto library)
+                let hash = 0;
+                for (let i = 0; i < password.length; i++) {
+                    const char = password.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // Convert to 32bit integer
+                }
+                return hash.toString(36) + new Date().getDate();
             }
 
             // Login button click
             loginBtn.addEventListener('click', function() {
                 if (passwordInput.value === ADMIN_PASSWORD) {
-                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    // Generate and store authentication token
+                    const token = generateAuthToken(ADMIN_PASSWORD);
+                    sessionStorage.setItem('adminAuthToken', token);
+                    sessionStorage.setItem('adminLoginTime', new Date().getTime().toString());
+
+                    // Clear password field for security
+                    passwordInput.value = '';
+
                     showAdminPanel();
                 } else {
                     alert('Incorrect password');
+
+                    // Add a small delay to prevent brute force attacks
+                    loginBtn.disabled = true;
+                    setTimeout(() => {
+                        loginBtn.disabled = false;
+                    }, 1000);
                 }
             });
 
@@ -504,12 +560,72 @@
                 }
             });
 
+            // Logout button click
+            logoutBtn.addEventListener('click', function() {
+                // Clear authentication data
+                sessionStorage.removeItem('adminAuthToken');
+                sessionStorage.removeItem('adminLoginTime');
+
+                // Show login screen
+                adminSection.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+
+                // Clear password field
+                passwordInput.value = '';
+            });
+
             // Show admin panel
             function showAdminPanel() {
                 loginSection.classList.add('hidden');
                 adminSection.classList.remove('hidden');
                 loadClaims();
                 updateSecurityStats();
+
+                // Set up session timeout (auto logout after 30 minutes of inactivity)
+                setupSessionTimeout();
+            }
+
+            // Session timeout variables
+            let sessionTimeoutId;
+            const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+
+            // Setup session timeout
+            function setupSessionTimeout() {
+                // Clear any existing timeout
+                if (sessionTimeoutId) {
+                    clearTimeout(sessionTimeoutId);
+                }
+
+                // Set new timeout
+                sessionTimeoutId = setTimeout(function() {
+                    // Auto logout after timeout
+                    logoutBtn.click();
+                    alert('You have been logged out due to inactivity.');
+                }, SESSION_TIMEOUT);
+
+                // Reset timeout on user activity
+                const resetTimeout = function() {
+                    setupSessionTimeout();
+                };
+
+                // Add event listeners for user activity
+                document.addEventListener('click', resetTimeout);
+                document.addEventListener('keypress', resetTimeout);
+                document.addEventListener('mousemove', debounce(resetTimeout, 1000));
+                document.addEventListener('scroll', debounce(resetTimeout, 1000));
+            }
+
+            // Debounce function to limit how often a function is called
+            function debounce(func, wait) {
+                let timeout;
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function() {
+                        func.apply(context, args);
+                    }, wait);
+                };
             }
 
             // Update security statistics
