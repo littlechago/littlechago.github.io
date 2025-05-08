@@ -6,10 +6,35 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>QR Hunt - Interactive QR Code Game!</title>
+
+    <!-- Primary Meta Tags -->
+    <title>QR Hunt - Interactive QR Code Game with Real Prizes!</title>
+    <meta name="title" content="QR Hunt - Interactive QR Code Game with Real Prizes!">
+    <meta name="description" content="Play QR Hunt, the exciting interactive QR code game where you can win real prizes! Follow the floating QR codes to discover exciting destinations and rewards.">
+    <meta name="keywords" content="QR code game, win prizes, interactive game, QR Hunt, scan QR codes, online game">
+    <meta name="author" content="QR Hunt">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://littlechago.github.io/">
+    <meta property="og:title" content="QR Hunt - Interactive QR Code Game with Real Prizes!">
+    <meta property="og:description" content="Play QR Hunt, the exciting interactive QR code game where you can win real prizes! Follow the floating QR codes to discover exciting destinations and rewards.">
+    <meta property="og:image" content="https://littlechago.github.io/qr-hunt-preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://littlechago.github.io/">
+    <meta property="twitter:title" content="QR Hunt - Interactive QR Code Game with Real Prizes!">
+    <meta property="twitter:description" content="Play QR Hunt, the exciting interactive QR code game where you can win real prizes! Follow the floating QR codes to discover exciting destinations and rewards.">
+    <meta property="twitter:image" content="https://littlechago.github.io/qr-hunt-preview.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
@@ -287,6 +312,109 @@
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
 
+        /* Footer Styles */
+        .site-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            padding: 10px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            z-index: 90;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content p {
+            margin: 5px 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-links {
+            margin-top: 5px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            margin: 0 5px;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
+        /* Social Share Styles */
+        .social-share {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            padding: 10px 15px;
+            border-radius: 30px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-share p {
+            margin: 0 10px 0 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            color: white;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .social-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+        }
+
+        .facebook {
+            background-color: #3b5998;
+        }
+
+        .twitter {
+            background-color: #1da1f2;
+        }
+
+        .linkedin {
+            background-color: #0077b5;
+        }
+
+        .email {
+            background-color: #ea4335;
+        }
+
         .particles {
             position: absolute;
             width: 100%;
@@ -455,6 +583,35 @@
 
     <a href="about.html" class="about-button">About QR Hunt</a>
 
+    <div class="social-share">
+        <p>Share QR Hunt:</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://littlechago.github.io/" target="_blank" class="social-icon facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+            </a>
+            <a href="https://twitter.com/intent/tweet?text=Check%20out%20QR%20Hunt%20-%20an%20exciting%20game%20where%20you%20can%20win%20real%20prizes!&url=https://littlechago.github.io/" target="_blank" class="social-icon twitter">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://littlechago.github.io/&title=QR%20Hunt&summary=An%20exciting%20game%20where%20you%20can%20win%20real%20prizes!" target="_blank" class="social-icon linkedin">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg>
+            </a>
+            <a href="mailto:?subject=Check%20out%20QR%20Hunt&body=I%20found%20this%20exciting%20game%20where%20you%20can%20win%20real%20prizes!%20Check%20it%20out%20at%20https://littlechago.github.io/" class="social-icon email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 QR Hunt. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="privacy-policy.html">Privacy Policy</a> |
+                <a href="terms-of-service.html">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
     <script src="script.js?v=4.1"></script>
+    <script src="cookie-consent.js"></script>
 </body>
 </html>
