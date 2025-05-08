@@ -6,6 +6,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <!-- Force refresh with timestamp -->
+    <meta name="version" content="1683142800">
 
     <!-- Primary Meta Tags -->
     <title>QR Hunt - Interactive QR Code Game with Real Prizes!</title>
@@ -40,7 +42,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
 
 
-    <style>
+    <style id="main-styles-v2">
         body {
             margin: 0;
             padding: 0;
@@ -74,126 +76,119 @@
 
         #qr-container {
             position: absolute;
-            transition: all 1.5s cubic-bezier(0.42, 0, 0.58, 1);
+            transition: all 2s ease-in-out;
             z-index: 5;
-            padding: 24px;
-            background-color: rgba(28, 28, 30, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-            width: 280px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            padding: 20px;
+            background-color: rgba(30, 30, 40, 0.85);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 250px;
+            backdrop-filter: blur(5px);
         }
 
-        /* Apple-style hover effect */
+        /* Subtle hover effect instead of pulse */
         #qr-container:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-5px);
         }
 
-        /* QR wrapper with Apple-style design */
+        /* QR wrapper with subtle styling */
         .qr-wrapper {
             position: relative;
-            margin: 15px auto;
-            width: 180px;
-            height: 180px;
+            margin: 10px auto;
+            width: 150px;
+            height: 150px;
             overflow: hidden;
-            border-radius: 16px;
+            border-radius: 10px;
             background: white;
-            padding: 0;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s cubic-bezier(0.42, 0, 0.58, 1);
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
 
         /* Subtle hover effect for QR code */
         .qr-wrapper:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            transform: scale(1.03);
         }
 
         img {
-            width: 180px;
-            height: 180px;
-            border-radius: 16px;
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
             background: white;
         }
 
         .click-hint {
             position: absolute;
-            bottom: -30px;
+            bottom: -25px;
             left: 0;
             right: 0;
             text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            padding: 8px;
-            font-size: 15px;
-            font-weight: 500;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 14px;
             opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            transform: translateY(5px);
+            transition: opacity 0.3s ease;
         }
 
         #qr-container:hover .click-hint {
             opacity: 1;
-            transform: translateY(0);
         }
 
-        /* Prize QR code effect - Apple-style animation */
+        /* Prize QR code effect */
         .prize-qr {
-            animation: prize-pulse 0.5s cubic-bezier(0.26, 0.86, 0.44, 0.985);
+            animation: prize-pulse 0.3s ease-in-out;
         }
 
         @keyframes prize-pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-            40% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.5); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 215, 0, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
         }
 
-        /* Urgency banner - Apple-style */
+        /* Urgency banner - more elegant */
         .urgency-banner {
-            background-color: rgba(40, 40, 45, 0.8);
+            background-color: rgba(60, 60, 80, 0.8);
             color: white;
-            padding: 16px;
-            border-radius: 14px;
-            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
             text-align: center;
             font-weight: 500;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            gap: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .countdown {
-            color: #ffffff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
+            color: #e6e6fa;
+            font-size: 1rem;
         }
 
         .scarcity {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 400;
+            font-size: 0.9rem;
+            color: #d0d0e0;
         }
 
-        /* Social proof section - Apple-style */
+        /* Social proof section - more elegant */
         .social-proof {
-            margin-top: 20px;
-            background-color: rgba(40, 40, 45, 0.7);
-            border-radius: 14px;
-            padding: 16px;
-            font-size: 0.9rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            margin-top: 15px;
+            background-color: rgba(60, 60, 80, 0.6);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .winner-ticker {
-            height: 22px;
+            height: 20px;
             overflow: hidden;
             position: relative;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .winner-ticker p {
@@ -201,13 +196,12 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            line-height: 22px;
+            line-height: 20px;
             text-align: center;
-            transform: translateY(22px);
-            animation: ticker 5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-            color: #6bf;
+            transform: translateY(20px);
+            animation: ticker 5s linear infinite;
+            color: #a8d8ff;
             font-weight: 500;
-            letter-spacing: -0.01em;
         }
 
         .winner-ticker p:nth-child(2) {
@@ -215,19 +209,18 @@
         }
 
         @keyframes ticker {
-            0% { transform: translateY(22px); opacity: 0; }
+            0% { transform: translateY(20px); opacity: 0; }
             10% { transform: translateY(0); opacity: 1; }
             40% { transform: translateY(0); opacity: 1; }
-            50% { transform: translateY(-22px); opacity: 0; }
-            100% { transform: translateY(-22px); opacity: 0; }
+            50% { transform: translateY(-20px); opacity: 0; }
+            100% { transform: translateY(-20px); opacity: 0; }
         }
 
         .stats {
             text-align: center;
             margin: 5px 0 0 0;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.85rem;
-            font-weight: 400;
+            color: #d0d0e0;
+            font-size: 0.8rem;
         }
 
         /* Attention-grabbing text styles - more elegant */
@@ -321,117 +314,107 @@
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* Footer Styles - Apple-style */
+        /* Footer Styles */
         .site-footer {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(28, 28, 30, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 12px 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            padding: 10px 0;
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             z-index: 90;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 25px;
+            padding: 0 20px;
         }
 
         .footer-content p {
             margin: 5px 0;
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 400;
-            letter-spacing: -0.01em;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .footer-links {
-            margin-top: 6px;
+            margin-top: 5px;
         }
 
         .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
-            transition: all 0.3s ease;
-            margin: 0 8px;
-            font-weight: 400;
+            transition: color 0.3s ease;
+            margin: 0 5px;
         }
 
         .footer-links a:hover {
-            color: #0071e3;
+            color: #667eea;
+            text-decoration: underline;
         }
 
-        /* Social Share Styles - Apple-style */
+        /* Social Share Styles */
         .social-share {
             position: fixed;
-            right: 25px;
-            top: 25px;
-            background-color: rgba(40, 40, 45, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 10px 18px;
-            border-radius: 20px;
+            right: 20px;
+            top: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            padding: 10px 15px;
+            border-radius: 30px;
             z-index: 100;
             display: flex;
             align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .social-share p {
-            margin: 0 12px 0 0;
-            font-size: 0.95rem;
+            margin: 0 10px 0 0;
+            font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.9);
-            font-weight: 500;
-            letter-spacing: -0.01em;
         }
 
         .social-icons {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .social-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             color: white;
-            transition: all 0.3s cubic-bezier(0.42, 0, 0.58, 1);
-            background-color: rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
         .social-icon svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
         }
 
         .social-icon:hover {
             transform: translateY(-3px);
-            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        .facebook:hover {
-            color: #3b5998;
+        .facebook {
+            background-color: #3b5998;
         }
 
-        .x-twitter:hover {
-            color: #ffffff;
-            background-color: rgba(0, 0, 0, 0.8);
+        .x-twitter {
+            background-color: #1da1f2;
         }
 
-        .linkedin:hover {
-            color: #0077b5;
+        .linkedin {
+            background-color: #0077b5;
         }
 
-        .email:hover {
-            color: #ea4335;
+        .email {
+            background-color: #ea4335;
         }
 
         .particles {
@@ -439,63 +422,58 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            overflow: hidden;
         }
 
         .particle {
             position: absolute;
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
-            animation: float 20s infinite cubic-bezier(0.42, 0, 0.58, 1);
+            animation: float 15s infinite ease-in-out;
         }
 
         @keyframes float {
-            0% { transform: translateY(0) translateX(0) scale(1); }
-            25% { transform: translateY(-25px) translateX(15px) scale(1.05); }
-            50% { transform: translateY(0) translateX(30px) scale(1); }
-            75% { transform: translateY(25px) translateX(15px) scale(0.95); }
-            100% { transform: translateY(0) translateX(0) scale(1); }
+            0% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(0) translateX(20px); }
+            75% { transform: translateY(20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
         }
 
-        /* Confetti and Money styles - Apple-style */
+        /* Confetti and Money styles */
         .confetti {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             z-index: 2;
             pointer-events: none;
-            opacity: 0.7;
-            animation: fall-confetti var(--fall-duration) cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+            opacity: 0.8;
+            animation: fall-confetti var(--fall-duration) linear forwards;
             /* Ensure initial position is set */
             top: 0;
             left: 0;
-            filter: blur(0.5px);
         }
 
         .confetti-rect {
             width: 100%;
             height: 100%;
             transform: rotate(var(--rotation-angle));
-            animation: spin-confetti var(--spin-duration) cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
-            border-radius: 2px;
+            animation: spin-confetti var(--spin-duration) ease-in-out infinite alternate;
         }
 
         .money-bill {
             position: absolute;
-            width: 45px;
-            height: 28px;
-            background-color: rgba(133, 187, 101, 0.9); /* Dollar bill green with transparency */
-            border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            width: 40px;
+            height: 25px;
+            background-color: #85bb65; /* Dollar bill green */
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
             z-index: 2;
             pointer-events: none;
             opacity: 0;
-            animation: float-money var(--float-duration) cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+            animation: float-money var(--float-duration) ease-in-out forwards;
             /* Ensure initial position is set */
             top: 0;
             left: 0;
-            backdrop-filter: blur(1px);
-            -webkit-backdrop-filter: blur(1px);
         }
 
         .money-bill::before {
@@ -504,76 +482,66 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(30, 70, 32, 0.9);
-            font-weight: 600;
-            font-size: 16px;
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+            color: #1e4620;
+            font-weight: bold;
+            font-size: 14px;
         }
 
         @keyframes fall-confetti {
             0% {
-                /* Use absolute positioning with Apple-style easing */
+                /* Use absolute positioning instead of transforms for more reliable positioning */
                 top: var(--start-y);
                 left: var(--start-x);
-                transform: rotate(0deg) scale(0.9);
-                opacity: 0.9;
-            }
-            20% {
-                top: calc(var(--start-y) + 20vh);
-                left: calc(var(--start-x) + var(--drift-x) * 0.2);
-                transform: rotate(36deg) scale(1);
+                transform: rotate(0deg);
                 opacity: 1;
+            }
+            25% {
+                top: calc(var(--start-y) + 25vh);
+                left: calc(var(--start-x) + var(--drift-x) * 0.25);
+                transform: rotate(45deg);
             }
             50% {
                 top: calc(var(--start-y) + 50vh);
                 left: calc(var(--start-x) + var(--drift-x) * 0.5);
-                transform: rotate(90deg) scale(0.95);
-                opacity: 0.9;
+                transform: rotate(90deg);
             }
-            80% {
-                top: calc(var(--start-y) + 80vh);
-                left: calc(var(--start-x) + var(--drift-x) * 0.8);
-                transform: rotate(144deg) scale(0.9);
-                opacity: 0.7;
+            75% {
+                top: calc(var(--start-y) + 75vh);
+                left: calc(var(--start-x) + var(--drift-x) * 0.75);
+                transform: rotate(135deg);
             }
             100% {
                 top: calc(var(--start-y) + 105vh);
                 left: calc(var(--start-x) + var(--drift-x));
-                transform: rotate(180deg) scale(0.8);
+                transform: rotate(180deg);
                 opacity: 0;
             }
         }
 
         @keyframes spin-confetti {
-            0% { transform: rotate(var(--rotation-angle)) scale(1); }
-            50% { transform: rotate(calc(var(--rotation-angle) + 90deg)) scale(1.05); }
-            100% { transform: rotate(calc(var(--rotation-angle) + 180deg)) scale(1); }
+            0% { transform: rotate(var(--rotation-angle)); }
+            100% { transform: rotate(calc(var(--rotation-angle) + 180deg)); }
         }
 
         @keyframes float-money {
             0% {
+                /* Use absolute positioning instead of transforms for more reliable positioning */
                 top: var(--start-y);
                 left: var(--start-x);
-                transform: rotate(var(--rotation)) scale(0.8);
+                transform: rotate(var(--rotation));
                 opacity: 0;
-                filter: blur(1px);
             }
             10% {
-                opacity: 1;
-                transform: rotate(calc(var(--rotation) + var(--rotate-amount) * 0.1)) scale(1);
-                filter: blur(0);
+                opacity: 0.8;
             }
-            80% {
-                opacity: 1;
-                transform: rotate(calc(var(--rotation) + var(--rotate-amount) * 0.8)) scale(1);
-                filter: blur(0);
+            90% {
+                opacity: 0.8;
             }
             100% {
                 top: calc(var(--start-y) + var(--move-y));
                 left: calc(var(--start-x) + var(--move-x));
-                transform: rotate(calc(var(--rotation) + var(--rotate-amount))) scale(0.8);
+                transform: rotate(calc(var(--rotation) + var(--rotate-amount)));
                 opacity: 0;
-                filter: blur(1px);
             }
         }
     </style>
