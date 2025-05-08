@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Hunt Prize Admin</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 30px;
+        }
+
+        .admin-container {
+            background-color: rgba(30, 30, 40, 0.85);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #764ba2, #667eea);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-button {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            margin-top: 0;
+            width: auto;
+            display: inline-block;
+        }
+
+        .claims-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background-color: rgba(20, 20, 30, 0.7);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .claims-table th, .claims-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .claims-table th {
+            background-color: rgba(60, 60, 80, 0.8);
+            font-weight: 600;
+        }
+
+        .claims-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .claims-table tr:hover td {
+            background-color: rgba(60, 60, 80, 0.3);
+        }
+
+        .status-pending {
+            color: #f39c12;
+            font-weight: 500;
+        }
+
+        .status-fulfilled {
+            color: #2ecc71;
+            font-weight: 500;
+        }
+
+        .no-claims {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>QR Hunt Prize Admin</h1>
+        
+        <div id="loginSection">
+            <div class="login-container">
+                <div class="form-group">
+                    <label for="password">Admin Password</label>
+                    <input type="password" id="password" placeholder="Enter admin password">
+                </div>
+                <button id="loginBtn">Login</button>
+            </div>
+        </div>
+        
+        <div id="adminSection" class="hidden">
+            <div class="controls">
+                <h2>Prize Claims</h2>
+                <button id="exportBtn" class="action-button">Export to CSV</button>
+            </div>
+            
+            <div id="claimsList"></div>
+            
+            <a href="index.html" class="back-link">← Back to QR Hunt</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginSection = document.getElementById('loginSection');
+            const adminSection = document.getElementById('adminSection');
+            const loginBtn = document.getElementById('loginBtn');
+            const passwordInput = document.getElementById('password');
+            const claimsList = document.getElementById('claimsList');
+            const exportBtn = document.getElementById('exportBtn');
+            
+            // Simple admin password - you should change this to something secure
+            const ADMIN_PASSWORD = 'qrhuntadmin';
+            
+            // Check if already logged in
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                showAdminPanel();
+            }
+            
+            // Login button click
+            loginBtn.addEventListener('click', function() {
+                if (passwordInput.value === ADMIN_PASSWORD) {
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    showAdminPanel();
+                } else {
+                    alert('Incorrect password');
+                }
+            });
+            
+            // Show admin panel
+            function showAdminPanel() {
+                loginSection.classList.add('hidden');
+                adminSection.classList.remove('hidden');
+                loadClaims();
+            }
+            
+            // Load claims from localStorage
+            function loadClaims() {
+                const claims = JSON.parse(localStorage.getItem('prizeClaims') || '[]');
+                
+                if (claims.length === 0) {
+                    claimsList.innerHTML = '<div class="no-claims">No prize claims yet.</div>';
+                    return;
+                }
+                
+                let html = '<table class="claims-table"><tr><th>Date</th><th>Prize Code</th><th>Name</th><th>Email</th><th>Address</th><th>Status</th><th>Actions</th></tr>';
+                
+                claims.forEach((claim, index) => {
+                    const date = new Date(claim.timestamp).toLocaleString();
+                    const statusClass = claim.status === 'pending' ? 'status-pending' : 'status-fulfilled';
+                    
+                    html += `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${claim.prizeCode}</td>
+                            <td>${claim.name}</td>
+                            <td><a href="mailto:${claim.email}" style="color: white;">${claim.email}</a></td>
+                            <td>${claim.address || 'N/A'}</td>
+                            <td class="${statusClass}">${claim.status}</td>
+                            <td>
+                                ${claim.status === 'pending' ? 
+                                    `<button onclick="markFulfilled(${index})" class="action-button">Mark Fulfilled</button>` : 
+                                    `<button onclick="markPending(${index})" class="action-button">Mark Pending</button>`}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</table>';
+                claimsList.innerHTML = html;
+            }
+            
+            // Export claims as CSV
+            exportBtn.addEventListener('click', function() {
+                const claims = JSON.parse(localStorage.getItem('prizeClaims') || '[]');
+                if (claims.length === 0) {
+                    alert('No claims to export');
+                    return;
+                }
+                
+                let csv = 'Date,Prize Code,Name,Email,Address,Status\n';
+                
+                claims.forEach(claim => {
+                    const date = new Date(claim.timestamp).toLocaleString();
+                    // Escape fields that might contain commas
+                    const address = claim.address ? `"${claim.address.replace(/"/g, '""')}"` : 'N/A';
+                    const name = `"${claim.name.replace(/"/g, '""')}"`;
+                    
+                    csv += `${date},${claim.prizeCode},${name},${claim.email},${address},${claim.status}\n`;
+                });
+                
+                // Create download link
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'qrhunt-prize-claims.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+            
+            // Make these functions available globally
+            window.markFulfilled = function(index) {
+                updateClaimStatus(index, 'fulfilled');
+            };
+            
+            window.markPending = function(index) {
+                updateClaimStatus(index, 'pending');
+            };
+            
+            function updateClaimStatus(index, status) {
+                const claims = JSON.parse(localStorage.getItem('prizeClaims') || '[]');
+                claims[index].status = status;
+                localStorage.setItem('prizeClaims', JSON.stringify(claims));
+                loadClaims();
+            }
+        });
+    </script>
+</body>
+</html>

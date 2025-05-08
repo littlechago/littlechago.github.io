@@ -11,6 +11,20 @@ const prizeUrls = [
     "prizes/sweepstakes-entry.html" // Sweepstakes entry page
 ];
 
+// Function to generate a unique prize code
+function generatePrizeCode() {
+    // Generate a random 8-character code
+    const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed similar-looking characters
+    let code = '';
+    for (let i = 0; i < 8; i++) {
+        code += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    // Add timestamp to make it unique
+    const timestamp = new Date().getTime().toString(36).slice(-4);
+    return `QR-${code}-${timestamp}`;
+}
+
 // Wait for the document to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Document loaded, initializing QR Hunt...');
@@ -120,6 +134,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentUrl = prizeUrls[prizeIndex];
                 console.log("Prize QR generated!");
 
+                // Generate a unique prize code
+                const prizeCode = generatePrizeCode();
+
+                // Store the prize code in the QR container's dataset
+                qrContainer.dataset.prizeCode = prizeCode;
+
+                // Store the prize in localStorage for reference
+                storePrizeWin(prizeCode, prizeUrls[prizeIndex]);
+
                 // Add a special class to indicate it's a prize QR code
                 qrContainer.classList.add('prize-qr');
 
@@ -150,9 +173,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Make QR code clickable
     qrContainer.addEventListener('click', function() {
         const url = this.dataset.url;
+        const prizeCode = this.dataset.prizeCode;
+
         if (url) {
-            // Open the URL in a new tab
-            window.open(url, '_blank');
+            // Check if this is a prize QR code
+            if (prizeCode) {
+                // Show prize win modal with the code
+                showPrizeWinModal(prizeCode);
+            } else {
+                // Regular ad QR code - open the URL in a new tab
+                window.open(url, '_blank');
+            }
 
             // Add a visual feedback for the click
             qrContainer.style.transform = 'scale(0.9)';
@@ -161,6 +192,134 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 200);
         }
     });
+
+    // Function to show prize win modal
+    function showPrizeWinModal(prizeCode) {
+        // Create modal container
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        modal.style.zIndex = '1000';
+
+        // Create modal content
+        const content = document.createElement('div');
+        content.style.backgroundColor = 'rgba(30, 30, 40, 0.95)';
+        content.style.borderRadius = '15px';
+        content.style.padding = '30px';
+        content.style.maxWidth = '90%';
+        content.style.width = '400px';
+        content.style.textAlign = 'center';
+        content.style.boxShadow = '0 0 30px rgba(103, 126, 234, 0.5)';
+        content.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+
+        // Add confetti animation to the modal
+        content.style.animation = 'prize-pulse 0.5s ease-in-out';
+
+        // Create heading
+        const heading = document.createElement('h2');
+        heading.textContent = 'Congratulations!';
+        heading.style.color = '#fff';
+        heading.style.fontSize = '2rem';
+        heading.style.marginBottom = '15px';
+
+        // Create message
+        const message = document.createElement('p');
+        message.textContent = 'You\'ve won a prize! Use this code to claim your reward:';
+        message.style.color = '#fff';
+        message.style.fontSize = '1.1rem';
+        message.style.marginBottom = '20px';
+
+        // Create prize code display
+        const codeDisplay = document.createElement('div');
+        codeDisplay.textContent = prizeCode;
+        codeDisplay.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        codeDisplay.style.padding = '15px';
+        codeDisplay.style.borderRadius = '8px';
+        codeDisplay.style.fontSize = '1.5rem';
+        codeDisplay.style.fontWeight = 'bold';
+        codeDisplay.style.color = '#f9c74f';
+        codeDisplay.style.marginBottom = '25px';
+        codeDisplay.style.letterSpacing = '1px';
+        codeDisplay.style.border = '1px dashed rgba(249, 199, 79, 0.5)';
+
+        // Create claim button
+        const claimButton = document.createElement('button');
+        claimButton.textContent = 'Claim Your Prize';
+        claimButton.style.backgroundColor = '#667eea';
+        claimButton.style.color = '#fff';
+        claimButton.style.border = 'none';
+        claimButton.style.borderRadius = '30px';
+        claimButton.style.padding = '12px 25px';
+        claimButton.style.fontSize = '1.1rem';
+        claimButton.style.fontWeight = 'bold';
+        claimButton.style.cursor = 'pointer';
+        claimButton.style.transition = 'all 0.3s ease';
+        claimButton.style.marginBottom = '15px';
+
+        claimButton.addEventListener('mouseover', function() {
+            this.style.transform = 'translateY(-3px)';
+            this.style.boxShadow = '0 6px 10px rgba(0, 0, 0, 0.2)';
+        });
+
+        claimButton.addEventListener('mouseout', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+        });
+
+        claimButton.addEventListener('click', function() {
+            window.open('claim-prize.html', '_blank');
+            modal.remove();
+        });
+
+        // Create close button
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'Close';
+        closeButton.style.backgroundColor = 'transparent';
+        closeButton.style.color = '#fff';
+        closeButton.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+        closeButton.style.borderRadius = '30px';
+        closeButton.style.padding = '10px 20px';
+        closeButton.style.fontSize = '0.9rem';
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.transition = 'all 0.3s ease';
+
+        closeButton.addEventListener('mouseover', function() {
+            this.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        });
+
+        closeButton.addEventListener('mouseout', function() {
+            this.style.backgroundColor = 'transparent';
+        });
+
+        closeButton.addEventListener('click', function() {
+            modal.remove();
+        });
+
+        // Assemble modal
+        content.appendChild(heading);
+        content.appendChild(message);
+        content.appendChild(codeDisplay);
+        content.appendChild(claimButton);
+        content.appendChild(closeButton);
+        modal.appendChild(content);
+
+        // Add to document
+        document.body.appendChild(modal);
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
 
     // Add cursor style to indicate it's clickable
     qrContainer.style.cursor = 'pointer';
@@ -319,6 +478,23 @@ document.addEventListener('DOMContentLoaded', function() {
         money.addEventListener('animationend', function() {
             money.remove();
         });
+    }
+
+    // Function to store prize wins in localStorage
+    function storePrizeWin(prizeCode, prizeUrl) {
+        // Get existing prize wins or initialize empty array
+        let prizeWins = JSON.parse(localStorage.getItem('prizeWins') || '[]');
+
+        // Add new prize win with timestamp
+        prizeWins.push({
+            prizeCode: prizeCode,
+            prizeUrl: prizeUrl,
+            timestamp: new Date().toISOString(),
+            claimed: false
+        });
+
+        // Save back to localStorage
+        localStorage.setItem('prizeWins', JSON.stringify(prizeWins));
     }
 
     // Function to setup psychological engagement elements
