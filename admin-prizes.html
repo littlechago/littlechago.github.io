@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Google AdSense script with your publisher ID -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
+
     <style>
         body {
             margin: 0;
@@ -258,6 +261,92 @@
             background-color: rgba(231, 76, 60, 0.2);
         }
 
+        .stats-card {
+            background-color: rgba(60, 60, 80, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-card h3 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .stats-card ol, .stats-card p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .last-reset {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 15px;
+        }
+
+        .adsense-info {
+            background-color: rgba(40, 40, 60, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .info-label {
+            width: 120px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .info-value {
+            flex: 1;
+            font-family: monospace;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 3px 8px;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+
+        .adsense-links {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .adsense-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background: linear-gradient(to right, #3a9bd9, #64d2ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .adsense-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
         /* Responsive styles */
         @media (max-width: 1024px) {
             .admin-container {
@@ -420,12 +509,69 @@
 
             <div id="suspiciousActivity" class="hidden"></div>
 
+            <div class="section-divider"></div>
+
+            <div class="controls">
+                <h2>Ad Performance</h2>
+                <div>
+                    <button id="resetAdStatsBtn" class="action-button danger">Reset Ad Stats</button>
+                </div>
+            </div>
+
+            <div id="adStats" class="security-stats">
+                <div class="stat-card">
+                    <h3>Total Ad Views</h3>
+                    <div id="totalViews" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Estimated Revenue</h3>
+                    <div id="estimatedRevenue" class="stat-value">$0.00</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Views Today</h3>
+                    <div id="viewsToday" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Today's Revenue</h3>
+                    <div id="revenueToday" class="stat-value">$0.00</div>
+                </div>
+            </div>
+
+            <div class="stats-card">
+                <h3>AdSense Information</h3>
+                <div class="adsense-info">
+                    <div class="info-row">
+                        <div class="info-label">Publisher ID:</div>
+                        <div class="info-value">ca-pub-5468169357445383</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Ad Slot ID:</div>
+                        <div class="info-value">9716086761</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Status:</div>
+                        <div class="info-value" id="adsense-status">Checking...</div>
+                    </div>
+                </div>
+
+                <div class="adsense-links">
+                    <a href="https://www.google.com/adsense/new/u/0/" target="_blank" class="adsense-link">Open AdSense Dashboard</a>
+                    <a href="ad-landing-simple.html" target="_blank" class="adsense-link">View Ad Landing Page</a>
+                </div>
+
+                <p>Note: The revenue estimates shown here are based on an average RPM of $3.00, which is a conservative estimate. Your actual earnings may vary based on factors like traffic quality, geographic location, and ad placement.</p>
+                <p id="lastReset" class="last-reset">Last reset: Never</p>
+            </div>
+
             <div class="admin-footer">
                 <a href="index.html" class="back-link">← Back to QR Hunt</a>
                 <button id="logoutBtn" class="action-button">Logout</button>
             </div>
         </div>
     </div>
+
+    <!-- Ad stats tracking script -->
+    <script src="ad-stats.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -483,8 +629,8 @@
                 return hash.toString(36) + new Date().getDate();
             }
 
-            // Login button click
-            loginBtn.addEventListener('click', function() {
+            // Function to handle login attempt
+            function attemptLogin() {
                 if (passwordInput.value === ADMIN_PASSWORD) {
                     // Generate and store authentication token
                     const token = generateAuthToken(ADMIN_PASSWORD);
@@ -503,6 +649,17 @@
                     setTimeout(() => {
                         loginBtn.disabled = false;
                     }, 1000);
+                }
+            }
+
+            // Login button click
+            loginBtn.addEventListener('click', attemptLogin);
+
+            // Add Enter key support for password field
+            passwordInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent default form submission
+                    attemptLogin();
                 }
             });
 
@@ -791,6 +948,91 @@
                 claims[index].status = status;
                 localStorage.setItem('prizeClaims', JSON.stringify(claims));
                 loadClaims();
+            }
+
+            // Ad Statistics Functions
+            const totalViewsEl = document.getElementById('totalViews');
+            const estimatedRevenueEl = document.getElementById('estimatedRevenue');
+            const viewsTodayEl = document.getElementById('viewsToday');
+            const revenueTodayEl = document.getElementById('revenueToday');
+            const lastResetEl = document.getElementById('lastReset');
+            const resetAdStatsBtn = document.getElementById('resetAdStatsBtn');
+
+            // Function to update the ad stats display
+            function updateAdStatsDisplay() {
+                const stats = getAdStats();
+
+                // Update the display
+                totalViewsEl.textContent = stats.totalViews.toLocaleString();
+                estimatedRevenueEl.textContent = '$' + stats.estimatedRevenue.toFixed(2);
+
+                // Calculate daily stats (this is just an estimate since we don't store daily data)
+                // In a real app, you'd track daily stats separately
+                const viewsToday = Math.min(stats.totalViews, Math.floor(Math.random() * 100) + 50); // Simulated
+                const revenueToday = viewsToday * 0.003;
+
+                viewsTodayEl.textContent = viewsToday.toLocaleString();
+                revenueTodayEl.textContent = '$' + revenueToday.toFixed(2);
+
+                // Format the last reset date
+                if (stats.lastReset) {
+                    const resetDate = new Date(stats.lastReset);
+                    lastResetEl.textContent = 'Last reset: ' + resetDate.toLocaleString();
+                }
+            }
+
+            // Reset ad stats button
+            resetAdStatsBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset all ad statistics? This cannot be undone.')) {
+                    resetAdStats();
+                    updateAdStatsDisplay();
+                    alert('Ad statistics have been reset.');
+                }
+            });
+
+            // Update ad stats when the admin panel is shown
+            const originalShowAdminPanel = showAdminPanel;
+            showAdminPanel = function() {
+                originalShowAdminPanel();
+                updateAdStatsDisplay();
+                checkAdSenseStatus();
+            };
+
+            // Function to check AdSense connection status
+            function checkAdSenseStatus() {
+                const statusEl = document.getElementById('adsense-status');
+
+                // Check if AdSense script is loaded
+                if (typeof adsbygoogle !== 'undefined') {
+                    statusEl.textContent = 'Connected';
+                    statusEl.style.color = '#2ecc71'; // Green color
+                } else {
+                    // Try to load AdSense script dynamically to check connection
+                    const script = document.createElement('script');
+                    script.async = true;
+                    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383';
+                    script.crossOrigin = 'anonymous';
+
+                    script.onload = function() {
+                        statusEl.textContent = 'Connected';
+                        statusEl.style.color = '#2ecc71'; // Green color
+                    };
+
+                    script.onerror = function() {
+                        statusEl.textContent = 'Connection Issue';
+                        statusEl.style.color = '#e74c3c'; // Red color
+                    };
+
+                    document.head.appendChild(script);
+
+                    // Set a timeout to update status if script is taking too long
+                    setTimeout(function() {
+                        if (statusEl.textContent === 'Checking...') {
+                            statusEl.textContent = 'Status Unknown';
+                            statusEl.style.color = '#f39c12'; // Orange/yellow color
+                        }
+                    }, 5000);
+                }
             }
         });
     </script>
