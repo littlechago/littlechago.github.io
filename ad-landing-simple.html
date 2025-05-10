@@ -8,6 +8,22 @@
     <!-- Google AdSense script with actual publisher ID -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
 
+    <!-- AdSense debugging script -->
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                // Check if AdSense is loaded
+                if (typeof adsbygoogle === 'undefined') {
+                    console.error('AdSense not loaded - possible ad blocker or connection issue');
+                    document.getElementById('ad-debug-info').textContent = 'AdSense not loaded - possible ad blocker or connection issue';
+                } else {
+                    console.log('AdSense script loaded successfully');
+                    document.getElementById('ad-debug-info').textContent = 'AdSense script loaded successfully';
+                }
+            }, 2000);
+        });
+    </script>
+
     <style>
         body {
             margin: 0;
@@ -75,6 +91,80 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .ad-debug-panel {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        #ad-debug-info {
+            padding: 8px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            margin-bottom: 10px;
+            color: #ffcc00;
+            font-family: monospace;
+        }
+
+        .ad-tips {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .ad-tips p {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .ad-tips ol {
+            margin-top: 5px;
+            padding-left: 25px;
+        }
+
+        .ad-tips li {
+            margin-bottom: 3px;
+        }
+
+        .ad-unit-container {
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            position: relative;
+        }
+
+        .ad-label {
+            position: absolute;
+            top: -8px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .primary-ad {
+            min-height: 250px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .secondary-ad {
+            min-height: 90px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .secondary-unit {
+            margin-top: 25px;
         }
 
         .button-container {
@@ -243,17 +333,73 @@
             <p>Please check out our sponsor's message below.</p>
         </div>
 
-        <!-- Single AdSense Ad -->
+        <!-- AdSense Ads Section -->
         <div class="ad-container">
-            <!-- AdSense ad code with actual publisher ID and ad slot -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-5468169357445383"
-                 data-ad-slot="9716086761"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
+            <div class="ad-debug-panel">
+                <div id="ad-debug-info">Checking AdSense status...</div>
+                <div class="ad-tips">
+                    <p><strong>Not seeing ads?</strong> Try these steps:</p>
+                    <ol>
+                        <li>Disable any ad blockers</li>
+                        <li>Check your AdSense account status</li>
+                        <li>Ensure your AdSense account is fully approved</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Primary AdSense Ad Unit -->
+            <div class="ad-unit-container">
+                <div class="ad-label">Advertisement</div>
+                <ins class="adsbygoogle primary-ad"
+                     style="display:block"
+                     data-ad-client="ca-pub-5468169357445383"
+                     data-ad-slot="9716086761"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+            <!-- Secondary AdSense Ad Unit (Display Ad) -->
+            <div class="ad-unit-container secondary-unit">
+                <div class="ad-label">Sponsored Content</div>
+                <ins class="adsbygoogle secondary-ad"
+                     style="display:block; min-width:300px; max-width:970px; width:100%; min-height:90px; max-height:250px;"
+                     data-ad-client="ca-pub-5468169357445383"
+                     data-ad-slot="9716086761"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+            <!-- Enable Auto Ads as a fallback -->
             <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
+                window.addEventListener('load', function() {
+                    setTimeout(function() {
+                        // If no ads are visible after 3 seconds, try to enable auto ads
+                        const adUnits = document.querySelectorAll('.adsbygoogle');
+                        let adsVisible = false;
+
+                        for (let i = 0; i < adUnits.length; i++) {
+                            // Check if ad unit has content
+                            if (adUnits[i].innerHTML.trim() !== '' &&
+                                adUnits[i].offsetHeight > 10) {
+                                adsVisible = true;
+                                break;
+                            }
+                        }
+
+                        if (!adsVisible && typeof adsbygoogle !== 'undefined') {
+                            console.log('No ads visible, enabling auto ads');
+                            document.getElementById('ad-debug-info').textContent = 'Enabling Auto Ads as fallback';
+                            (adsbygoogle = window.adsbygoogle || []).push({
+                                google_ad_client: "ca-pub-5468169357445383",
+                                enable_page_level_ads: true
+                            });
+                        }
+                    }, 3000);
+                });
             </script>
         </div>
 
