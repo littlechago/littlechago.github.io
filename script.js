@@ -740,7 +740,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('prizeWins', JSON.stringify(prizeWins));
     }
 
-    // Function to setup psychological engagement elements
+    // Function to setup engagement elements
     function setupEngagementElements() {
         // Countdown timer
         const countdownEl = document.getElementById('countdown-timer');
@@ -761,7 +761,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 timeLeft = 180;
                 updateCountdown();
 
-                // Update the prizes left with a random number (creating scarcity)
+                // Update the prizes left with a random number
                 const prizesLeftEl = document.getElementById('prizes-left');
                 const prizesLeft = Math.floor(Math.random() * 8) + 1; // 1-8 prizes left
                 prizesLeftEl.textContent = `${prizesLeft} grand prizes left today!`;
@@ -776,59 +776,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Start the countdown
         updateCountdown();
-
-        // Update scan stats randomly
-        const scanStatsEl = document.getElementById('scan-stats');
-
-        function updateScanStats() {
-            const scans = Math.floor(Math.random() * 400) + 200; // 200-600 scans
-            scanStatsEl.textContent = `${scans} people scanned in the last hour`;
-
-            // Update every 30-60 seconds
-            const nextUpdate = Math.floor(Math.random() * 30000) + 30000;
-            setTimeout(updateScanStats, nextUpdate);
-        }
-
-        // Start updating scan stats
-        updateScanStats();
-
-        // Update winner ticker with random names and prizes
-        const firstNames = ['John', 'Maria', 'Alex', 'Sarah', 'David', 'Emma', 'Michael', 'Olivia', 'James', 'Sophia'];
-        const lastInitials = ['S', 'T', 'M', 'R', 'J', 'K', 'L', 'B', 'W', 'P'];
-        const prizes = [
-            '$5 Amazon card',
-            'free movie ticket',
-            '$10 gift card',
-            'premium subscription',
-            'discount code',
-            'digital album',
-            'ebook download',
-            'sweepstakes entry'
-        ];
-
-        const winnerTickerEl = document.getElementById('winner-ticker');
-        const winnerP1 = winnerTickerEl.children[0];
-        const winnerP2 = winnerTickerEl.children[1];
-
-        function updateWinnerTicker() {
-            // Generate random winner and prize
-            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-            const lastInitial = lastInitials[Math.floor(Math.random() * lastInitials.length)];
-            const prize = prizes[Math.floor(Math.random() * prizes.length)];
-
-            // Update the ticker that's currently not visible
-            if (winnerP1.offsetTop < 0) {
-                winnerP1.textContent = `${firstName} ${lastInitial}. just won ${prize}!`;
-            } else {
-                winnerP2.textContent = `${firstName} ${lastInitial}. just won ${prize}!`;
-            }
-
-            // Update approximately every 20 seconds (between 18-22 seconds)
-            const nextUpdate = Math.floor(Math.random() * 4000) + 18000;
-            setTimeout(updateWinnerTicker, nextUpdate);
-        }
-
-        // Start updating winner ticker
-        setTimeout(updateWinnerTicker, 2500); // Start after first animation cycle
     }
 });
