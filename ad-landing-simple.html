@@ -187,8 +187,19 @@
             border-radius: 4px;
         }
 
-        .secondary-unit {
+        .secondary-unit, .native-unit, .video-unit, .premium-unit {
             margin-top: 25px;
+            position: relative;
+        }
+
+        .premium-unit {
+            background-color: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 15px;
+        }
+
+        .video-unit {
+            min-height: 250px;
         }
 
         .button-container {
@@ -371,9 +382,9 @@
                 </div>
             </div>
 
-            <!-- Primary AdSense Ad Unit (Large Rectangle) -->
-            <div class="ad-unit-container">
-                <div class="ad-label">Advertisement</div>
+            <!-- Premium AdSense Ad Unit (Large Rectangle) -->
+            <div class="ad-unit-container premium-unit">
+                <div class="ad-label">Featured Sponsor</div>
                 <ins class="adsbygoogle primary-ad"
                      style="display:block"
                      data-ad-client="ca-pub-5468169357445383"
@@ -411,6 +422,45 @@
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
             </div>
+
+            <!-- Video Ad Unit -->
+            <div class="ad-unit-container video-unit">
+                <div class="ad-label">Featured Video</div>
+                <ins class="adsbygoogle video-ad"
+                     style="display:block"
+                     data-ad-client="ca-pub-5468169357445383"
+                     data-ad-slot="9716086761"
+                     data-ad-format="fluid"
+                     data-ad-layout="in-article"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+            <!-- Auto-refresh ads every 30 seconds -->
+            <script>
+                // Auto-refresh ads every 30 seconds to increase impressions
+                setInterval(function() {
+                    try {
+                        if (typeof adsbygoogle !== 'undefined') {
+                            // Refresh all ad units
+                            const adUnits = document.querySelectorAll('.adsbygoogle');
+                            for (let i = 0; i < adUnits.length; i++) {
+                                // Create a new ad unit with the same properties
+                                const parent = adUnits[i].parentNode;
+                                const adClone = adUnits[i].cloneNode(true);
+                                parent.replaceChild(adClone, adUnits[i]);
+
+                                // Push to adsbygoogle
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                            }
+                            console.log('Ads refreshed');
+                        }
+                    } catch (e) {
+                        console.error('Error refreshing ads:', e);
+                    }
+                }, 30000); // 30 seconds
+            </script>
 
             <!-- Enable Auto Ads as a fallback -->
             <script>

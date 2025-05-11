@@ -21,9 +21,9 @@ function trackAdView() {
     // Increment view count
     adStats.totalViews++;
 
-    // Calculate estimated revenue (using average $0.006 per view)
-    // This is based on an optimized RPM of $6.00 per 1000 views
-    const estimatedPerView = 0.006;
+    // Calculate estimated revenue (using average $0.01 per view)
+    // This is based on an optimized RPM of $10.00 per 1000 views
+    const estimatedPerView = 0.01;
     adStats.estimatedRevenue = adStats.totalViews * estimatedPerView;
 
     // Save to localStorage

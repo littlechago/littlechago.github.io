@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const qrStats = {
         totalGenerated: 0,
         prizesGenerated: 0,
-        targetPrizeRate: 0.03, // 3% prize rate (97% ad rate)
+        targetPrizeRate: 0.005, // 0.5% prize rate (99.5% ad rate)
 
         // Initialize from localStorage if available
         init: function() {
@@ -551,11 +551,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create expiration message
         const expirationMessage = document.createElement('p');
-        expirationMessage.textContent = 'This code expires in 12 hours. Claim it now!';
-        expirationMessage.style.color = '#ff9f43';
+        expirationMessage.textContent = 'This code expires in 6 hours. Claim it now!';
+        expirationMessage.style.color = '#ff5e57';
         expirationMessage.style.fontSize = '0.9rem';
         expirationMessage.style.marginBottom = '20px';
         expirationMessage.style.fontWeight = 'bold';
+        expirationMessage.style.animation = 'pulse 2s infinite';
 
         // Create prize code display
         const codeDisplay = document.createElement('div');
@@ -853,7 +854,7 @@ document.addEventListener('DOMContentLoaded', function() {
             paymentMethod: null,
             paymentDate: null,
             notes: null,
-            expirationDate: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString() // 12 hour expiration (reduces claim rate)
+            expirationDate: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString() // 6 hour expiration (significantly reduces claim rate)
         });
 
         // Save back to localStorage
