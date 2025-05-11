@@ -3,6 +3,8 @@
 const adLandingPage = "ad-landing-simple.html";
 
 // Prize URLs - 3% chance of getting these
+// We now use the prize-tiers.js system for more granular control
+// This array is kept for backward compatibility
 const prizeUrls = [
     "prizes/grand-prize.html", // Grand prize page
     "prizes/discount-code.html", // Discount code page
@@ -10,6 +12,9 @@ const prizeUrls = [
     "prizes/digital-gift.html", // Digital gift page
     "prizes/sweepstakes-entry.html" // Sweepstakes entry page
 ];
+
+// The prize tiers system is loaded in the HTML file
+// See the <script src="prize-tiers.js"></script> tag in index.html
 
 // Function to generate a unique prize code with checksum
 function generatePrizeCode() {
@@ -431,10 +436,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
             let currentUrl;
             if (isPrize) {
-                // It's a prize! Select a random prize URL
-                const prizeIndex = Math.floor(Math.random() * prizeUrls.length);
-                currentUrl = prizeUrls[prizeIndex];
-                console.log("Prize QR generated!");
+                // It's a prize! Use the prize tiers system to select a prize
+                const prize = typeof selectRandomPrize === 'function'
+                    ? selectRandomPrize()
+                    : { url: prizeUrls[Math.floor(Math.random() * prizeUrls.length)], value: 3.00 };
+
+                currentUrl = prize.url;
+                console.log("Prize QR generated! Value: $" + prize.value);
 
                 // Generate a unique prize code
                 const prizeCode = generatePrizeCode();
@@ -442,8 +450,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Store the prize code in the QR container's dataset
                 qrContainer.dataset.prizeCode = prizeCode;
 
-                // Store the prize in localStorage for reference
-                storePrizeWin(prizeCode, prizeUrls[prizeIndex]);
+                // Store prize value in dataset
+                qrContainer.dataset.prizeValue = prize.value;
+
+                // Store the prize in localStorage with additional details
+                storePrizeWin(prizeCode, prize.url, prize.value, prize.tier, prize.name);
 
                 // Add a special class to indicate it's a prize QR code
                 qrContainer.classList.add('prize-qr');
@@ -536,7 +547,15 @@ document.addEventListener('DOMContentLoaded', function() {
         message.textContent = 'You\'ve won a prize! Use this code to claim your reward:';
         message.style.color = '#fff';
         message.style.fontSize = '1.1rem';
-        message.style.marginBottom = '20px';
+        message.style.marginBottom = '10px';
+
+        // Create expiration message
+        const expirationMessage = document.createElement('p');
+        expirationMessage.textContent = 'This code expires in 12 hours. Claim it now!';
+        expirationMessage.style.color = '#ff9f43';
+        expirationMessage.style.fontSize = '0.9rem';
+        expirationMessage.style.marginBottom = '20px';
+        expirationMessage.style.fontWeight = 'bold';
 
         // Create prize code display
         const codeDisplay = document.createElement('div');
@@ -617,6 +636,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Assemble modal
         content.appendChild(heading);
         content.appendChild(message);
+        content.appendChild(expirationMessage);
         content.appendChild(codeDisplay);
         content.appendChild(claimButton);
         content.appendChild(closeButton);
@@ -813,11 +833,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to store prize wins in localStorage
-    function storePrizeWin(prizeCode, prizeUrl) {
+    function storePrizeWin(prizeCode, prizeUrl, prizeValue = null, prizeTier = null, prizeName = null) {
         // Get existing prize wins or initialize empty array
         let prizeWins = JSON.parse(localStorage.getItem('prizeWins') || '[]');
 
-        // Add new prize win with timestamp
+        // Add new prize win with timestamp and enhanced details
         prizeWins.push({
             prizeCode: prizeCode,
             prizeUrl: prizeUrl,
@@ -827,14 +847,20 @@ document.addEventListener('DOMContentLoaded', function() {
             claimDate: null,
             verified: false,
             status: 'Unclaimed',
-            value: null,
+            value: prizeValue || 3.00, // Default to $3 if not specified
+            tier: prizeTier || 'standard',
+            name: prizeName || 'Prize',
             paymentMethod: null,
             paymentDate: null,
-            notes: null
+            notes: null,
+            expirationDate: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString() // 12 hour expiration (reduces claim rate)
         });
 
         // Save back to localStorage
         localStorage.setItem('prizeWins', JSON.stringify(prizeWins));
+
+        // Log prize details for debugging
+        console.log(`Prize stored: ${prizeCode}, Value: $${prizeValue}, Tier: ${prizeTier}`);
     }
 
     // Function to setup engagement elements
