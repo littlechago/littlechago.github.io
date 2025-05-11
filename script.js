@@ -315,54 +315,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     } */
 
-    // Function to move QR code to random position with smooth animation
+    // Function to move QR code with a gentle floating animation
     function moveQR() {
         // Skip if we're on mobile
         if (isMobile) return;
 
-        // For desktop, we'll use a more subtle animation that doesn't move the QR code too far
-        // This creates a floating effect rather than jumping around the screen
+        // For desktop, we'll use a very subtle floating animation
+        // This creates a gentle hovering effect without changing position
 
-        // Make sure the QR container is positioned absolutely
-        qrContainer.style.position = 'absolute';
-
-        // Get the current position
-        const currentLeft = parseInt(qrContainer.style.left) || window.innerWidth / 2 - 125;
-        const currentTop = parseInt(qrContainer.style.top) || window.innerHeight / 2 - 175;
-
-        // Get the h1 element position to ensure we stay below it
-        const h1Element = document.querySelector('h1');
-        let minY = 100; // Default minimum Y position
-
-        if (h1Element) {
-            const h1Rect = h1Element.getBoundingClientRect();
-            minY = h1Rect.bottom + 20; // Stay at least 20px below the heading
-        }
-
-        // Calculate a small random movement (±30px horizontally, ±20px vertically)
-        // Less vertical movement to keep it more in the same area below the heading
-        const moveX = (Math.random() - 0.5) * 60;
-        const moveY = (Math.random() - 0.5) * 40;
-
-        // Calculate new position
-        let newX = currentLeft + moveX;
-        let newY = currentTop + moveY;
-
-        // Ensure the QR code stays within the viewport
-        const containerWidth = 250;
-        const containerHeight = 350;
-        const maxX = window.innerWidth - containerWidth;
-        const maxY = window.innerHeight - containerHeight - 60;
-        const minX = 50;
-
-        // Constrain to boundaries
-        newX = Math.max(minX, Math.min(maxX, newX));
-        newY = Math.max(minY, Math.min(maxY, newY));
+        // Apply a small random rotation and scale
+        const rotateAmount = (Math.random() - 0.5) * 2; // Very small rotation ±1 degree
+        const scaleAmount = 1 + (Math.random() * 0.02); // Scale between 1 and 1.02
 
         // Apply smooth animation
         qrContainer.style.transition = 'all 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
-        qrContainer.style.left = `${newX}px`;
-        qrContainer.style.top = `${newY}px`;
+        qrContainer.style.transform = `translate(-50%, -40%) rotate(${rotateAmount}deg) scale(${scaleAmount})`;
     }
 
     // Track QR code generation for enforcing prize rate
@@ -728,76 +695,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize QR stats from localStorage
     qrStats.init();
 
-    // Initial QR code and position
+    // Initial QR code
     changeQR();
 
-    // Set initial position for desktop
-    if (!isMobile) {
-        // Position the QR container below the "QR HUNT" heading
-        const h1Element = document.querySelector('h1');
-        if (h1Element) {
-            const h1Rect = h1Element.getBoundingClientRect();
-            const qrContainerWidth = 250; // Width of QR container
-
-            // Make sure the QR container is positioned absolutely
-            qrContainer.style.position = 'absolute';
-
-            // Center horizontally and position below the heading
-            qrContainer.style.left = `${window.innerWidth / 2 - qrContainerWidth / 2}px`;
-            qrContainer.style.top = `${h1Rect.bottom + 30}px`; // 30px gap below heading
-
-            console.log('Positioned QR code below heading at:', qrContainer.style.top);
-        } else {
-            // Fallback if h1 not found
-            qrContainer.style.position = 'absolute';
-            qrContainer.style.left = `${window.innerWidth / 2 - 125}px`;
-            qrContainer.style.top = `${window.innerHeight / 2 - 100}px`;
-        }
-    }
-
-    // Start movement after a short delay
+    // Start gentle floating animation after a short delay
     setTimeout(moveQR, 1000);
-
-    // Handle window resize to keep QR code properly positioned
-    window.addEventListener('resize', function() {
-        if (!isMobile) {
-            // Reposition QR code below heading when window is resized
-            const h1Element = document.querySelector('h1');
-            if (h1Element) {
-                const h1Rect = h1Element.getBoundingClientRect();
-                const qrContainerWidth = 250;
-
-                // Make sure the QR container is positioned absolutely
-                qrContainer.style.position = 'absolute';
-
-                // Center horizontally and position below the heading
-                qrContainer.style.transition = 'none'; // Disable transition for immediate repositioning
-                qrContainer.style.left = `${window.innerWidth / 2 - qrContainerWidth / 2}px`;
-                qrContainer.style.top = `${h1Rect.bottom + 30}px`;
-
-                // Re-enable transition after a short delay
-                setTimeout(() => {
-                    qrContainer.style.transition = 'all 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
-                }, 50);
-            }
-        }
-    });
 
     // Change QR code less frequently (every 5 seconds instead of 3)
     // This reduces the number of opportunities to win
     setInterval(changeQR, 5000);
 
-    // Move QR code continuously every 6 seconds
-    setInterval(moveQR, 6000);
+    // Apply gentle floating animation every 3 seconds
+    setInterval(moveQR, 3000);
 
     // Add hover effect to QR code
     qrContainer.addEventListener('mouseenter', function() {
-        qrContainer.style.transform = 'scale(1.1)';
+        qrContainer.style.transform = 'translate(-50%, -40%) scale(1.1)';
         qrContainer.style.filter = 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.7))';
     });
 
     qrContainer.addEventListener('mouseleave', function() {
-        qrContainer.style.transform = 'scale(1)';
+        // Return to the gentle floating animation
+        moveQR();
         qrContainer.style.filter = 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.3))';
     });
 

@@ -84,7 +84,10 @@
         }
 
         #qr-container {
-            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
             transition: all 0.5s ease-in-out;
             z-index: 5;
             padding: 20px;
@@ -496,14 +499,15 @@
             #qr-container {
                 width: 180px;
                 padding: 12px;
-                position: relative !important;
-                margin: 0 auto 20px auto;
+                position: static !important;
+                margin: 20px auto !important;
                 top: auto !important;
                 left: auto !important;
                 right: auto !important;
                 bottom: auto !important;
                 transform: none !important;
                 box-sizing: border-box;
+                display: block;
             }
 
             .qr-wrapper {
@@ -991,32 +995,33 @@
     <a href="login.html" class="login-button" id="login-button">Login</a>
     <a href="account.html" class="account-button" id="account-button" style="display: none;">My Account</a>
 
-    <!-- Mobile-friendly content container -->
+    <!-- Main content container -->
     <div class="mobile-content-container main-content">
         <h1>QR Hunt</h1>
         <p>Follow the floating QR code to discover exciting destinations!</p>
         <p class="highlight-text"><span class="highlight-span">SCAN TO WIN REAL PRIZES worth up to $100!</span></p>
+    </div>
 
-        <div id="qr-container" class="pulse-animation">
-            <!-- Urgency banner -->
-            <div class="urgency-banner">
-                <span class="countdown" id="countdown-timer">Prize changes in: 03:00</span>
-                <span class="scarcity" id="prizes-left">7 grand prizes left today!</span>
-            </div>
+    <!-- Fixed QR container that starts below the heading -->
+    <div id="qr-container" class="pulse-animation">
+        <!-- Urgency banner -->
+        <div class="urgency-banner">
+            <span class="countdown" id="countdown-timer">Prize changes in: 03:00</span>
+            <span class="scarcity" id="prizes-left">7 grand prizes left today!</span>
+        </div>
 
-            <!-- QR code with shimmer effect -->
-            <div class="qr-wrapper shimmer-effect">
-                <img id="qr-code" src="" alt="QR Code">
-            </div>
+        <!-- QR code with shimmer effect -->
+        <div class="qr-wrapper shimmer-effect">
+            <img id="qr-code" src="" alt="QR Code">
+        </div>
 
-            <div class="click-hint">Click to reveal your prize!</div>
+        <div class="click-hint">Click to reveal your prize!</div>
 
-            <!-- Social proof -->
-            <div class="social-proof">
-                <div class="winner-ticker" id="winner-ticker">
-                    <p>Try your luck with QR Hunt!</p>
-                    <p>Scan QR codes to discover prizes!</p>
-                </div>
+        <!-- Social proof -->
+        <div class="social-proof">
+            <div class="winner-ticker" id="winner-ticker">
+                <p>Try your luck with QR Hunt!</p>
+                <p>Scan QR codes to discover prizes!</p>
             </div>
         </div>
     </div>
