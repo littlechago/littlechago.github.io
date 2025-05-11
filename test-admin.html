@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .test-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Test Page</h1>
+    <p>This page is used to test if the browser is properly loading updated files.</p>
+    <p>Current timestamp: <span id="timestamp"></span></p>
+    
+    <button class="test-button" id="testBtn">Test Button</button>
+    <p id="result"></p>
+    
+    <a href="admin-prizes.html?nocache=1">Go to Admin Prizes Page</a>
+    
+    <script>
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        
+        document.getElementById('testBtn').addEventListener('click', function() {
+            document.getElementById('result').textContent = 'Button clicked at ' + new Date().toLocaleString();
+        });
+    </script>
+</body>
+</html>
