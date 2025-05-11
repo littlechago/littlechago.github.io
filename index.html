@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <!-- Force refresh with timestamp -->
     <meta name="version" content="1683142800">
+    <!-- Mobile specific meta tag -->
+    <meta name="HandheldFriendly" content="true">
 
     <!-- Primary Meta Tags -->
     <title>QR Hunt - Interactive QR Code Game with Real Prizes!</title>
@@ -427,13 +429,19 @@
                 overflow-y: auto; /* Allow scrolling on mobile */
                 height: auto;
                 min-height: 100vh;
-                padding-bottom: 80px; /* Space for footer */
+                padding-bottom: 60px; /* Space for footer */
+                padding-top: 60px; /* Space for header */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
             }
 
             h1 {
                 font-size: 2.2rem;
                 text-align: center;
-                margin-top: 70px;
+                margin-top: 0;
+                margin-bottom: 10px;
                 padding: 0 15px;
             }
 
@@ -441,6 +449,7 @@
                 font-size: 0.95rem;
                 padding: 0 20px;
                 max-width: 100%;
+                margin-bottom: 10px;
             }
 
             .highlight-text {
@@ -449,17 +458,29 @@
                 margin-bottom: 20px;
             }
 
+            /* Create a container for the main content */
+            .mobile-content-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                max-width: 100%;
+                padding: 0 10px;
+                box-sizing: border-box;
+                margin-bottom: 20px;
+            }
+
             #qr-container {
                 width: 180px;
                 padding: 12px;
                 position: relative;
-                margin: 0 auto;
+                margin: 0 auto 20px auto;
                 top: auto !important;
                 left: auto !important;
                 right: auto !important;
                 bottom: auto !important;
                 transform: none !important;
-                margin-bottom: 20px;
+                box-sizing: border-box;
             }
 
             .qr-wrapper {
@@ -532,6 +553,10 @@
             .site-footer {
                 padding: 6px 0;
                 position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 90;
             }
 
             .footer-content {
@@ -552,22 +577,37 @@
             .particle {
                 opacity: 0.3; /* Make particles more subtle on mobile */
             }
+
+            /* Adjust AdSense container for mobile */
+            .adsense-container {
+                max-width: 90%;
+                width: 90%;
+                margin: 10px auto;
+                padding: 10px;
+                box-sizing: border-box;
+            }
         }
 
         @media (max-width: 480px) {
+            body {
+                padding-top: 50px; /* Reduced padding for smaller screens */
+                font-size: 14px; /* Base font size reduction */
+            }
+
             h1 {
                 font-size: 1.8rem;
-                margin-top: 60px;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
             }
 
             p {
                 font-size: 0.85rem;
+                margin-bottom: 8px;
             }
 
             .highlight-text {
                 font-size: 0.85rem;
                 margin-bottom: 15px;
+                max-width: 95%;
             }
 
             .social-icons {
@@ -587,6 +627,7 @@
             #qr-container {
                 width: 160px;
                 padding: 10px;
+                margin-bottom: 15px;
             }
 
             .qr-wrapper {
@@ -605,7 +646,77 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                margin-top: 20px;
+                margin-top: 10px;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            /* Adjust footer for very small screens */
+            .site-footer {
+                padding: 4px 0;
+            }
+
+            .footer-content p {
+                font-size: 0.7rem;
+                margin: 3px 0;
+            }
+
+            /* Ensure AdSense container fits */
+            .adsense-container {
+                width: 95%;
+                padding: 8px;
+                margin: 8px auto;
+            }
+
+            /* Adjust buttons for very small screens */
+            .about-us-button {
+                top: 5px;
+                left: 5px;
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 360px) {
+            body {
+                padding-top: 40px;
+                font-size: 13px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            p {
+                font-size: 0.8rem;
+            }
+
+            .highlight-text {
+                font-size: 0.8rem;
+            }
+
+            #qr-container {
+                width: 150px;
+                padding: 8px;
+            }
+
+            .qr-wrapper {
+                width: 100px;
+                height: 100px;
+                padding: 5px;
+            }
+
+            img {
+                width: 100px;
+                height: 100px;
+            }
+
+            /* Ensure all content fits without scrolling horizontally */
+            .mobile-content-container,
+            .adsense-container {
+                width: 98%;
+                max-width: 98%;
             }
         }
 
@@ -797,32 +908,32 @@
 
     <a href="about.html" class="about-us-button">About QR Hunt</a>
 
+    <!-- Mobile-friendly content container -->
+    <div class="mobile-content-container">
+        <h1>QR Hunt</h1>
+        <p>Follow the floating QR code to discover exciting destinations!</p>
+        <p class="highlight-text"><span class="highlight-span">SCAN TO WIN REAL PRIZES worth up to $100!</span></p>
 
-    <h1>QR Hunt</h1>
-    <p>Follow the floating QR code to discover exciting destinations!</p>
-    <p class="highlight-text"><span class="highlight-span">SCAN TO WIN REAL PRIZES worth up to $100!</span></p>
+        <div id="qr-container" class="pulse-animation">
+            <!-- Urgency banner -->
+            <div class="urgency-banner">
+                <span class="countdown" id="countdown-timer">Prize changes in: 03:00</span>
+                <span class="scarcity" id="prizes-left">7 grand prizes left today!</span>
+            </div>
 
+            <!-- QR code with shimmer effect -->
+            <div class="qr-wrapper shimmer-effect">
+                <img id="qr-code" src="" alt="QR Code">
+            </div>
 
+            <div class="click-hint">Click to reveal your prize!</div>
 
-    <div id="qr-container" class="pulse-animation">
-        <!-- Urgency banner -->
-        <div class="urgency-banner">
-            <span class="countdown" id="countdown-timer">Prize changes in: 03:00</span>
-            <span class="scarcity" id="prizes-left">7 grand prizes left today!</span>
-        </div>
-
-        <!-- QR code with shimmer effect -->
-        <div class="qr-wrapper shimmer-effect">
-            <img id="qr-code" src="" alt="QR Code">
-        </div>
-
-        <div class="click-hint">Click to reveal your prize!</div>
-
-        <!-- Social proof -->
-        <div class="social-proof">
-            <div class="winner-ticker" id="winner-ticker">
-                <p>Try your luck with QR Hunt!</p>
-                <p>Scan QR codes to discover prizes!</p>
+            <!-- Social proof -->
+            <div class="social-proof">
+                <div class="winner-ticker" id="winner-ticker">
+                    <p>Try your luck with QR Hunt!</p>
+                    <p>Scan QR codes to discover prizes!</p>
+                </div>
             </div>
         </div>
     </div>
@@ -848,19 +959,21 @@
     </div>
 
     <!-- AdSense Ad Container -->
-    <div class="adsense-container">
-        <div class="adsense-label">Sponsored</div>
-        <div class="adsense-wrapper">
-            <!-- AdSense ad unit -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-5468169357445383"
-                 data-ad-slot="9716086761"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+    <div class="mobile-content-container">
+        <div class="adsense-container">
+            <div class="adsense-label">Sponsored</div>
+            <div class="adsense-wrapper">
+                <!-- AdSense ad unit -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5468169357445383"
+                     data-ad-slot="9716086761"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
         </div>
     </div>
 
