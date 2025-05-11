@@ -4,33 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>QR Hunt - Login</title>
-    
+
     <!-- Primary Meta Tags -->
     <meta name="title" content="QR Hunt - Login to Claim Prizes">
     <meta name="description" content="Login to your QR Hunt account to claim prizes and track your progress.">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://littlechago.github.io/login.html">
     <meta property="og:title" content="QR Hunt - Login to Claim Prizes">
     <meta property="og:description" content="Login to your QR Hunt account to claim prizes and track your progress.">
-    <meta property="og:image" content="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://littlechago.github.io/&bgcolor=764ba2&color=ffffff&margin=20">
-    
+    <meta property="og:image" content="https://screenshot-api.vercel.app/api?url=https://littlechago.github.io/qr-hunt-preview.html&width=1200&height=630&deviceScaleFactor=1">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="QR Hunt - Scan to play!">
+
     <!-- Twitter / X -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://littlechago.github.io/login.html">
     <meta property="twitter:title" content="QR Hunt - Login to Claim Prizes">
     <meta property="twitter:description" content="Login to your QR Hunt account to claim prizes and track your progress.">
-    <meta property="twitter:image" content="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://littlechago.github.io/&bgcolor=764ba2&color=ffffff&margin=20">
-    
+    <meta property="twitter:image" content="https://screenshot-api.vercel.app/api?url=https://littlechago.github.io/qr-hunt-preview.html&width=1200&height=630&deviceScaleFactor=1">
+    <meta name="twitter:image:alt" content="QR Hunt - Scan to play!">
+
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         body {
             margin: 0;
@@ -44,7 +48,7 @@
             justify-content: center;
             color: white;
         }
-        
+
         .container {
             width: 90%;
             max-width: 400px;
@@ -56,24 +60,24 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             margin: 20px;
         }
-        
+
         h1 {
             text-align: center;
             margin-bottom: 30px;
             color: #fff;
             font-size: 2rem;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
         }
-        
+
         input[type="email"],
         input[type="password"],
         input[type="text"] {
@@ -87,7 +91,7 @@
             box-sizing: border-box;
             transition: all 0.3s ease;
         }
-        
+
         input[type="email"]:focus,
         input[type="password"]:focus,
         input[type="text"]:focus {
@@ -96,7 +100,7 @@
             background-color: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 0 2px rgba(100, 210, 255, 0.3);
         }
-        
+
         button {
             width: 100%;
             padding: 12px;
@@ -110,54 +114,54 @@
             transition: all 0.3s ease;
             margin-top: 10px;
         }
-        
+
         button:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
-        
+
         .form-footer {
             text-align: center;
             margin-top: 20px;
             font-size: 0.9rem;
         }
-        
+
         .form-footer a {
             color: #64d2ff;
             text-decoration: none;
             transition: all 0.3s ease;
         }
-        
+
         .form-footer a:hover {
             text-decoration: underline;
         }
-        
+
         .form-switch {
             text-align: center;
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .error-message {
             color: #ff6b6b;
             font-size: 0.9rem;
             margin-top: 5px;
             display: none;
         }
-        
+
         .success-message {
             color: #51cf66;
             font-size: 0.9rem;
             margin-top: 5px;
             display: none;
         }
-        
+
         .form-tabs {
             display: flex;
             margin-bottom: 20px;
         }
-        
+
         .form-tab {
             flex: 1;
             text-align: center;
@@ -166,21 +170,21 @@
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
-        
+
         .form-tab.active {
             border-bottom: 2px solid #64d2ff;
             font-weight: 600;
         }
-        
+
         #register-form {
             display: none;
         }
-        
+
         .back-to-home {
             margin-top: 20px;
             text-align: center;
         }
-        
+
         .back-to-home a {
             color: white;
             text-decoration: none;
@@ -188,20 +192,20 @@
             align-items: center;
             transition: all 0.3s ease;
         }
-        
+
         .back-to-home a:hover {
             color: #64d2ff;
         }
-        
+
         .back-to-home svg {
             margin-right: 5px;
         }
-        
+
         @media (max-width: 480px) {
             .container {
                 padding: 20px;
             }
-            
+
             h1 {
                 font-size: 1.8rem;
             }
@@ -211,74 +215,74 @@
 <body>
     <div class="container">
         <h1>QR Hunt</h1>
-        
+
         <div class="form-tabs">
             <div class="form-tab active" id="login-tab">Login</div>
             <div class="form-tab" id="register-tab">Register</div>
         </div>
-        
+
         <form id="login-form">
             <div class="form-group">
                 <label for="login-email">Email</label>
                 <input type="email" id="login-email" required>
                 <div class="error-message" id="login-email-error"></div>
             </div>
-            
+
             <div class="form-group">
                 <label for="login-password">Password</label>
                 <input type="password" id="login-password" required>
                 <div class="error-message" id="login-password-error"></div>
             </div>
-            
+
             <button type="submit">Login</button>
-            
+
             <div class="form-footer">
                 <a href="#" id="forgot-password">Forgot Password?</a>
             </div>
-            
+
             <div class="error-message" id="login-error"></div>
             <div class="success-message" id="login-success"></div>
         </form>
-        
+
         <form id="register-form">
             <div class="form-group">
                 <label for="register-name">Full Name</label>
                 <input type="text" id="register-name" required>
                 <div class="error-message" id="register-name-error"></div>
             </div>
-            
+
             <div class="form-group">
                 <label for="register-email">Email</label>
                 <input type="email" id="register-email" required>
                 <div class="error-message" id="register-email-error"></div>
             </div>
-            
+
             <div class="form-group">
                 <label for="register-password">Password</label>
                 <input type="password" id="register-password" required>
                 <div class="error-message" id="register-password-error"></div>
             </div>
-            
+
             <div class="form-group">
                 <label for="register-confirm-password">Confirm Password</label>
                 <input type="password" id="register-confirm-password" required>
                 <div class="error-message" id="register-confirm-password-error"></div>
             </div>
-            
+
             <button type="submit">Register</button>
-            
+
             <div class="error-message" id="register-error"></div>
             <div class="success-message" id="register-success"></div>
         </form>
     </div>
-    
+
     <div class="back-to-home">
         <a href="index.html">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             Back to QR Hunt
         </a>
     </div>
-    
+
     <script src="auth.js"></script>
 </body>
 </html>
