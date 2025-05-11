@@ -327,9 +327,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentLeft = parseInt(qrContainer.style.left) || window.innerWidth / 2 - 125;
         const currentTop = parseInt(qrContainer.style.top) || window.innerHeight / 2 - 175;
 
-        // Calculate a small random movement (±50px)
-        const moveX = (Math.random() - 0.5) * 100;
-        const moveY = (Math.random() - 0.5) * 100;
+        // Get the h1 element position to ensure we stay below it
+        const h1Element = document.querySelector('h1');
+        let minY = 100; // Default minimum Y position
+
+        if (h1Element) {
+            const h1Rect = h1Element.getBoundingClientRect();
+            minY = h1Rect.bottom + 20; // Stay at least 20px below the heading
+        }
+
+        // Calculate a small random movement (±30px horizontally, ±20px vertically)
+        // Less vertical movement to keep it more in the same area below the heading
+        const moveX = (Math.random() - 0.5) * 60;
+        const moveY = (Math.random() - 0.5) * 40;
 
         // Calculate new position
         let newX = currentLeft + moveX;
@@ -341,7 +351,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const maxX = window.innerWidth - containerWidth;
         const maxY = window.innerHeight - containerHeight - 60;
         const minX = 50;
-        const minY = 100;
 
         // Constrain to boundaries
         newX = Math.max(minX, Math.min(maxX, newX));
@@ -721,13 +730,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set initial position for desktop
     if (!isMobile) {
-        // Center the QR container initially
-        qrContainer.style.left = `${window.innerWidth / 2 - 125}px`;
-        qrContainer.style.top = `${window.innerHeight / 2 - 100}px`;
+        // Position the QR container below the "QR HUNT" heading
+        const h1Element = document.querySelector('h1');
+        if (h1Element) {
+            const h1Rect = h1Element.getBoundingClientRect();
+            const qrContainerWidth = 250; // Width of QR container
+
+            // Center horizontally and position below the heading
+            qrContainer.style.left = `${window.innerWidth / 2 - qrContainerWidth / 2}px`;
+            qrContainer.style.top = `${h1Rect.bottom + 30}px`; // 30px gap below heading
+
+            console.log('Positioned QR code below heading at:', qrContainer.style.top);
+        } else {
+            // Fallback if h1 not found
+            qrContainer.style.left = `${window.innerWidth / 2 - 125}px`;
+            qrContainer.style.top = `${window.innerHeight / 2 - 100}px`;
+        }
     }
 
     // Start movement after a short delay
     setTimeout(moveQR, 1000);
+
+    // Handle window resize to keep QR code properly positioned
+    window.addEventListener('resize', function() {
+        if (!isMobile) {
+            // Reposition QR code below heading when window is resized
+            const h1Element = document.querySelector('h1');
+            if (h1Element) {
+                const h1Rect = h1Element.getBoundingClientRect();
+                const qrContainerWidth = 250;
+
+                // Center horizontally and position below the heading
+                qrContainer.style.transition = 'none'; // Disable transition for immediate repositioning
+                qrContainer.style.left = `${window.innerWidth / 2 - qrContainerWidth / 2}px`;
+                qrContainer.style.top = `${h1Rect.bottom + 30}px`;
+
+                // Re-enable transition after a short delay
+                setTimeout(() => {
+                    qrContainer.style.transition = 'all 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                }, 50);
+            }
+        }
+    });
 
     // Change QR code less frequently (every 5 seconds instead of 3)
     // This reduces the number of opportunities to win
