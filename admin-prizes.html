@@ -818,6 +818,43 @@
                 return hash.toString(36) + new Date().getDate();
             }
 
+            // Add a test user with a verified prize for testing payment management
+            function addTestUser() {
+                const testUser = {
+                    name: "Test User",
+                    email: "test@example.com",
+                    password: "password123",
+                    prizes: [
+                        {
+                            code: "TEST-PRIZE-123",
+                            value: 25.00,
+                            date: new Date().toISOString(),
+                            status: "Verified",
+                            message: "Your prize has been verified and is ready for payment."
+                        }
+                    ],
+                    paymentInfo: {
+                        method: "paypal",
+                        email: "test-payment@example.com",
+                        notes: "Test payment account"
+                    }
+                };
+
+                // Add the test user to localStorage
+                const users = JSON.parse(localStorage.getItem('qrHuntUsers') || '[]');
+
+                // Check if test user already exists
+                const existingUserIndex = users.findIndex(user => user.email === testUser.email);
+                if (existingUserIndex !== -1) {
+                    users[existingUserIndex] = testUser;
+                } else {
+                    users.push(testUser);
+                }
+
+                localStorage.setItem('qrHuntUsers', JSON.stringify(users));
+                console.log('Test user added:', testUser);
+            }
+
             // Function to handle login attempt
             function attemptLogin() {
                 if (passwordInput.value === ADMIN_PASSWORD) {
@@ -828,6 +865,9 @@
 
                     // Clear password field for security
                     passwordInput.value = '';
+
+                    // Add test user for payment management testing
+                    addTestUser();
 
                     showAdminPanel();
                 } else {
@@ -1182,12 +1222,16 @@
 
             // Payment Management Functions
             processPaymentsBtn.addEventListener('click', function() {
+                console.log('Process Payments button clicked');
+                alert('Loading pending payments...');
                 loadPendingPayments();
                 paymentHistorySection.classList.add('hidden');
                 paymentManagementSection.classList.remove('hidden');
             });
 
             paymentHistoryBtn.addEventListener('click', function() {
+                console.log('Payment History button clicked');
+                alert('Loading payment history...');
                 loadPaymentHistory();
                 paymentManagementSection.classList.add('hidden');
                 paymentHistorySection.classList.remove('hidden');
@@ -1195,8 +1239,12 @@
 
             // Load pending payments
             function loadPendingPayments() {
+                console.log('loadPendingPayments function called');
+
                 // Get users with verified prizes that need payment
                 const users = JSON.parse(localStorage.getItem('qrHuntUsers') || '[]');
+                console.log('Users from localStorage:', users);
+
                 const pendingPayments = [];
 
                 users.forEach(user => {
@@ -1565,9 +1613,23 @@
             // Update ad stats when the admin panel is shown
             const originalShowAdminPanel = showAdminPanel;
             showAdminPanel = function() {
+                console.log('showAdminPanel function called');
                 originalShowAdminPanel();
                 updateAdStatsDisplay();
                 checkAdSenseStatus();
+
+                // Make sure payment management buttons are properly initialized
+                console.log('Process Payments Button:', processPaymentsBtn);
+                console.log('Payment History Button:', paymentHistoryBtn);
+
+                // Add event listeners again to ensure they work
+                processPaymentsBtn.addEventListener('click', function() {
+                    console.log('Process Payments button clicked (from showAdminPanel)');
+                    alert('Loading pending payments...');
+                    loadPendingPayments();
+                    paymentHistorySection.classList.add('hidden');
+                    paymentManagementSection.classList.remove('hidden');
+                });
 
                 // Load pending payments by default
                 loadPendingPayments();
