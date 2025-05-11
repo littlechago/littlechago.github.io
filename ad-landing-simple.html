@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Hunt | One Step Away</title>
 
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="QR Hunt - Interactive QR Code Game with Real Prizes!">
+    <meta name="description" content="Play QR Hunt, the exciting interactive QR code game where you can win real prizes! Follow the floating QR codes to discover exciting destinations and rewards.">
+    <meta name="keywords" content="QR code game, win prizes, interactive game, QR Hunt, scan QR codes, online game">
+    <meta name="author" content="QR Hunt">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://littlechago.github.io/">
+    <meta property="og:title" content="QR Hunt - Interactive QR Code Game with Real Prizes!">
+    <meta property="og:description" content="Play QR Hunt, the exciting interactive QR code game where you can win real prizes! Follow the floating QR codes to discover exciting destinations and rewards.">
+    <meta property="og:image" content="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://littlechago.github.io/&bgcolor=764ba2&color=ffffff&margin=20">
+    <meta property="og:image:width" content="500">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:alt" content="QR Hunt - Scan to play!">
+
+    <!-- Twitter / X -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://littlechago.github.io/">
+    <meta property="twitter:title" content="QR Hunt - Interactive QR Code Game with Real Prizes!">
+    <meta property="twitter:description" content="Play QR Hunt, the exciting interactive QR code game where you can win real prizes! Follow the floating QR codes to discover exciting destinations and rewards.">
+    <meta property="twitter:image" content="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://littlechago.github.io/&bgcolor=764ba2&color=ffffff&margin=20">
+    <meta name="twitter:image:alt" content="QR Hunt - Scan to play!">
+
     <!-- Google AdSense script with actual publisher ID -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
 
@@ -413,6 +437,9 @@
         &copy; 2023 QR Hunt. All rights reserved.
     </footer>
 
+    <!-- Ad blocker detection -->
+    <script src="adblock-detector.js"></script>
+
     <!-- Ad stats tracking script -->
     <script src="ad-stats.js"></script>
 
@@ -427,6 +454,36 @@
 
             // Move floating QR code
             moveFloatingQR();
+
+            // Enhanced ad blocker detection specifically for ad landing page
+            setTimeout(function() {
+                // Check if ads are visible
+                const adUnits = document.querySelectorAll('.adsbygoogle');
+                let adsVisible = false;
+
+                for (let i = 0; i < adUnits.length; i++) {
+                    // Check if ad unit has content
+                    if (adUnits[i].innerHTML.trim() !== '' &&
+                        adUnits[i].offsetHeight > 10) {
+                        adsVisible = true;
+                        break;
+                    }
+                }
+
+                // If no ads are visible and adBlockDetector hasn't already shown an overlay
+                if (!adsVisible && !adBlockDetector.overlayCreated) {
+                    console.log("No ads visible, likely blocked");
+                    adBlockDetector.adBlockDetected = true;
+                    adBlockDetector.showAdBlockerOverlay();
+
+                    // Update debug info
+                    const debugInfo = document.getElementById('ad-debug-info');
+                    if (debugInfo) {
+                        debugInfo.textContent = 'Ad blocker detected - please disable to support QR Hunt';
+                        debugInfo.style.color = '#e74c3c';
+                    }
+                }
+            }, 3000);
         });
 
         // Function to create and animate falling elements

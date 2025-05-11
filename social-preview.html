@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Hunt Social Preview</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 1200px;
+            height: 630px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .qr-code {
+            width: 250px;
+            height: 250px;
+            background-color: white;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .qr-code img {
+            width: 220px;
+            height: 220px;
+        }
+        
+        .text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .hunt {
+            font-size: 120px;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+            line-height: 1;
+            text-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 36px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f94144;
+            opacity: 0.8;
+            animation: fall 4s linear infinite;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(700px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Create confetti background -->
+    <script>
+        // Create confetti pieces
+        const colors = [
+            '#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590',
+            '#FF1493', '#00FFFF', '#FFD700', '#7FFF00', '#FF00FF', '#00FF7F', '#FF4500'
+        ];
+        
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            
+            // Random position
+            const x = Math.random() * 1200;
+            confetti.style.left = `${x}px`;
+            
+            // Random delay
+            const delay = Math.random() * 4;
+            confetti.style.animationDelay = `${delay}s`;
+            
+            // Random size
+            const size = Math.floor(Math.random() * 15) + 5;
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+            
+            // Random color
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.backgroundColor = color;
+            
+            // Random rotation
+            const rotation = Math.random() * 360;
+            confetti.style.transform = `rotate(${rotation}deg)`;
+            
+            document.body.appendChild(confetti);
+        }
+    </script>
+    
+    <div class="container">
+        <div class="qr-code">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://littlechago.github.io/" alt="QR Hunt">
+        </div>
+        <div class="text">
+            <h1 class="hunt">QR HUNT</h1>
+            <p class="tagline">Scan. Play. Win Prizes!</p>
+        </div>
+    </div>
+</body>
+</html>
