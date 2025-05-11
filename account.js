@@ -1,6 +1,6 @@
 /**
  * QR Hunt Account Management
- * Handles user account, prizes, and payment information
+ * Handles user account, prizes, power-ups, and payment information
  */
 
 // DOM Elements
@@ -13,6 +13,8 @@ const tabContents = document.querySelectorAll('.tab-content');
 const paymentForm = document.getElementById('payment-form');
 const claimForm = document.getElementById('claim-form');
 const claimResult = document.getElementById('claim-result');
+const powerupsList = document.getElementById('powerups-list');
+const powerupsStore = document.getElementById('powerups-store');
 
 // Current user data
 let currentUser = null;
@@ -43,6 +45,9 @@ function initAccountPage() {
 
         // Load prizes
         loadPrizes();
+
+        // Load power-ups
+        loadPowerups();
 
         // Load payment info
         loadPaymentInfo();
@@ -270,7 +275,10 @@ function updateUserData() {
         users[userIndex] = {
             ...users[userIndex],
             paymentInfo: currentUser.paymentInfo,
-            prizes: currentUser.prizes
+            prizes: currentUser.prizes,
+            powerups: currentUser.powerups,
+            activePowerups: currentUser.activePowerups,
+            purchases: currentUser.purchases
         };
 
         localStorage.setItem('qrHuntUsers', JSON.stringify(users));
@@ -285,6 +293,245 @@ logoutButton.addEventListener('click', function() {
     // Redirect to login page
     window.location.href = 'login.html';
 });
+
+// Load user's power-ups
+function loadPowerups() {
+    // Initialize powerups if not present
+    if (!currentUser.powerups) {
+        currentUser.powerups = {
+            winBooster: 0,
+            prizeUpgrade: 0,
+            extraTime: 0
+        };
+
+        // Update in localStorage
+        updateUserData();
+    }
+
+    // Load power-up types from powerups.js
+    const powerupTypes = window.powerupTypes || {
+        winBooster: {
+            id: 'winBooster',
+            name: 'Win Booster',
+            description: '2x chance to win prizes for your next 5 scans',
+            icon: '🎯',
+            price: 2.99,
+            duration: 5,
+            effect: 'doubles your chance of winning from 0.5% to 1%'
+        },
+        prizeUpgrade: {
+            id: 'prizeUpgrade',
+            name: 'Prize Upgrade',
+            description: 'Upgrades your next prize to a higher tier',
+            icon: '⭐',
+            price: 1.99,
+            duration: 1,
+            effect: 'upgrades your next prize to the next tier up'
+        },
+        extraTime: {
+            id: 'extraTime',
+            name: 'Extra Time',
+            description: 'Extends prize claim window from 6 to 24 hours',
+            icon: '⏰',
+            price: 0.99,
+            duration: 1,
+            effect: 'gives you more time to claim your next prize'
+        }
+    };
+
+    // Display user's power-ups
+    const powerupsHTML = Object.keys(powerupTypes).map(type => {
+        const count = currentUser.powerups[type] || 0;
+        const powerup = powerupTypes[type];
+
+        return `
+            <div class="powerup-card">
+                <div class="powerup-icon">${powerup.icon}</div>
+                <div class="powerup-name">${powerup.name}</div>
+                <div class="powerup-count">You have: ${count}</div>
+                <div class="powerup-description">${powerup.description}</div>
+                <div class="powerup-action">
+                    <button class="powerup-button"
+                            data-powerup="${type}"
+                            ${count === 0 ? 'disabled' : ''}>
+                        ${count > 0 ? 'Activate' : 'None Available'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    if (powerupsList) {
+        if (Object.values(currentUser.powerups).every(count => count === 0)) {
+            powerupsList.innerHTML = `
+                <div class="empty-powerups">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <h3>No Power-ups Yet</h3>
+                    <p>Purchase power-ups below to enhance your QR Hunt experience!</p>
+                </div>
+            `;
+        } else {
+            powerupsList.innerHTML = powerupsHTML;
+
+            // Add event listeners to activate buttons
+            document.querySelectorAll('.powerup-button').forEach(button => {
+                if (!button.disabled) {
+                    button.addEventListener('click', function() {
+                        const powerupType = this.getAttribute('data-powerup');
+                        activatePowerup(powerupType);
+                    });
+                }
+            });
+        }
+    }
+
+    // Display power-up store
+    const storeHTML = Object.keys(powerupTypes).map(type => {
+        const powerup = powerupTypes[type];
+
+        return `
+            <div class="store-item" data-powerup="${type}">
+                <div class="store-item-icon">${powerup.icon}</div>
+                <div class="store-item-name">${powerup.name}</div>
+                <div class="store-item-price">$${powerup.price.toFixed(2)}</div>
+                <div class="store-item-description">${powerup.description}</div>
+                <div class="store-item-effect">Effect: ${powerup.effect}</div>
+                <div class="quantity-selector">
+                    <button class="quantity-btn minus" data-powerup="${type}">-</button>
+                    <span class="quantity-value" id="quantity-${type}">1</span>
+                    <button class="quantity-btn plus" data-powerup="${type}">+</button>
+                </div>
+                <button class="buy-button" data-powerup="${type}">Buy Now</button>
+            </div>
+        `;
+    }).join('');
+
+    if (powerupsStore) {
+        powerupsStore.innerHTML = storeHTML;
+
+        // Add event listeners to quantity buttons
+        document.querySelectorAll('.quantity-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const powerupType = this.getAttribute('data-powerup');
+                const quantityElement = document.getElementById(`quantity-${powerupType}`);
+                let quantity = parseInt(quantityElement.textContent);
+
+                if (this.classList.contains('minus')) {
+                    quantity = Math.max(1, quantity - 1);
+                } else {
+                    quantity = Math.min(10, quantity + 1);
+                }
+
+                quantityElement.textContent = quantity;
+            });
+        });
+
+        // Add event listeners to buy buttons
+        document.querySelectorAll('.buy-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const powerupType = this.getAttribute('data-powerup');
+                const quantity = parseInt(document.getElementById(`quantity-${powerupType}`).textContent);
+                purchasePowerup(powerupType, quantity);
+            });
+        });
+    }
+}
+
+// Activate a power-up
+function activatePowerup(powerupType) {
+    // Check if user has this power-up
+    if (!currentUser.powerups || currentUser.powerups[powerupType] <= 0) {
+        alert('You don\'t have any of these power-ups available.');
+        return;
+    }
+
+    // Decrement power-up count
+    currentUser.powerups[powerupType]--;
+
+    // Add to active power-ups
+    if (!currentUser.activePowerups) {
+        currentUser.activePowerups = {};
+    }
+
+    // Get power-up details
+    const powerupTypes = window.powerupTypes || {
+        winBooster: { duration: 5 },
+        prizeUpgrade: { duration: 1 },
+        extraTime: { duration: 1 }
+    };
+
+    currentUser.activePowerups[powerupType] = {
+        activatedAt: new Date().toISOString(),
+        remainingUses: powerupTypes[powerupType].duration
+    };
+
+    // Update user data
+    updateUserData();
+
+    // Show success message
+    alert(`${powerupType === 'winBooster' ? 'Win Booster' :
+           powerupType === 'prizeUpgrade' ? 'Prize Upgrade' :
+           'Extra Time'} activated successfully!`);
+
+    // Reload power-ups display
+    loadPowerups();
+}
+
+// Purchase a power-up
+function purchasePowerup(powerupType, quantity) {
+    // Get power-up details
+    const powerupTypes = window.powerupTypes || {
+        winBooster: { name: 'Win Booster', price: 2.99 },
+        prizeUpgrade: { name: 'Prize Upgrade', price: 1.99 },
+        extraTime: { name: 'Extra Time', price: 0.99 }
+    };
+
+    const powerup = powerupTypes[powerupType];
+    const totalPrice = (powerup.price * quantity).toFixed(2);
+
+    // Confirm purchase
+    if (confirm(`Are you sure you want to purchase ${quantity} ${powerup.name}${quantity > 1 ? 's' : ''} for $${totalPrice}?`)) {
+        // In a real app, we would process payment here
+        // For this demo, we'll just add the power-up to the user's account
+
+        // Initialize powerups object if it doesn't exist
+        if (!currentUser.powerups) {
+            currentUser.powerups = {
+                winBooster: 0,
+                prizeUpgrade: 0,
+                extraTime: 0
+            };
+        }
+
+        // Add power-up to user's account
+        currentUser.powerups[powerupType] = (currentUser.powerups[powerupType] || 0) + quantity;
+
+        // Add purchase to user's purchase history
+        if (!currentUser.purchases) {
+            currentUser.purchases = [];
+        }
+
+        currentUser.purchases.push({
+            type: powerupType,
+            quantity: quantity,
+            price: powerup.price * quantity,
+            date: new Date().toISOString()
+        });
+
+        // Update user data
+        updateUserData();
+
+        // Show success message
+        alert(`Successfully purchased ${quantity} ${powerup.name}${quantity > 1 ? 's' : ''}!`);
+
+        // Reload power-ups display
+        loadPowerups();
+    }
+}
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', initAccountPage);

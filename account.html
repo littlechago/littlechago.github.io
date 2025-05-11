@@ -320,6 +320,209 @@
             margin-top: auto;
         }
 
+        /* Power-ups styles */
+        .powerups-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .powerup-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .powerup-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .powerup-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .powerup-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #64d2ff;
+        }
+
+        .powerup-count {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .powerup-description {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+        }
+
+        .powerup-action {
+            margin-top: auto;
+        }
+
+        .powerup-button {
+            background: linear-gradient(to right, #3a9bd9, #64d2ff);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .powerup-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .powerup-button:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .powerups-store {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .store-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .store-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .store-item-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .store-item-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #ffd280;
+        }
+
+        .store-item-price {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #64d2ff;
+            font-weight: 600;
+        }
+
+        .store-item-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+
+        .store-item-effect {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .buy-button {
+            background: linear-gradient(to right, #764ba2, #667eea);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        .quantity-btn {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .quantity-value {
+            margin: 0 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .empty-powerups {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .empty-powerups svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
         @media (max-width: 768px) {
             .container {
                 width: 95%;
@@ -341,6 +544,26 @@
             .tab {
                 padding: 10px;
                 font-size: 0.9rem;
+            }
+
+            .powerups-container,
+            .powerups-store {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+
+            .store-item-icon,
+            .powerup-icon {
+                font-size: 2rem;
+            }
+
+            .store-item-name {
+                font-size: 1rem;
+            }
+
+            .store-item-description,
+            .powerup-description {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -364,6 +587,7 @@
 
             <div class="tabs">
                 <div class="tab active" data-tab="prizes">My Prizes</div>
+                <div class="tab" data-tab="powerups">Power-ups</div>
                 <div class="tab" data-tab="payment">Payment Info</div>
                 <div class="tab" data-tab="claim">Claim Prize</div>
             </div>
@@ -377,6 +601,24 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
                     <h3>No Prizes Yet</h3>
                     <p>Keep scanning QR codes for a chance to win!</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="powerups-tab">
+                <div style="margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 15px;">My Power-ups</h3>
+                    <div id="powerups-list" class="powerups-container">
+                        <!-- Power-ups will be populated by JavaScript -->
+                        <p>Loading your power-ups...</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 15px;">Purchase Power-ups</h3>
+                    <div id="powerups-store" class="powerups-store">
+                        <!-- Power-up store items will be populated by JavaScript -->
+                        <p>Loading store items...</p>
+                    </div>
                 </div>
             </div>
 
@@ -433,6 +675,7 @@
         &copy; 2024 QR Hunt. All rights reserved.
     </footer>
 
+    <script src="powerups.js"></script>
     <script src="account.js"></script>
 </body>
 </html>

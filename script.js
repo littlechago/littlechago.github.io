@@ -420,8 +420,44 @@ document.addEventListener('DOMContentLoaded', function() {
         qrImage.style.opacity = 0;
 
         setTimeout(() => {
+            // Check for active power-ups
+            let modifiedQrStats = { ...qrStats };
+
+            // Get current user
+            const currentUser = JSON.parse(sessionStorage.getItem('qrHuntCurrentUser') || 'null');
+
+            if (currentUser && currentUser.loggedIn) {
+                // Get full user data from localStorage
+                const users = JSON.parse(localStorage.getItem('qrHuntUsers') || '[]');
+                const user = users.find(u => u.email === currentUser.email);
+
+                if (user && user.activePowerups) {
+                    // Apply power-up effects
+                    if (typeof window.applyPowerupEffects === 'function') {
+                        modifiedQrStats = window.applyPowerupEffects(qrStats);
+                        console.log('Applied power-up effects:', modifiedQrStats.targetPrizeRate);
+                    } else if (user.activePowerups.winBooster && user.activePowerups.winBooster.remainingUses > 0) {
+                        // Fallback if powerups.js is not loaded
+                        modifiedQrStats.targetPrizeRate = qrStats.targetPrizeRate * 2;
+
+                        // Decrement remaining uses
+                        user.activePowerups.winBooster.remainingUses--;
+
+                        // Remove if used up
+                        if (user.activePowerups.winBooster.remainingUses <= 0) {
+                            delete user.activePowerups.winBooster;
+                        }
+
+                        // Update user in localStorage
+                        const userIndex = users.findIndex(u => u.email === currentUser.email);
+                        users[userIndex] = user;
+                        localStorage.setItem('qrHuntUsers', JSON.stringify(users));
+                    }
+                }
+            }
+
             // Use the tracking system to determine if this should be a prize
-            const isPrize = qrStats.shouldGeneratePrize();
+            const isPrize = modifiedQrStats.shouldGeneratePrize();
 
             // If it's a prize, increment the prize counter
             if (isPrize) {
@@ -549,9 +585,25 @@ document.addEventListener('DOMContentLoaded', function() {
         message.style.fontSize = '1.1rem';
         message.style.marginBottom = '10px';
 
+        // Check if user has Extra Time power-up active
+        let expirationHours = 6; // Default
+
+        // Get current user
+        const currentUser = JSON.parse(sessionStorage.getItem('qrHuntCurrentUser') || 'null');
+
+        if (currentUser && currentUser.loggedIn) {
+            // Get full user data from localStorage
+            const users = JSON.parse(localStorage.getItem('qrHuntUsers') || '[]');
+            const user = users.find(u => u.email === currentUser.email);
+
+            if (user && user.activePowerups && user.activePowerups.extraTime && user.activePowerups.extraTime.remainingUses > 0) {
+                expirationHours = 24; // Extended with power-up
+            }
+        }
+
         // Create expiration message
         const expirationMessage = document.createElement('p');
-        expirationMessage.textContent = 'This code expires in 6 hours. Claim it now!';
+        expirationMessage.textContent = `This code expires in ${expirationHours} hours. Claim it now!`;
         expirationMessage.style.color = '#ff5e57';
         expirationMessage.style.fontSize = '0.9rem';
         expirationMessage.style.marginBottom = '20px';
@@ -838,6 +890,72 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get existing prize wins or initialize empty array
         let prizeWins = JSON.parse(localStorage.getItem('prizeWins') || '[]');
 
+        // Check for active power-ups
+        let expirationHours = 6; // Default expiration time
+        let upgradedTier = prizeTier;
+        let upgradedValue = prizeValue;
+
+        // Get current user
+        const currentUser = JSON.parse(sessionStorage.getItem('qrHuntCurrentUser') || 'null');
+
+        if (currentUser && currentUser.loggedIn) {
+            // Get full user data from localStorage
+            const users = JSON.parse(localStorage.getItem('qrHuntUsers') || '[]');
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+
+            if (userIndex !== -1) {
+                const user = users[userIndex];
+
+                if (user.activePowerups) {
+                    // Check for Extra Time power-up
+                    if (user.activePowerups.extraTime && user.activePowerups.extraTime.remainingUses > 0) {
+                        expirationHours = 24; // Extended expiration time
+                        console.log('Applied Extra Time power-up: Extended expiration to 24 hours');
+
+                        // Decrement remaining uses
+                        user.activePowerups.extraTime.remainingUses--;
+
+                        // Remove if used up
+                        if (user.activePowerups.extraTime.remainingUses <= 0) {
+                            delete user.activePowerups.extraTime;
+                        }
+                    }
+
+                    // Check for Prize Upgrade power-up
+                    if (user.activePowerups.prizeUpgrade && user.activePowerups.prizeUpgrade.remainingUses > 0) {
+                        // Upgrade the prize tier and value
+                        if (prizeTier === 'micro') {
+                            upgradedTier = 'small';
+                            upgradedValue = 2.00;
+                        } else if (prizeTier === 'small') {
+                            upgradedTier = 'medium';
+                            upgradedValue = 5.00;
+                        } else if (prizeTier === 'medium') {
+                            upgradedTier = 'grand';
+                            upgradedValue = 10.00;
+                        } else {
+                            // Already at grand tier, increase value by 50%
+                            upgradedValue = prizeValue * 1.5;
+                        }
+
+                        console.log(`Applied Prize Upgrade power-up: Upgraded from ${prizeTier} ($${prizeValue}) to ${upgradedTier} ($${upgradedValue})`);
+
+                        // Decrement remaining uses
+                        user.activePowerups.prizeUpgrade.remainingUses--;
+
+                        // Remove if used up
+                        if (user.activePowerups.prizeUpgrade.remainingUses <= 0) {
+                            delete user.activePowerups.prizeUpgrade;
+                        }
+                    }
+
+                    // Update user in localStorage if power-ups were used
+                    users[userIndex] = user;
+                    localStorage.setItem('qrHuntUsers', JSON.stringify(users));
+                }
+            }
+        }
+
         // Add new prize win with timestamp and enhanced details
         prizeWins.push({
             prizeCode: prizeCode,
@@ -848,20 +966,20 @@ document.addEventListener('DOMContentLoaded', function() {
             claimDate: null,
             verified: false,
             status: 'Unclaimed',
-            value: prizeValue || 3.00, // Default to $3 if not specified
-            tier: prizeTier || 'standard',
+            value: upgradedValue || prizeValue || 3.00, // Use upgraded value if available
+            tier: upgradedTier || prizeTier || 'standard',
             name: prizeName || 'Prize',
             paymentMethod: null,
             paymentDate: null,
             notes: null,
-            expirationDate: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString() // 6 hour expiration (significantly reduces claim rate)
+            expirationDate: new Date(Date.now() + expirationHours * 60 * 60 * 1000).toISOString() // Dynamic expiration time
         });
 
         // Save back to localStorage
         localStorage.setItem('prizeWins', JSON.stringify(prizeWins));
 
         // Log prize details for debugging
-        console.log(`Prize stored: ${prizeCode}, Value: $${prizeValue}, Tier: ${prizeTier}`);
+        console.log(`Prize stored: ${prizeCode}, Value: $${upgradedValue || prizeValue}, Tier: ${upgradedTier || prizeTier}`);
     }
 
     // Function to setup engagement elements

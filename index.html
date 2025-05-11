@@ -909,6 +909,45 @@
             min-height: 90px;
         }
 
+        /* Login and Account Buttons */
+        .login-button, .account-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-button:hover, .account-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .about-us-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+
+        .about-us-button:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
         /* Responsive adjustments for AdSense container */
         @media (max-width: 768px) {
             .adsense-container {
@@ -1009,7 +1048,10 @@
     <!-- Prize tiers system - load before script.js -->
     <script src="prize-tiers.js"></script>
 
-    <script src="script.js?v=4.2"></script>
+    <!-- Power-ups system - load before script.js -->
+    <script src="powerups.js"></script>
+
+    <script src="script.js?v=4.3"></script>
     <script src="cookie-consent.js"></script>
 
     <!-- Ad blocker detection -->
