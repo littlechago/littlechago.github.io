@@ -344,6 +344,70 @@ document.addEventListener('DOMContentLoaded', function() {
         qrContainer.style.top = `${randomY}px`;
     }
 
+    // Track QR code generation for enforcing prize rate
+    const qrStats = {
+        totalGenerated: 0,
+        prizesGenerated: 0,
+        targetPrizeRate: 0.03, // 3% prize rate (97% ad rate)
+
+        // Initialize from localStorage if available
+        init: function() {
+            const savedStats = localStorage.getItem('qrHuntStats');
+            if (savedStats) {
+                try {
+                    const parsed = JSON.parse(savedStats);
+                    this.totalGenerated = parsed.totalGenerated || 0;
+                    this.prizesGenerated = parsed.prizesGenerated || 0;
+                    console.log('Loaded QR stats from localStorage:', this);
+                } catch (e) {
+                    console.error('Error loading QR stats:', e);
+                }
+            }
+        },
+
+        // Save stats to localStorage
+        save: function() {
+            localStorage.setItem('qrHuntStats', JSON.stringify({
+                totalGenerated: this.totalGenerated,
+                prizesGenerated: this.prizesGenerated,
+                lastUpdated: new Date().toISOString()
+            }));
+        },
+
+        // Calculate current prize rate
+        getCurrentPrizeRate: function() {
+            if (this.totalGenerated === 0) return 0;
+            return this.prizesGenerated / this.totalGenerated;
+        },
+
+        // Determine if next QR should be a prize based on maintaining target rate
+        shouldGeneratePrize: function() {
+            // Always increment total
+            this.totalGenerated++;
+
+            // If we haven't generated any QRs yet, use random chance
+            if (this.totalGenerated <= 10) {
+                return Math.random() < this.targetPrizeRate;
+            }
+
+            // Calculate current prize rate
+            const currentRate = this.getCurrentPrizeRate();
+
+            // If current rate is higher than target, force an ad
+            if (currentRate > this.targetPrizeRate) {
+                return false;
+            }
+
+            // If current rate is much lower than target, increase chance of prize
+            if (currentRate < (this.targetPrizeRate * 0.5)) {
+                return Math.random() < (this.targetPrizeRate * 1.5);
+            }
+
+            // Otherwise use standard random chance
+            return Math.random() < this.targetPrizeRate;
+        }
+    };
+
     // Function to change QR code with fade effect
     function changeQR() {
         // Fade out
@@ -351,8 +415,19 @@ document.addEventListener('DOMContentLoaded', function() {
         qrImage.style.opacity = 0;
 
         setTimeout(() => {
-            // Determine if this is a prize (3% chance) or ad (97% chance)
-            const isPrize = Math.random() < 0.03;
+            // Use the tracking system to determine if this should be a prize
+            const isPrize = qrStats.shouldGeneratePrize();
+
+            // If it's a prize, increment the prize counter
+            if (isPrize) {
+                qrStats.prizesGenerated++;
+            }
+
+            // Save stats to localStorage
+            qrStats.save();
+
+            // Log current stats to console for debugging
+            console.log(`QR Stats: Total: ${qrStats.totalGenerated}, Prizes: ${qrStats.prizesGenerated}, Rate: ${(qrStats.getCurrentPrizeRate() * 100).toFixed(2)}%`);
 
             let currentUrl;
             if (isPrize) {
@@ -501,7 +576,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         claimButton.addEventListener('click', function() {
-            window.open('claim-prize.html', '_blank');
+            // Check if user is logged in
+            const currentUser = JSON.parse(sessionStorage.getItem('qrHuntCurrentUser') || 'null');
+
+            if (currentUser && currentUser.loggedIn) {
+                // User is logged in, redirect to account page with prize code
+                window.open(`account.html?claim=${prizeCode}`, '_blank');
+            } else {
+                // User is not logged in, redirect to login page with redirect to account page
+                window.open(`login.html?redirect=account.html&claim=${prizeCode}`, '_blank');
+            }
+
             modal.remove();
         });
 
@@ -551,15 +636,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add cursor style to indicate it's clickable
     qrContainer.style.cursor = 'pointer';
 
+    // Initialize QR stats from localStorage
+    qrStats.init();
+
     // Initial QR code and position
     changeQR();
     moveQR();
 
-    // Change QR code every 3 seconds
-    setInterval(changeQR, 3000);
+    // Change QR code less frequently (every 5 seconds instead of 3)
+    // This reduces the number of opportunities to win
+    setInterval(changeQR, 5000);
 
-    // Move QR code continuously every 4 seconds
-    setInterval(moveQR, 4000);
+    // Move QR code continuously every 6 seconds
+    setInterval(moveQR, 6000);
 
     // Add hover effect to QR code
     qrContainer.addEventListener('mouseenter', function() {
@@ -733,7 +822,15 @@ document.addEventListener('DOMContentLoaded', function() {
             prizeCode: prizeCode,
             prizeUrl: prizeUrl,
             timestamp: new Date().toISOString(),
-            claimed: false
+            claimed: false,
+            claimedBy: null,
+            claimDate: null,
+            verified: false,
+            status: 'Unclaimed',
+            value: null,
+            paymentMethod: null,
+            paymentDate: null,
+            notes: null
         });
 
         // Save back to localStorage

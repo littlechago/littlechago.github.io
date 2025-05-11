@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QR Hunt - My Account</title>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="QR Hunt - My Account">
+    <meta name="description" content="Manage your QR Hunt account, view your prizes, and update your payment information.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://littlechago.github.io/account.html">
+    <meta property="og:title" content="QR Hunt - My Account">
+    <meta property="og:description" content="Manage your QR Hunt account, view your prizes, and update your payment information.">
+    <meta property="og:image" content="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://littlechago.github.io/&bgcolor=764ba2&color=ffffff&margin=20">
+    
+    <!-- Twitter / X -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://littlechago.github.io/account.html">
+    <meta property="twitter:title" content="QR Hunt - My Account">
+    <meta property="twitter:description" content="Manage your QR Hunt account, view your prizes, and update your payment information.">
+    <meta property="twitter:image" content="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://littlechago.github.io/&bgcolor=764ba2&color=ffffff&margin=20">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .header {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            flex: 1;
+        }
+        
+        .account-card {
+            background-color: rgba(30, 30, 40, 0.85);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .account-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-info {
+            margin-bottom: 20px;
+        }
+        
+        .user-info p {
+            margin: 5px 0;
+        }
+        
+        .user-info strong {
+            color: #64d2ff;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background-color: rgba(100, 210, 255, 0.2);
+            color: #64d2ff;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .prize-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .prize-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .prize-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .prize-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .prize-title {
+            font-weight: 600;
+            color: #ffd280;
+        }
+        
+        .prize-date {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .prize-code {
+            font-family: monospace;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        
+        .prize-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        
+        .status-verified {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        
+        .status-claimed {
+            background-color: rgba(23, 162, 184, 0.2);
+            color: #17a2b8;
+        }
+        
+        .status-rejected {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #64d2ff;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(100, 210, 255, 0.3);
+        }
+        
+        button {
+            padding: 12px 25px;
+            border-radius: 30px;
+            border: none;
+            background: linear-gradient(to right, #3a9bd9, #64d2ff);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .empty-state svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .empty-state p {
+            margin: 10px 0 0 0;
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .back-to-home a {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-home a:hover {
+            color: #64d2ff;
+        }
+        
+        .back-to-home svg {
+            margin-right: 5px;
+        }
+        
+        footer {
+            background-color: rgba(0, 0, 0, 0.3);
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
+            .account-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .account-header h2 {
+                margin-bottom: 10px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>QR Hunt</h1>
+    </div>
+    
+    <div class="container">
+        <div class="account-card">
+            <div class="account-header">
+                <h2>My Account</h2>
+                <button class="logout-btn" id="logout-btn">Logout</button>
+            </div>
+            
+            <div class="user-info" id="user-info">
+                <!-- User info will be populated by JavaScript -->
+                <p>Loading user information...</p>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="prizes">My Prizes</div>
+                <div class="tab" data-tab="payment">Payment Info</div>
+                <div class="tab" data-tab="claim">Claim Prize</div>
+            </div>
+            
+            <div class="tab-content active" id="prizes-tab">
+                <ul class="prize-list" id="prize-list">
+                    <!-- Prize list will be populated by JavaScript -->
+                </ul>
+                
+                <div class="empty-state" id="no-prizes" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                    <h3>No Prizes Yet</h3>
+                    <p>Keep scanning QR codes for a chance to win!</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="payment-tab">
+                <form id="payment-form">
+                    <div class="form-group">
+                        <label for="payment-method">Preferred Payment Method</label>
+                        <select id="payment-method" required>
+                            <option value="">Select a payment method</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="venmo">Venmo</option>
+                            <option value="cashapp">Cash App</option>
+                            <option value="bank">Bank Transfer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="payment-email">Payment Email/Username</label>
+                        <input type="email" id="payment-email" placeholder="Email or username for selected payment method" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="payment-notes">Additional Notes (Optional)</label>
+                        <input type="text" id="payment-notes" placeholder="Any additional information needed for payment">
+                    </div>
+                    
+                    <button type="submit">Save Payment Information</button>
+                </form>
+            </div>
+            
+            <div class="tab-content" id="claim-tab">
+                <form id="claim-form">
+                    <div class="form-group">
+                        <label for="prize-code">Enter Prize Code</label>
+                        <input type="text" id="prize-code" placeholder="Enter your prize code (e.g., QR-ABCD1234-XYZ1A)" required>
+                    </div>
+                    
+                    <button type="submit">Verify & Claim Prize</button>
+                </form>
+                
+                <div id="claim-result" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="back-to-home">
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Back to QR Hunt
+        </a>
+    </div>
+    
+    <footer>
+        &copy; 2024 QR Hunt. All rights reserved.
+    </footer>
+    
+    <script src="account.js"></script>
+</body>
+</html>

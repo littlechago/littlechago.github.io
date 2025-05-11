@@ -299,10 +299,8 @@
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .about-us-button {
+        .about-us-button, .login-button, .account-button {
             position: fixed;
-            top: 20px;
-            left: 20px;
             background: linear-gradient(to right, #764ba2, #667eea);
             color: white;
             text-decoration: none;
@@ -315,7 +313,17 @@
             font-size: 0.9rem;
         }
 
-        .about-us-button:hover {
+        .about-us-button {
+            top: 20px;
+            left: 20px;
+        }
+
+        .login-button, .account-button {
+            top: 20px;
+            right: 20px;
+        }
+
+        .about-us-button:hover, .login-button:hover, .account-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
@@ -536,6 +544,15 @@
                 position: fixed;
                 top: 10px;
                 left: 10px;
+                padding: 5px 10px;
+                font-size: 0.75rem;
+                z-index: 95;
+            }
+
+            .login-button, .account-button {
+                position: fixed;
+                top: 10px;
+                right: 10px;
                 padding: 5px 10px;
                 font-size: 0.75rem;
                 z-index: 95;
@@ -907,6 +924,8 @@
     <div id="money-qr-scene"></div>
 
     <a href="about.html" class="about-us-button">About QR Hunt</a>
+    <a href="login.html" class="login-button" id="login-button">Login</a>
+    <a href="account.html" class="account-button" id="account-button" style="display: none;">My Account</a>
 
     <!-- Mobile-friendly content container -->
     <div class="mobile-content-container">
@@ -1001,6 +1020,23 @@
             // Track the ad view
             if (typeof trackAdView === 'function') {
                 trackAdView();
+            }
+
+            // Check login status and update buttons
+            const loginButton = document.getElementById('login-button');
+            const accountButton = document.getElementById('account-button');
+
+            // Check if user is logged in
+            const currentUser = JSON.parse(sessionStorage.getItem('qrHuntCurrentUser') || 'null');
+
+            if (currentUser && currentUser.loggedIn) {
+                // User is logged in, show account button and hide login button
+                loginButton.style.display = 'none';
+                accountButton.style.display = 'block';
+            } else {
+                // User is not logged in, show login button and hide account button
+                loginButton.style.display = 'block';
+                accountButton.style.display = 'none';
             }
         });
     </script>
