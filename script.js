@@ -323,6 +323,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // For desktop, we'll use a more subtle animation that doesn't move the QR code too far
         // This creates a floating effect rather than jumping around the screen
 
+        // Make sure the QR container is positioned absolutely
+        qrContainer.style.position = 'absolute';
+
         // Get the current position
         const currentLeft = parseInt(qrContainer.style.left) || window.innerWidth / 2 - 125;
         const currentTop = parseInt(qrContainer.style.top) || window.innerHeight / 2 - 175;
@@ -736,6 +739,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const h1Rect = h1Element.getBoundingClientRect();
             const qrContainerWidth = 250; // Width of QR container
 
+            // Make sure the QR container is positioned absolutely
+            qrContainer.style.position = 'absolute';
+
             // Center horizontally and position below the heading
             qrContainer.style.left = `${window.innerWidth / 2 - qrContainerWidth / 2}px`;
             qrContainer.style.top = `${h1Rect.bottom + 30}px`; // 30px gap below heading
@@ -743,6 +749,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Positioned QR code below heading at:', qrContainer.style.top);
         } else {
             // Fallback if h1 not found
+            qrContainer.style.position = 'absolute';
             qrContainer.style.left = `${window.innerWidth / 2 - 125}px`;
             qrContainer.style.top = `${window.innerHeight / 2 - 100}px`;
         }
@@ -759,6 +766,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (h1Element) {
                 const h1Rect = h1Element.getBoundingClientRect();
                 const qrContainerWidth = 250;
+
+                // Make sure the QR container is positioned absolutely
+                qrContainer.style.position = 'absolute';
 
                 // Center horizontally and position below the heading
                 qrContainer.style.transition = 'none'; // Disable transition for immediate repositioning

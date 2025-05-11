@@ -84,7 +84,7 @@
         }
 
         #qr-container {
-            position: relative;
+            position: absolute;
             transition: all 0.5s ease-in-out;
             z-index: 5;
             padding: 20px;
@@ -94,7 +94,6 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             width: 250px;
             backdrop-filter: blur(5px);
-            margin: 0 auto 20px auto;
         }
 
         /* Subtle hover effect instead of pulse */
@@ -497,7 +496,7 @@
             #qr-container {
                 width: 180px;
                 padding: 12px;
-                position: relative;
+                position: relative !important;
                 margin: 0 auto 20px auto;
                 top: auto !important;
                 left: auto !important;
