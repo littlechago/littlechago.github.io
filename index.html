@@ -61,6 +61,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         h1 {
@@ -481,6 +482,16 @@
                 box-sizing: border-box;
                 margin-bottom: 20px;
                 text-align: center;
+                position: relative;
+            }
+
+            /* Main content container on mobile */
+            .main-content {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                padding-top: 20px;
             }
 
             #qr-container {
@@ -914,6 +925,16 @@
             min-height: 90px;
         }
 
+        /* Main content container */
+        .main-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 800px;
+        }
+
         /* Login and Account Buttons */
         .login-button, .account-button {
             position: absolute;
@@ -972,7 +993,7 @@
     <a href="account.html" class="account-button" id="account-button" style="display: none;">My Account</a>
 
     <!-- Mobile-friendly content container -->
-    <div class="mobile-content-container">
+    <div class="mobile-content-container main-content">
         <h1>QR Hunt</h1>
         <p>Follow the floating QR code to discover exciting destinations!</p>
         <p class="highlight-text"><span class="highlight-span">SCAN TO WIN REAL PRIZES worth up to $100!</span></p>
