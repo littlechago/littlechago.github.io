@@ -85,9 +85,9 @@
 
         #qr-container {
             position: fixed;
-            top: 50%;
+            top: 40%;
             left: 50%;
-            transform: translate(-50%, -40%);
+            transform: translate(-50%, -20%);
             transition: all 0.5s ease-in-out;
             z-index: 5;
             padding: 20px;
@@ -931,7 +931,7 @@
         /* Main content container */
         .main-content {
             position: absolute;
-            top: 50%;
+            top: 20%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
@@ -1046,9 +1046,9 @@
         </div>
     </div>
 
-    <!-- AdSense Ad Container -->
-    <div class="mobile-content-container">
-        <div class="adsense-container">
+    <!-- AdSense Ad Container - Moved to bottom of page to avoid covering QR code -->
+    <div class="mobile-content-container" style="position: fixed; bottom: 60px; width: 100%; z-index: 1;">
+        <div class="adsense-container" style="max-width: 320px; margin: 0 auto;">
             <div class="adsense-label">Sponsored</div>
             <div class="adsense-wrapper">
                 <!-- AdSense ad unit -->

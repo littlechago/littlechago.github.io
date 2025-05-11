@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Apply smooth animation
         qrContainer.style.transition = 'all 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
-        qrContainer.style.transform = `translate(-50%, -40%) rotate(${rotateAmount}deg) scale(${scaleAmount})`;
+        qrContainer.style.transform = `translate(-50%, -20%) rotate(${rotateAmount}deg) scale(${scaleAmount})`;
     }
 
     // Track QR code generation for enforcing prize rate
@@ -710,7 +710,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add hover effect to QR code
     qrContainer.addEventListener('mouseenter', function() {
-        qrContainer.style.transform = 'translate(-50%, -40%) scale(1.1)';
+        qrContainer.style.transform = 'translate(-50%, -20%) scale(1.1)';
         qrContainer.style.filter = 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.7))';
     });
 
