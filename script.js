@@ -320,33 +320,37 @@ document.addEventListener('DOMContentLoaded', function() {
         // Skip if we're on mobile
         if (isMobile) return;
 
-        // Get container dimensions
-        const containerWidth = 250; // Width of QR container
-        const containerHeight = 350; // Approximate height of QR container
+        // For desktop, we'll use a more subtle animation that doesn't move the QR code too far
+        // This creates a floating effect rather than jumping around the screen
 
-        // Calculate safe boundaries
+        // Get the current position
+        const currentLeft = parseInt(qrContainer.style.left) || window.innerWidth / 2 - 125;
+        const currentTop = parseInt(qrContainer.style.top) || window.innerHeight / 2 - 175;
+
+        // Calculate a small random movement (±50px)
+        const moveX = (Math.random() - 0.5) * 100;
+        const moveY = (Math.random() - 0.5) * 100;
+
+        // Calculate new position
+        let newX = currentLeft + moveX;
+        let newY = currentTop + moveY;
+
+        // Ensure the QR code stays within the viewport
+        const containerWidth = 250;
+        const containerHeight = 350;
         const maxX = window.innerWidth - containerWidth;
         const maxY = window.innerHeight - containerHeight - 60;
-        const minY = 100; // Keep some distance from the top
+        const minX = 50;
+        const minY = 100;
 
-        // Avoid center area where text is
-        let randomX, randomY;
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
+        // Constrain to boundaries
+        newX = Math.max(minX, Math.min(maxX, newX));
+        newY = Math.max(minY, Math.min(maxY, newY));
 
-        // Keep trying until we get a position that's not in the center
-        do {
-            randomX = Math.floor(Math.random() * maxX);
-            randomY = Math.floor(Math.random() * (maxY - minY)) + minY;
-        } while (
-            Math.abs(randomX - centerX) < 200 &&
-            Math.abs(randomY - centerY) < 200
-        );
-
-        // Apply easing for smoother animation
+        // Apply smooth animation
         qrContainer.style.transition = 'all 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
-        qrContainer.style.left = `${randomX}px`;
-        qrContainer.style.top = `${randomY}px`;
+        qrContainer.style.left = `${newX}px`;
+        qrContainer.style.top = `${newY}px`;
     }
 
     // Track QR code generation for enforcing prize rate
@@ -714,7 +718,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial QR code and position
     changeQR();
-    moveQR();
+
+    // Set initial position for desktop
+    if (!isMobile) {
+        // Center the QR container initially
+        qrContainer.style.left = `${window.innerWidth / 2 - 125}px`;
+        qrContainer.style.top = `${window.innerHeight / 2 - 100}px`;
+    }
+
+    // Start movement after a short delay
+    setTimeout(moveQR, 1000);
 
     // Change QR code less frequently (every 5 seconds instead of 3)
     // This reduces the number of opportunities to win
