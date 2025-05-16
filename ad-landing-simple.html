@@ -379,6 +379,18 @@
                         <li>Check your AdSense account status</li>
                         <li>Ensure your AdSense account is fully approved</li>
                     </ol>
+                    <p><a href="#" id="manual-override" style="color: #64d2ff; text-decoration: underline; cursor: pointer;">Having trouble with ad blocker detection?</a></p>
+                    <script>
+                        document.getElementById('manual-override').addEventListener('click', function(e) {
+                            e.preventDefault();
+                            if (confirm("This will override the ad blocker detection. Please confirm that you have disabled your ad blocker to support QR Hunt.")) {
+                                localStorage.setItem('adBlockerMessageDismissed', 'true');
+                                localStorage.setItem('adBlockerVerifiedDisabled', 'true');
+                                alert("Thank you! The ad blocker message will no longer appear. Please refresh the page.");
+                                window.location.reload();
+                            }
+                        });
+                    </script>
                 </div>
             </div>
 
@@ -502,8 +514,8 @@
         &copy; 2023 QR Hunt. All rights reserved.
     </footer>
 
-    <!-- Ad blocker detection -->
-    <script src="adblock-detector.js"></script>
+    <!-- Final ad blocker detection - only dismissible when actually disabled -->
+    <script src="adblock-detector-final.js?v=1.0"></script>
 
     <!-- Ad stats tracking script -->
     <script src="ad-stats.js"></script>
@@ -520,35 +532,29 @@
             // Move floating QR code
             moveFloatingQR();
 
-            // Enhanced ad blocker detection specifically for ad landing page
+            // Update debug info based on ad blocker status
             setTimeout(function() {
-                // Check if ads are visible
-                const adUnits = document.querySelectorAll('.adsbygoogle');
-                let adsVisible = false;
-
-                for (let i = 0; i < adUnits.length; i++) {
-                    // Check if ad unit has content
-                    if (adUnits[i].innerHTML.trim() !== '' &&
-                        adUnits[i].offsetHeight > 10) {
-                        adsVisible = true;
-                        break;
+                const debugInfo = document.getElementById('ad-debug-info');
+                if (debugInfo) {
+                    // Check if message has been dismissed and ad blocker is verified as disabled
+                    if (localStorage.getItem('adBlockerMessageDismissed') === 'true' &&
+                        localStorage.getItem('adBlockerVerifiedDisabled') === 'true') {
+                        debugInfo.textContent = 'Ad display enabled - thank you for supporting QR Hunt';
+                        debugInfo.style.color = '#4CAF50';
+                    } else if (typeof adsbygoogle !== 'undefined') {
+                        // AdSense is loaded, which means no ad blocker is active
+                        debugInfo.textContent = 'Ad display enabled - thank you for supporting QR Hunt';
+                        debugInfo.style.color = '#4CAF50';
+                        // Update localStorage to remember this state
+                        localStorage.setItem('adBlockerMessageDismissed', 'true');
+                        localStorage.setItem('adBlockerVerifiedDisabled', 'true');
+                    } else {
+                        // Let the main detector handle showing the message
+                        debugInfo.textContent = 'Checking ad blocker status...';
+                        debugInfo.style.color = '#f9c74f';
                     }
                 }
-
-                // If no ads are visible and adBlockDetector hasn't already shown an overlay
-                if (!adsVisible && !adBlockDetector.overlayCreated) {
-                    console.log("No ads visible, likely blocked");
-                    adBlockDetector.adBlockDetected = true;
-                    adBlockDetector.showAdBlockerOverlay();
-
-                    // Update debug info
-                    const debugInfo = document.getElementById('ad-debug-info');
-                    if (debugInfo) {
-                        debugInfo.textContent = 'Ad blocker detected - please disable to support QR Hunt';
-                        debugInfo.style.color = '#e74c3c';
-                    }
-                }
-            }, 3000);
+            }, 1000);
         });
 
         // Function to create and animate falling elements
