@@ -1,15 +1,15 @@
 /**
  * Prize Tiers System for QR Hunt
- * 
+ *
  * This file defines the prize tiers, their values, and distribution percentages.
  * The average prize value is kept between $1-5 for optimal profitability.
  */
 
 // Prize tier definitions
 const prizeTiers = {
-    // Micro prizes ($1) - 70% of all wins
+    // Micro prizes ($1) - 85% of all wins
     micro: {
-        percentage: 70,
+        percentage: 85,
         minValue: 1.00,
         maxValue: 1.00,
         types: [
@@ -33,16 +33,16 @@ const prizeTiers = {
             }
         ]
     },
-    
-    // Small prizes ($3-5) - 25% of all wins
+
+    // Small prizes ($2) - 12% of all wins
     small: {
-        percentage: 25,
-        minValue: 3.00,
-        maxValue: 5.00,
+        percentage: 12,
+        minValue: 2.00,
+        maxValue: 2.00,
         types: [
             {
                 name: "Digital Gift Card",
-                description: "$5 Amazon/Google Play/iTunes Gift Card",
+                description: "$2 Amazon/Google Play/iTunes Gift Card",
                 url: "prizes/digital-gift.html",
                 imageUrl: "images/prizes/gift-card-medium.png"
             },
@@ -60,16 +60,16 @@ const prizeTiers = {
             }
         ]
     },
-    
-    // Medium prizes ($10) - 4% of all wins
+
+    // Medium prizes ($5) - 2.5% of all wins
     medium: {
-        percentage: 4,
-        minValue: 10.00,
-        maxValue: 10.00,
+        percentage: 2.5,
+        minValue: 5.00,
+        maxValue: 5.00,
         types: [
             {
                 name: "Digital Gift Card",
-                description: "$10 Amazon/Google Play/iTunes Gift Card",
+                description: "$5 Amazon/Google Play/iTunes Gift Card",
                 url: "prizes/digital-gift.html",
                 imageUrl: "images/prizes/gift-card-large.png"
             },
@@ -81,16 +81,16 @@ const prizeTiers = {
             }
         ]
     },
-    
-    // Grand prizes ($25) - 1% of all wins
+
+    // Grand prizes ($10) - 0.5% of all wins
     grand: {
-        percentage: 1,
-        minValue: 25.00,
-        maxValue: 25.00,
+        percentage: 0.5,
+        minValue: 10.00,
+        maxValue: 10.00,
         types: [
             {
                 name: "Grand Prize",
-                description: "$25 Amazon Gift Card",
+                description: "$10 Amazon Gift Card",
                 url: "prizes/grand-prize.html",
                 imageUrl: "images/prizes/grand-prize.png"
             }
@@ -102,20 +102,20 @@ const prizeTiers = {
 function calculateAveragePrizeValue() {
     let totalPercentage = 0;
     let weightedSum = 0;
-    
+
     for (const tier in prizeTiers) {
         const { percentage, minValue, maxValue } = prizeTiers[tier];
         const avgValue = (minValue + maxValue) / 2;
-        
+
         weightedSum += percentage * avgValue;
         totalPercentage += percentage;
     }
-    
+
     // Ensure percentages add up to 100
     if (totalPercentage !== 100) {
         console.warn(`Prize tier percentages sum to ${totalPercentage}%, not 100%`);
     }
-    
+
     return weightedSum / 100;
 }
 
@@ -123,21 +123,21 @@ function calculateAveragePrizeValue() {
 function selectRandomPrize() {
     // Generate a random number between 0 and 100
     const rand = Math.random() * 100;
-    
+
     // Determine which tier this falls into
     let cumulativePercentage = 0;
-    
+
     for (const tier in prizeTiers) {
         cumulativePercentage += prizeTiers[tier].percentage;
-        
+
         if (rand <= cumulativePercentage) {
             // Select a random prize type from this tier
             const prizeTypes = prizeTiers[tier].types;
             const randomType = prizeTypes[Math.floor(Math.random() * prizeTypes.length)];
-            
+
             // Generate a random value within the tier's range
             const value = Math.random() * (prizeTiers[tier].maxValue - prizeTiers[tier].minValue) + prizeTiers[tier].minValue;
-            
+
             return {
                 tier,
                 value: Math.round(value * 100) / 100, // Round to 2 decimal places
@@ -148,11 +148,11 @@ function selectRandomPrize() {
             };
         }
     }
-    
+
     // Fallback to micro prize if something goes wrong
     const microTypes = prizeTiers.micro.types;
     const fallbackType = microTypes[Math.floor(Math.random() * microTypes.length)];
-    
+
     return {
         tier: 'micro',
         value: prizeTiers.micro.minValue,

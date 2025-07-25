@@ -44,8 +44,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468169357445383" crossorigin="anonymous"></script>
+    <!-- Google AdSense temporarily removed -->
 
 
     <style id="main-styles-v2">
@@ -84,20 +83,21 @@
         }
 
         #qr-container {
-            position: fixed;
+            position: absolute;
             top: 40%;
             left: 50%;
-            transform: translate(-50%, -20%);
+            transform: translate(-50%, -50%);
             transition: all 0.5s ease-in-out;
             z-index: 5;
             padding: 20px;
-            background-color: rgba(30, 30, 40, 0.85);
+            background-color: rgba(30, 30, 40, 0.95);
             border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             width: 250px;
-            backdrop-filter: blur(5px);
         }
+
+        /* QR container styling */
 
         /* Subtle hover effect instead of pulse */
         #qr-container:hover {
@@ -137,17 +137,22 @@
             left: 0;
             right: 0;
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 5px;
+            padding: 8px;
             border-radius: 5px;
             font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         #qr-container:hover .click-hint {
             opacity: 1;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
         }
 
         /* Prize QR code effect */
@@ -186,14 +191,14 @@
             color: #d0d0e0;
         }
 
-        /* Social proof section - more elegant */
+        /* Social proof section - clearer and more elegant */
         .social-proof {
             margin-top: 15px;
-            background-color: rgba(60, 60, 80, 0.6);
+            background-color: rgba(60, 60, 80, 0.8);
             border-radius: 8px;
             padding: 12px;
-            font-size: 0.85rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .winner-ticker {
@@ -212,8 +217,9 @@
             text-align: center;
             transform: translateY(20px);
             animation: ticker 5s linear infinite;
-            color: #a8d8ff;
+            color: #ffffff;
             font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .winner-ticker p:nth-child(2) {
@@ -283,6 +289,11 @@
             0% { opacity: 0.8; }
             50% { opacity: 1; }
             100% { opacity: 0.8; }
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
         }
 
         .about-button {
@@ -499,7 +510,7 @@
             #qr-container {
                 width: 180px;
                 padding: 12px;
-                position: static !important;
+                position: relative !important;
                 margin: 20px auto !important;
                 top: auto !important;
                 left: auto !important;
@@ -898,35 +909,7 @@
             }
         }
 
-        /* AdSense Container Styles */
-        .adsense-container {
-            max-width: 728px;
-            margin: 20px auto;
-            background-color: rgba(60, 60, 80, 0.5);
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 50;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .adsense-label {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.6);
-            text-align: center;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .adsense-wrapper {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            overflow: hidden;
-            min-height: 90px;
-        }
+        /* Ad styles removed */
 
         /* Main content container */
         .main-content {
@@ -977,14 +960,7 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
 
-        /* Responsive adjustments for AdSense container */
-        @media (max-width: 768px) {
-            .adsense-container {
-                max-width: 90%;
-                margin: 15px auto;
-                padding: 10px;
-            }
-        }
+        /* Responsive ad styles removed */
     </style>
 </head>
 <body>
@@ -1046,24 +1022,7 @@
         </div>
     </div>
 
-    <!-- AdSense Ad Container - Moved to bottom of page to avoid covering QR code -->
-    <div class="mobile-content-container" style="position: fixed; bottom: 60px; width: 100%; z-index: 1;">
-        <div class="adsense-container" style="max-width: 320px; margin: 0 auto;">
-            <div class="adsense-label">Sponsored</div>
-            <div class="adsense-wrapper">
-                <!-- AdSense ad unit -->
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-5468169357445383"
-                     data-ad-slot="9716086761"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </div>
-    </div>
+    <!-- AdSense is now loaded only when QR codes are clicked -->
 
     <footer class="site-footer">
         <div class="footer-content">
@@ -1081,11 +1040,11 @@
     <!-- Power-ups system - load before script.js -->
     <script src="powerups.js"></script>
 
-    <script src="script.js?v=4.3"></script>
+    <script src="script.js?v=4.7"></script>
     <script src="cookie-consent.js"></script>
 
-    <!-- Ad blocker detection -->
-    <script src="adblock-detector.js"></script>
+    <!-- Final ad blocker detection - only dismissible when actually disabled -->
+    <script src="adblock-detector-final.js?v=1.0"></script>
 
     <!-- Track ad view on main page -->
     <script src="ad-stats.js"></script>

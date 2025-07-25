@@ -78,7 +78,7 @@ function validatePrizeCode(code) {
 
 // Wait for the document to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Document loaded, initializing QR Hunt...');
+    console.log('Document loaded, initializing QR Hunt with enhanced movement v4.4...');
 
     const qrContainer = document.getElementById('qr-container');
     const qrImage = document.getElementById('qr-code');
@@ -315,21 +315,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     } */
 
-    // Function to move QR code with a gentle floating animation
+    // Function to move QR code with a slow, gentle movement across the screen
     function moveQR() {
         // Skip if we're on mobile
         if (isMobile) return;
 
-        // For desktop, we'll use a very subtle floating animation
-        // This creates a gentle hovering effect without changing position
+        // Get viewport dimensions
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
 
-        // Apply a small random rotation and scale
-        const rotateAmount = (Math.random() - 0.5) * 2; // Very small rotation ±1 degree
-        const scaleAmount = 1 + (Math.random() * 0.02); // Scale between 1 and 1.02
+        // Calculate safe boundaries to keep QR code fully visible
+        const qrWidth = 250; // Approximate width of QR container
+        const qrHeight = 300; // Approximate height of QR container
+        const safeMargin = 100; // Larger margin from edges for more central movement
 
-        // Apply smooth animation
-        qrContainer.style.transition = 'all 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
-        qrContainer.style.transform = `translate(-50%, -20%) rotate(${rotateAmount}deg) scale(${scaleAmount})`;
+        // Calculate safe area boundaries
+        const minX = qrWidth/2 + safeMargin;
+        const maxX = viewportWidth - qrWidth/2 - safeMargin;
+        const minY = qrHeight/2 + safeMargin;
+        const maxY = viewportHeight - qrHeight/2 - safeMargin;
+
+        // Generate random position within the safe area
+        const newX = minX + Math.random() * (maxX - minX);
+        const newY = minY + Math.random() * (maxY - minY);
+
+        // Apply a small random rotation and scale for subtle effect
+        const rotateAmount = (Math.random() - 0.5) * 3; // Small rotation ±1.5 degrees
+        const scaleAmount = 0.98 + (Math.random() * 0.04); // Scale between 0.98 and 1.02
+
+        // Use slow transition for gentle movement
+        const transitionSpeed = 4 + Math.random() * 2; // Between 4 and 6 seconds
+
+        // Apply smooth animation with absolute positioning
+        qrContainer.style.transition = `all ${transitionSpeed}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
+        qrContainer.style.position = 'fixed'; // Use fixed positioning
+        qrContainer.style.left = `${newX}px`;
+        qrContainer.style.top = `${newY}px`;
+        qrContainer.style.transform = `translate(-50%, -50%) rotate(${rotateAmount}deg) scale(${scaleAmount})`;
     }
 
     // Track QR code generation for enforcing prize rate
@@ -698,6 +720,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial QR code
     changeQR();
 
+    // Start dynamic movement animation immediately
+    moveQR();
+
     // Start gentle floating animation after a short delay
     setTimeout(moveQR, 1000);
 
@@ -705,8 +730,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // This reduces the number of opportunities to win
     setInterval(changeQR, 5000);
 
-    // Apply gentle floating animation every 3 seconds
-    setInterval(moveQR, 3000);
+    // Apply slow movement animation every 5 seconds
+    setInterval(moveQR, 5000);
 
     // Add hover effect to QR code
     qrContainer.addEventListener('mouseenter', function() {
